@@ -161,22 +161,27 @@ body {
 .file-list a:hover {
   color: #000;
 }
-/* ================= 页面背景系统 ================= */
+/* ================= 页面背景容器 ================= */
 
-body::before {
-  content: "";
+.page-bg {
   position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-size: cover;
+  background-position: center;
+}
+
+.page-bg::after {
+  content: "";
+  position: absolute;
   inset: 0;
   background:
     linear-gradient(
-      rgba(255,255,255,0.85),
-      rgba(255,255,255,0.85)
-    ),
-    var(--page-bg, none);
-  background-size: cover;
-  background-position: center;
-  z-index: -1;
+      rgba(255,255,255,0.88),
+      rgba(255,255,255,0.88)
+    );
 }
+
 
 /* ================= 子模块卡片 ================= */
 
@@ -211,3 +216,4 @@ body::before {
   align-items: flex-end;
   padding: 16px;
 }
+

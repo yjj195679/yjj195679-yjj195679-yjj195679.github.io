@@ -1,8 +1,55 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#090c12"><meta name="description" content="生活、兴趣与个人记录。"><title>Life · True Path M</title><link rel="icon" href="assets/images/favicon.svg"><link rel="stylesheet" href="css/style.css"></head><body><div class="site-bg" aria-hidden="true"></div><div class="noise" aria-hidden="true"></div><header class="topbar"><div class="container topbar-inner"><a class="brand" href="index.html"><span class="brand-dot"></span><span>TRUE PATH M</span></a><nav class="nav"><a href="index.html#about">About</a><a href="projects.html">Projects</a><a href="education.html">Education</a><a href="life.html">Life</a><a href="https://github.com/yjj195679" target="_blank" rel="noreferrer">GitHub</a></nav><button class="icon-btn" id="clock" aria-label="local time"></button></div></header>
-<main><section class="subhero"><div class="container"><div class="subhero-card glass reveal"><a class="back-link" href="index.html">← Home</a><div class="kicker">Life</div><h1>Beyond Work.</h1><p>一个个人网站不应该只有技术名词。这里留给摄影、音乐、旅行、日常片段，以及以后真正想长期记录的东西。</p></div></div></section>
-<section class="section"><div class="container content-grid">
-<article class="content-card glass reveal"><div class="kicker">Photography</div><h3>摄影</h3><p>可以替换为你自己的照片，并按“地点 / 时间 / 一句话”方式展示，不需要做成复杂图库。</p></article>
-<article class="content-card glass reveal"><div class="kicker">Music</div><h3>音乐</h3><p>首版不内置播放器，避免额外脚本和 API。以后如果确实需要，可以加一个轻量“最近在听”列表。</p></article>
-<article class="content-card glass reveal"><div class="kicker">Travel</div><h3>旅行与散步</h3><p>更适合放少量高质量照片与文字，而不是大量流水账。</p></article>
-<article class="content-card glass reveal"><div class="kicker">Now</div><h3>最近在做</h3><p>可以定期更新正在学习、正在做的项目、当前阅读或下一阶段目标，让网站保持“活着”。</p></article>
-</div></section></main><footer class="footer"><div class="container footer-inner"><div>© <span id="year">2026</span> True Path M · Personal Portfolio</div><div><a href="https://github.com/yjj195679" target="_blank" rel="noreferrer">GitHub ↗</a></div></div></footer><script>document.getElementById('year').textContent=new Date().getFullYear()</script><script src="js/main.js" defer></script></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080a0f">
+  <meta name="description" content="True Path M 的近期状态、生活记录与技术之外的留白。">
+  <meta property="og:title" content="Life · True Path M">
+  <meta property="og:image" content="https://1956799.xyz/images/life.webp">
+  <link rel="canonical" href="https://1956799.xyz/life.html">
+  <link rel="preload" href="images/life.webp" as="image" type="image/webp">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <title>Life · True Path M</title>
+</head>
+<body data-page="life">
+  <a class="skip-link" href="#main">跳到主要内容</a><div class="site-bg" aria-hidden="true"></div><div class="noise" aria-hidden="true"></div>
+  <header class="topbar"><div class="container topbar-inner">
+    <a class="brand" href="index.html"><span class="brand-dot" aria-hidden="true"></span><span>TRUE PATH M</span></a>
+    <nav class="nav" id="site-nav" aria-label="主导航"><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="education.html">Education</a><a href="courses.html">Study</a><a href="achievements.html">Achievements</a><a href="life.html" aria-current="page">Life</a><a href="guestbook.html">Guestbook</a><a href="https://github.com/yjj195679" target="_blank" rel="noreferrer">GitHub</a></nav>
+    <div class="topbar-tools"><span class="clock" id="clock" aria-label="本地时间"></span><button class="menu-toggle" id="menu-toggle" type="button" aria-label="打开导航" aria-controls="site-nav" aria-expanded="false"><span></span></button></div>
+  </div></header>
+
+  <main id="main">
+    <section class="subhero"><div class="container"><article class="subhero-card glass reveal">
+      <a class="back-link" href="index.html">← 返回首页</a><div class="kicker">Life</div><h1>Beyond Work.</h1>
+      <p>生活页不急着填满。它记录技术之外真正值得留下的片段，也公开我最近在做什么、为什么保持这样的节奏。</p>
+    </article></div></section>
+
+    <section class="section"><div class="container">
+      <div class="section-head reveal"><div><div class="kicker">Now</div><h2>最近在做。</h2></div><p class="section-intro">把当前状态写清楚，也让网站随着学习和项目自然生长。</p></div>
+      <div class="content-grid">
+        <article class="content-card glass reveal"><div class="kicker">Study</div><h3>系统复习 408</h3><p>围绕计算机组成原理、操作系统、网络与算法持续追问“为什么”，把易混概念连接到真实执行过程。</p></article>
+        <article class="content-card glass reveal"><div class="kicker">Mathematics</div><h3>整理推导与错题</h3><p>重点关注积分区域、空间几何、级数、概率密度与多元微积分中容易被步骤掩盖的逻辑。</p></article>
+        <article class="content-card glass reveal"><div class="kicker">Engineering</div><h3>维护个人网站</h3><p>持续改善页面结构、移动端体验、图片体积和内容准确性，并使用 Supabase 为静态站点补充轻量数据能力。</p></article>
+        <article class="content-card glass reveal"><div class="kicker">Archive</div><h3>让成果更容易回看</h3><p>把项目说明、实验图表、学习资料与个人记录逐步整理为清晰入口，而不是散落在不同文件夹中。</p></article>
+      </div>
+    </div></section>
+
+    <section class="section"><div class="container">
+      <div class="section-head reveal"><div><div class="kicker">Outside the screen</div><h2>保留一点留白。</h2></div><p class="section-intro">摄影、音乐、旅行和散步不需要被包装成“能力”，它们只是让生活保持尺度感。</p></div>
+      <div class="explore-grid">
+        <article class="explore-card reveal" style="background-image:url('images/life.webp')"><strong>远处与散步</strong><span>离开屏幕，让问题沉淀一会儿。</span></article>
+        <article class="explore-card reveal" style="background-image:url('images/course.webp')"><strong>阅读</strong><span>在教材、论文与非技术内容之间切换。</span></article>
+        <article class="explore-card reveal" style="background-image:url('images/edu.webp')"><strong>音乐</strong><span>在长时间学习之外保留稳定节奏。</span></article>
+      </div>
+    </div></section>
+
+    <section class="section"><div class="container"><article class="panel glass contact-card reveal"><div><div class="kicker">Say hello</div><h3>路过的话，留下一句话。</h3><p>留言板不会要求注册，只展示通过公开策略读取的内容。</p></div><div class="contact-actions"><a class="button-link" href="guestbook.html">打开留言板</a><a class="button-link" href="index.html">回到首页</a></div></article></div></section>
+  </main>
+
+  <footer class="footer"><div class="container footer-inner"><div>© <span id="year">2026</span> True Path M · Personal Portfolio</div><div class="footer-links"><a href="index.html">Home</a><a href="courses.html">Study</a><a href="guestbook.html">Guestbook</a></div></div></footer>
+  <script src="js/main.js" defer></script>
+</body>
+</html>

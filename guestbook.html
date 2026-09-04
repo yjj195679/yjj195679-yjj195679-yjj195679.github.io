@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080a0f">
+  <meta name="description" content="True Path M 的公开留言板，由 Supabase 提供安全的数据存储。">
+  <meta property="og:title" content="Guestbook · True Path M">
+  <meta property="og:image" content="https://1956799.xyz/images/hero.webp">
+  <link rel="canonical" href="https://1956799.xyz/guestbook.html">
+  <link rel="preload" href="images/hero.webp" as="image" type="image/webp">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <title>Guestbook · True Path M</title>
+</head>
+<body data-page="guestbook">
+  <a class="skip-link" href="#main">跳到主要内容</a><div class="site-bg" aria-hidden="true"></div><div class="noise" aria-hidden="true"></div>
+  <header class="topbar"><div class="container topbar-inner">
+    <a class="brand" href="index.html"><span class="brand-dot" aria-hidden="true"></span><span>TRUE PATH M</span></a>
+    <nav class="nav" id="site-nav" aria-label="主导航"><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="education.html">Education</a><a href="courses.html">Study</a><a href="achievements.html">Achievements</a><a href="life.html">Life</a><a href="guestbook.html" aria-current="page">Guestbook</a><a href="https://github.com/yjj195679" target="_blank" rel="noreferrer">GitHub</a></nav>
+    <div class="topbar-tools"><span class="clock" id="clock" aria-label="本地时间"></span><button class="menu-toggle" id="menu-toggle" type="button" aria-label="打开导航" aria-controls="site-nav" aria-expanded="false"><span></span></button></div>
+  </div></header>
+
+  <main id="main">
+    <section class="subhero"><div class="container"><article class="subhero-card glass reveal">
+      <a class="back-link" href="index.html">← 返回首页</a><div class="kicker">Guestbook</div><h1>Leave a message.</h1>
+      <p>欢迎交流项目、学习与网站建议。留言无需注册，发布后会作为公开内容展示，请不要填写隐私或敏感信息。</p>
+    </article></div></section>
+
+    <section class="section"><div class="container guestbook-grid">
+      <article class="panel glass reveal">
+        <div class="kicker">Write</div><h3>留下一句话</h3>
+        <form class="guestbook-form" id="guestbook-form">
+          <div class="field"><label for="name">名字</label><input id="name" name="name" type="text" minlength="1" maxlength="40" autocomplete="name" required><div class="field-help">1–40 个字符，可以使用昵称。</div></div>
+          <div class="field"><label for="content">留言</label><textarea id="content" name="content" minlength="1" maxlength="500" required></textarea><div class="field-help">1–500 个字符，请勿填写联系方式、账号或其他敏感信息。</div></div>
+          <div class="honeypot" aria-hidden="true"><label for="website">Website</label><input id="website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+          <div class="form-actions"><button class="button primary" id="guestbook-submit" type="submit">发布留言</button></div>
+          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+        </form>
+        <p class="privacy-note">数据由 Supabase 保存；浏览器端仅使用受 RLS 和列权限限制的公开密钥，不能修改或删除留言，也不能写入审核字段。</p>
+      </article>
+
+      <section class="panel glass reveal" aria-labelledby="messages-heading">
+        <div class="kicker">Recent</div><h3 id="messages-heading">最近留言</h3>
+        <div class="message-list" id="message-list" aria-live="polite"><div class="empty-state">正在加载留言…</div></div>
+      </section>
+    </div></section>
+  </main>
+
+  <footer class="footer"><div class="container footer-inner"><div>© <span id="year">2026</span> True Path M · Personal Portfolio</div><div class="footer-links"><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="https://github.com/yjj195679" target="_blank" rel="noreferrer">GitHub ↗</a></div></div></footer>
+  <script src="js/main.js" defer></script>
+  <script src="js/guestbook.js" defer></script>
+</body>
+</html>

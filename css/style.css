@@ -18,6 +18,16 @@
   --max-width: 1180px;
   --font-latin: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   --font-cjk: "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --type-meta: 0.8125rem;
+  --type-ui: 0.875rem;
+  --type-body: 1.0625rem;
+  --type-lead: clamp(1.0625rem, 1.5vw, 1.25rem);
+  --type-card-title: 1.5rem;
+  --type-section: clamp(2.125rem, 4.4vw, 3.25rem);
+  --type-display: clamp(3rem, 6.6vw, 5.25rem);
+  --type-subdisplay: clamp(2.875rem, 6.8vw, 4.75rem);
+  --measure-copy: 42rem;
+  --measure-intro: 38rem;
 }
 
 * {
@@ -37,45 +47,63 @@ body {
   color: var(--text);
   background: var(--bg);
   font-family: var(--font-latin);
-  font-size: 17px;
+  font-size: var(--type-body);
   font-weight: 400;
   line-height: 1.72;
+  font-kerning: normal;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
 
 html:lang(zh-CN) body {
   font-family: var(--font-cjk);
-  line-height: 1.78;
+  line-height: 1.82;
+  letter-spacing: 0;
+  line-break: strict;
+  word-break: normal;
 }
 
 html:lang(zh-CN) .eyebrow,
 html:lang(zh-CN) .kicker,
 html:lang(zh-CN) .quick-label {
   font-weight: 600;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.04em;
   text-transform: none;
 }
 
 html:lang(zh-CN) .hero h1,
 html:lang(zh-CN) .subhero h1 {
-  letter-spacing: 0.01em;
-  line-height: 1.08;
+  letter-spacing: 0;
+  line-height: 1.14;
+}
+
+html:lang(zh-CN) .hero h1 {
+  max-width: 11em;
+  font-size: clamp(2.75rem, 6vw, 4.625rem);
+}
+
+html:lang(zh-CN) .subhero h1 {
+  font-size: clamp(2.625rem, 6.2vw, 4.25rem);
 }
 
 html:lang(zh-CN) .section h2 {
-  letter-spacing: 0.01em;
-  line-height: 1.18;
+  max-width: 15em;
+  font-size: clamp(2rem, 4vw, 2.875rem);
+  letter-spacing: 0;
+  line-height: 1.24;
 }
 
 html:lang(zh-CN) .panel h3,
 html:lang(zh-CN) .content-card h3,
 html:lang(zh-CN) .project-content h3,
 html:lang(zh-CN) .timeline-item h3 {
-  line-height: 1.36;
+  line-height: 1.42;
 }
 
-html:lang(zh-CN) .nav a,
+html:lang(zh-CN) .nav a {
+  letter-spacing: 0;
+}
+
 html:lang(zh-CN) .button,
 html:lang(zh-CN) .button-link,
 html:lang(zh-CN) .language-switch a,
@@ -106,6 +134,19 @@ button {
 img {
   display: block;
   max-width: 100%;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p,
+li,
+dd {
+  text-wrap: pretty;
+  hanging-punctuation: first last;
 }
 
 ::selection {
@@ -222,9 +263,9 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 700;
-  letter-spacing: 0.13em;
+  letter-spacing: 0.11em;
   white-space: nowrap;
 }
 
@@ -247,9 +288,9 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
   padding: 8px 11px;
   border-radius: 999px;
   color: #d9e0ea;
-  font-size: 14px;
+  font-size: var(--type-ui);
   font-weight: 500;
-  line-height: 1.4;
+  line-height: 1.35;
   transition: color 0.2s ease, background 0.2s ease;
 }
 
@@ -298,7 +339,7 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
   place-items: center;
   border-radius: 999px;
   color: var(--muted);
-  font-size: 13px;
+  font-size: var(--type-meta);
   font-weight: 600;
   line-height: 1;
 }
@@ -336,7 +377,7 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
   min-width: 78px;
   padding: 8px 10px;
   font-variant-numeric: tabular-nums;
-  font-size: 13px;
+  font-size: var(--type-meta);
 }
 
 .menu-toggle {
@@ -406,8 +447,10 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
 .eyebrow,
 .kicker {
   color: var(--accent);
-  font-size: 13px;
-  letter-spacing: 0.14em;
+  font-size: var(--type-meta);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1.45;
   text-transform: uppercase;
 }
 
@@ -420,20 +463,21 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
 .subhero h1 {
   margin: 0;
   font-weight: 700;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.03em;
 }
 
 .hero h1 {
-  max-width: 850px;
-  font-size: clamp(52px, 7vw, 94px);
-  line-height: 0.98;
+  max-width: 19ch;
+  font-size: var(--type-display);
+  line-height: 1.02;
 }
 
 .hero-lead {
-  max-width: 720px;
-  margin: 24px 0 28px;
+  max-width: var(--measure-copy);
+  margin: 1.5rem 0 1.75rem;
   color: #e1e7f0;
-  font-size: clamp(17px, 2vw, 21px);
+  font-size: var(--type-lead);
+  line-height: 1.72;
 }
 
 .hero-actions,
@@ -455,6 +499,10 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
   border: 1px solid var(--line-strong);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.07);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.25;
+  white-space: nowrap;
   transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
 
@@ -530,14 +578,17 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
 
 .quick-label {
   color: #d2dbea;
-  font-size: 13px;
-  letter-spacing: 0.12em;
+  font-size: var(--type-meta);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  line-height: 1.45;
   text-transform: uppercase;
 }
 
 .quick-title {
-  font-size: 27px;
-  line-height: 1.12;
+  font-size: 1.625rem;
+  font-weight: 600;
+  line-height: 1.2;
 }
 
 .icon {
@@ -601,24 +652,27 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
 
 .section-head {
   display: flex;
-  margin-bottom: 34px;
+  margin-bottom: 2rem;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 32px;
+  gap: 2rem;
 }
 
 .section h2 {
-  margin: 8px 0 0;
-  font-size: clamp(37px, 5vw, 58px);
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  line-height: 1.08;
+  max-width: 18ch;
+  margin: 0.5rem 0 0;
+  font-size: var(--type-section);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
 }
 
 .section-intro {
-  max-width: 600px;
+  max-width: var(--measure-intro);
   margin: 0;
   color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.72;
 }
 
 .about-grid,
@@ -640,15 +694,23 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
 
 .panel h3,
 .content-card h3 {
-  margin: 8px 0 10px;
-  font-size: 25px;
-  line-height: 1.2;
+  max-width: 24ch;
+  margin: 0.625rem 0 0.75rem;
+  font-size: var(--type-card-title);
+  font-weight: 600;
+  line-height: 1.32;
 }
 
 .panel p,
 .content-card p,
 .content-card li {
   color: #cbd3df;
+  line-height: 1.78;
+}
+
+.panel p,
+.content-card p {
+  max-width: var(--measure-copy);
 }
 
 .stats {
@@ -667,13 +729,14 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
 
 .stat strong {
   display: block;
-  font-size: 24px;
+  font-size: 1.5rem;
   line-height: 1.2;
 }
 
 .stat span {
   color: var(--muted);
-  font-size: 13px;
+  font-size: var(--type-meta);
+  line-height: 1.55;
 }
 
 .tags,
@@ -689,7 +752,8 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.045);
   color: #dce4ef;
-  font-size: 13px;
+  font-size: var(--type-meta);
+  line-height: 1.45;
 }
 
 .tag { padding: 7px 11px; }
@@ -748,15 +812,18 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
 }
 
 .project-content h3 {
-  margin: 7px 0 9px;
-  font-size: clamp(27px, 4vw, 35px);
-  line-height: 1.08;
+  max-width: 25ch;
+  margin: 0.5rem 0 0.625rem;
+  font-size: clamp(1.625rem, 3vw, 2.125rem);
+  font-weight: 600;
+  line-height: 1.2;
 }
 
 .project-content p {
-  max-width: 760px;
-  margin: 0 0 15px;
+  max-width: var(--measure-copy);
+  margin: 0 0 1rem;
   color: #d2dae5;
+  line-height: 1.72;
 }
 
 .timeline {
@@ -777,19 +844,24 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
 
 .timeline-time {
   color: var(--accent);
-  font-size: 14px;
-  letter-spacing: 0.05em;
+  font-size: var(--type-ui);
+  letter-spacing: 0.03em;
+  line-height: 1.5;
 }
 
 .timeline-item h3 {
-  margin: 0 0 6px;
-  font-size: 23px;
+  max-width: 32ch;
+  margin: 0 0 0.5rem;
+  font-size: 1.375rem;
+  font-weight: 600;
+  line-height: 1.36;
 }
 
 .timeline-item p {
-  max-width: 780px;
+  max-width: var(--measure-copy);
   margin: 0;
   color: #c7d0dc;
+  line-height: 1.76;
 }
 
 .explore-grid {
@@ -829,14 +901,16 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
 }
 
 .explore-card strong {
-  font-size: 25px;
-  line-height: 1.15;
+  font-size: var(--type-card-title);
+  font-weight: 600;
+  line-height: 1.24;
 }
 
 .explore-card span {
   margin-top: 6px;
   color: #cbd3df;
-  font-size: 14px;
+  font-size: var(--type-ui);
+  line-height: 1.55;
 }
 
 .weather-panel {
@@ -857,13 +931,14 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
 .weather-value {
   display: block;
   margin-bottom: 3px;
-  font-size: 34px;
+  font-size: 2.125rem;
   line-height: 1.2;
 }
 
 .weather-meta {
   color: var(--muted);
-  font-size: 14px;
+  font-size: var(--type-ui);
+  line-height: 1.55;
 }
 
 .subhero {
@@ -877,17 +952,18 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
 }
 
 .subhero h1 {
-  max-width: 850px;
-  margin-top: 8px;
-  font-size: clamp(50px, 8vw, 88px);
-  line-height: 0.98;
+  max-width: 15ch;
+  margin-top: 0.625rem;
+  font-size: var(--type-subdisplay);
+  line-height: 1.04;
 }
 
 .subhero p {
-  max-width: 750px;
-  margin: 22px 0 0;
+  max-width: var(--measure-copy);
+  margin: 1.25rem 0 0;
   color: #d4dbe6;
-  font-size: 19px;
+  font-size: 1.125rem;
+  line-height: 1.76;
 }
 
 .back-link {
@@ -908,7 +984,8 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
 }
 
 .content-card li + li {
-  margin-top: 8px;
+  margin-top: 0.625rem;
+  line-height: 1.7;
 }
 
 .content-card.full {
@@ -936,6 +1013,7 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
 .detail-row dd {
   margin: 0;
   color: #e0e6ef;
+  line-height: 1.7;
 }
 
 .guestbook-grid {
@@ -955,7 +1033,8 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
 
 .field label {
   color: #e7edf6;
-  font-size: 15px;
+  font-size: 0.9375rem;
+  font-weight: 500;
 }
 
 .field input,
@@ -965,6 +1044,8 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
   border-radius: 15px;
   background: rgba(4, 7, 11, 0.5);
   padding: 12px 14px;
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
 .field input:focus,
@@ -983,7 +1064,8 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
 .form-status,
 .privacy-note {
   color: var(--muted);
-  font-size: 13px;
+  font-size: var(--type-meta);
+  line-height: 1.55;
 }
 
 .form-status {
@@ -1024,18 +1106,23 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
 }
 
 .message-name {
-  font-size: 18px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.4;
 }
 
 .message-time {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 0.75rem;
+  line-height: 1.5;
   white-space: nowrap;
 }
 
 .message-content {
+  max-width: var(--measure-copy);
   margin: 0;
   color: #d2d9e4;
+  line-height: 1.72;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
@@ -1062,7 +1149,8 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
 .footer {
   padding: 56px 0 84px;
   color: var(--muted);
-  font-size: 14px;
+  font-size: var(--type-ui);
+  line-height: 1.6;
 }
 
 .footer-inner {
@@ -1183,7 +1271,14 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
 }
 
 @media (max-width: 640px) {
-  body { font-size: 16px; }
+  :root {
+    --type-body: 1rem;
+    --type-section: clamp(2rem, 10vw, 2.625rem);
+    --type-display: clamp(2.75rem, 13vw, 3.75rem);
+    --type-subdisplay: clamp(2.625rem, 13vw, 3.625rem);
+  }
+
+  body { font-size: var(--type-body); }
 
   .container {
     width: min(calc(100% - 24px), var(--max-width));
@@ -1213,7 +1308,9 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
     padding: 29px 23px;
   }
 
-  .hero h1 { font-size: clamp(48px, 15vw, 66px); }
+  .hero h1 { font-size: var(--type-display); }
+
+  html:lang(zh-CN) .hero h1 { font-size: clamp(2.625rem, 12vw, 3.5rem); }
 
   .hero-side,
   .stats,
@@ -1233,7 +1330,9 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
     padding: 23px;
   }
 
-  .subhero h1 { font-size: clamp(45px, 15vw, 68px); }
+  .subhero h1 { font-size: var(--type-subdisplay); }
+
+  html:lang(zh-CN) .subhero h1 { font-size: clamp(2.5rem, 11.5vw, 3.375rem); }
 
   .timeline-item {
     grid-template-columns: 1fr;

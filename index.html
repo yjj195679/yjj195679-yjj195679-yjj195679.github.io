@@ -11,10 +11,13 @@
   <meta property="og:url" content="https://1956799.xyz/">
   <meta property="og:image" content="https://1956799.xyz/images/hero.webp">
   <link rel="canonical" href="https://1956799.xyz/">
-  <link rel="preload" href="images/hero.webp" as="image" type="image/webp">
+  <link rel="alternate" hreflang="zh-CN" href="https://1956799.xyz/">
+  <link rel="alternate" hreflang="en" href="https://1956799.xyz/en/">
+  <link rel="alternate" hreflang="x-default" href="https://1956799.xyz/">
+  <link rel="preconnect" href="https://images.unsplash.com">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css">
-  <title>True Path M · Personal Portfolio</title>
+  <title>True Path M · 个人网站</title>
 </head>
 <body data-page="home">
   <a class="skip-link" href="#main">跳到主要内容</a>
@@ -28,16 +31,17 @@
         <span>TRUE PATH M</span>
       </a>
       <nav class="nav" id="site-nav" aria-label="主导航">
-        <a href="index.html" aria-current="page">Home</a>
-        <a href="projects.html">Projects</a>
-        <a href="education.html">Education</a>
-        <a href="courses.html">Study</a>
-        <a href="achievements.html">Achievements</a>
-        <a href="life.html">Life</a>
-        <a href="guestbook.html">Guestbook</a>
+        <a href="index.html" aria-current="page">首页</a>
+        <a href="projects.html">项目</a>
+        <a href="education.html">教育</a>
+        <a href="courses.html">学习</a>
+        <a href="achievements.html">成果</a>
+        <a href="life.html">生活</a>
+        <a href="guestbook.html">留言板</a>
         <a href="https://github.com/yjj195679" target="_blank" rel="noreferrer">GitHub</a>
       </nav>
       <div class="topbar-tools">
+        <div class="language-switch" aria-label="语言切换"><span aria-current="true">中文</span><a href="en/index.html" lang="en" hreflang="en">EN</a></div>
         <span class="clock" id="clock" aria-label="本地时间"></span>
         <button class="menu-toggle" id="menu-toggle" type="button" aria-label="打开导航" aria-controls="site-nav" aria-expanded="false"><span></span></button>
       </div>
@@ -49,8 +53,8 @@
       <div class="container hero-grid">
         <article class="hero-main glass reveal">
           <div class="hero-copy">
-            <div class="eyebrow">Personal archive · Research · Learning</div>
-            <h1>Build things.<br>Learn deeply.</h1>
+            <div class="eyebrow">个人档案 · 研究 · 学习</div>
+            <h1>研究、实现、<br>持续积累。</h1>
             <p class="hero-lead">你好，我是 <strong>True Path M</strong>。我关注图像复原、深度学习与优化算法，也在持续整理计算机基础和数学学习中的推导、实验与复盘。</p>
             <div class="hero-actions">
               <a class="button primary" href="projects.html">查看项目 <svg class="icon icon-arrow-right" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11"></path><path d="m11 6 4 4-4 4"></path></svg></a>
@@ -62,19 +66,19 @@
 
         <aside class="hero-side" aria-label="快捷入口">
           <a class="quick-card glass reveal" href="projects.html" style="--card-image:url('images/project.webp')">
-            <span class="quick-label">Selected work</span><span class="quick-title">Projects</span><svg class="icon quick-arrow icon-arrow-right" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11"></path><path d="m11 6 4 4-4 4"></path></svg>
+            <span class="quick-label">精选内容</span><span class="quick-title">项目</span><svg class="icon quick-arrow icon-arrow-right" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11"></path><path d="m11 6 4 4-4 4"></path></svg>
           </a>
           <a class="quick-card glass reveal" href="courses.html" style="--card-image:url('images/course.webp')">
-            <span class="quick-label">Knowledge map</span><span class="quick-title">Study</span><svg class="icon quick-arrow icon-arrow-right" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11"></path><path d="m11 6 4 4-4 4"></path></svg>
+            <span class="quick-label">知识地图</span><span class="quick-title">学习</span><svg class="icon quick-arrow icon-arrow-right" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11"></path><path d="m11 6 4 4-4 4"></path></svg>
           </a>
           <a class="quick-card glass reveal" href="education.html" style="--card-image:url('images/edu.webp')">
-            <span class="quick-label">Learning path</span><span class="quick-title">Education</span><svg class="icon quick-arrow icon-arrow-right" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11"></path><path d="m11 6 4 4-4 4"></path></svg>
+            <span class="quick-label">学习路径</span><span class="quick-title">教育</span><svg class="icon quick-arrow icon-arrow-right" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11"></path><path d="m11 6 4 4-4 4"></path></svg>
           </a>
           <a class="quick-card glass reveal" href="achievements.html" style="--card-image:url('images/achieve.webp')">
-            <span class="quick-label">Verified output</span><span class="quick-title">Milestones</span><svg class="icon quick-arrow icon-arrow-right" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11"></path><path d="m11 6 4 4-4 4"></path></svg>
+            <span class="quick-label">阶段成果</span><span class="quick-title">阶段成果</span><svg class="icon quick-arrow icon-arrow-right" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11"></path><path d="m11 6 4 4-4 4"></path></svg>
           </a>
           <a class="quick-card wide glass reveal" href="guestbook.html" style="--card-image:url('images/hero.webp')">
-            <span class="quick-label">Powered by Supabase</span><span class="quick-title">Leave a message.</span><svg class="icon quick-arrow icon-arrow-right" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11"></path><path d="m11 6 4 4-4 4"></path></svg>
+            <span class="quick-label">留言板</span><span class="quick-title">留下一句话。</span><svg class="icon quick-arrow icon-arrow-right" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11"></path><path d="m11 6 4 4-4 4"></path></svg>
           </a>
         </aside>
       </div>
@@ -83,11 +87,11 @@
     <section class="section anchor-offset" id="about">
       <div class="container">
         <div class="section-head reveal">
-          <div><div class="kicker">About</div><h2>从公式到可运行系统。</h2></div>
+          <div><div class="kicker">关于我</div><h2>从公式到可运行系统。</h2></div>
         </div>
         <div class="about-grid">
           <article class="panel glass reveal">
-            <div class="kicker">Research focus</div>
+            <div class="kicker">研究方向</div>
             <h3>图像复原与计算机视觉</h3>
             <p>主要实践集中在去模糊、超分辨率与 Plug-and-Play 方法：从 Primal–Dual 优化推导，到 DPSR 训练与 Patch-wise 推理，再到 UNet、Restormer 等深度模型的稳定性比较。</p>
             <div class="stats">
@@ -98,11 +102,11 @@
             </div>
           </article>
           <article class="panel glass reveal">
-            <div class="kicker">Toolbox</div>
+            <div class="kicker">工具与方法</div>
             <h3>偏向可复现与可维护</h3>
             <p>在 Windows、Anaconda 与 VS Code 环境中完成模型训练、推理、结果分析和文档整理，重视依赖管理、显存控制、数值稳定与清晰的实验记录。</p>
             <div class="tags">
-              <span class="tag">Python</span><span class="tag">PyTorch</span><span class="tag">C / C++</span><span class="tag">NumPy</span><span class="tag">OpenCV</span><span class="tag">MATLAB</span><span class="tag">Git</span><span class="tag">Linux</span><span class="tag">HTML / CSS / JS</span><span class="tag">Supabase</span>
+              <span class="tag">Python</span><span class="tag">PyTorch</span><span class="tag">C / C++</span><span class="tag">NumPy</span><span class="tag">OpenCV</span><span class="tag">MATLAB</span><span class="tag">Git</span><span class="tag">Linux</span><span class="tag">HTML / CSS / JS</span>
             </div>
           </article>
         </div>
@@ -112,13 +116,13 @@
     <section class="section anchor-offset" id="projects">
       <div class="container">
         <div class="section-head reveal">
-          <div><div class="kicker">Selected projects</div><h2>研究、实现与迭代。</h2></div>
+          <div><div class="kicker">精选项目</div><h2>研究、实现与迭代。</h2></div>
         </div>
         <div class="project-grid">
           <a class="project-card featured reveal" href="projects.html#dpsr">
             <div class="project-cover" style="background-image:url('images/project.webp')"></div>
             <div class="project-content">
-              <div class="kicker">Computer vision</div>
+              <div class="kicker">计算机视觉</div>
               <h3>DPSR · Plug-and-Play Super-Resolution</h3>
               <p>完成训练、退化建模、PnP-ADMM 推理与显存适配，在任意模糊核场景中建立可复现的超分辨率流程。</p>
               <div class="project-meta"><span class="mini">PyTorch</span><span class="mini">SRResNet</span><span class="mini">PnP-ADMM</span><span class="mini">Patch-wise</span></div>
@@ -127,19 +131,19 @@
           <a class="project-card reveal" href="projects.html#deblur">
             <div class="project-cover" style="background-image:linear-gradient(135deg,rgba(16,24,38,.25),rgba(3,6,10,.78)),url('images/hero.webp')"></div>
             <div class="project-content">
-              <div class="kicker">Image restoration</div>
+              <div class="kicker">图像复原</div>
               <h3>Primal–Dual Deblurring</h3>
               <p>围绕 Chambolle–Pock 迭代、频域闭式求解和边界条件，形成从数学模型到实验结果的完整链条。</p>
-              <div class="project-meta"><span class="mini">Optimization</span><span class="mini">FFT</span><span class="mini">TV prior</span></div>
+              <div class="project-meta"><span class="mini">优化方法</span><span class="mini">FFT</span><span class="mini">TV prior</span></div>
             </div>
           </a>
           <a class="project-card reveal" href="projects.html#hybrid">
             <div class="project-cover" style="background-image:linear-gradient(135deg,rgba(13,19,29,.28),rgba(3,6,10,.82)),url('images/course.webp')"></div>
             <div class="project-content">
-              <div class="kicker">Deep learning</div>
+              <div class="kicker">深度学习</div>
               <h3>UNet / Restormer Experiments</h3>
               <p>针对 NaN、偏色与显存溢出定位归一化和推理策略问题，并尝试与优化方法组合。</p>
-              <div class="project-meta"><span class="mini">UNet</span><span class="mini">Restormer</span><span class="mini">Stability</span></div>
+              <div class="project-meta"><span class="mini">UNet</span><span class="mini">Restormer</span><span class="mini">稳定性</span></div>
             </div>
           </a>
         </div>
@@ -149,13 +153,13 @@
     <section class="section anchor-offset" id="path">
       <div class="container">
         <div class="section-head reveal">
-          <div><div class="kicker">Learning path</div><h2>持续形成知识闭环。</h2></div>
+          <div><div class="kicker">学习路径</div><h2>持续形成知识闭环。</h2></div>
           <p class="section-intro">学习以“概念—推导—实现—验证—复盘”为主线，避免知识点彼此孤立。</p>
         </div>
         <div class="timeline">
           <div class="timeline-item reveal"><div class="timeline-time">2025.12—2026.01</div><div><h3>图像复原研究实践</h3><p>完成 Primal–Dual 去模糊与 DPSR 复现，处理数据退化、训练配置、频域求解、OOM 和数值稳定等实际问题。</p></div></div>
-          <div class="timeline-item reveal"><div class="timeline-time">2026 · Current</div><div><h3>408 与数学体系化整理</h3><p>持续梳理数据结构、计算机组成原理、操作系统、计算机网络，以及高等数学、线性代数和概率论中的知识联系。</p></div></div>
-          <div class="timeline-item reveal"><div class="timeline-time">Long term</div><div><h3>把结果变成可复用资产</h3><p>将代码、图表、报告、网页和学习笔记整理为可维护、可验证、便于继续扩展的工程。</p></div></div>
+          <div class="timeline-item reveal"><div class="timeline-time">2026 · 当前</div><div><h3>408 与数学体系化整理</h3><p>持续梳理数据结构、计算机组成原理、操作系统、计算机网络，以及高等数学、线性代数和概率论中的知识联系。</p></div></div>
+          <div class="timeline-item reveal"><div class="timeline-time">长期</div><div><h3>把结果变成可复用资产</h3><p>将代码、图表、报告、网页和学习笔记整理为可维护、可验证、便于继续扩展的工程。</p></div></div>
         </div>
       </div>
     </section>
@@ -163,14 +167,14 @@
     <section class="section" id="explore">
       <div class="container">
         <div class="section-head reveal">
-          <div><div class="kicker">Explore</div><h2>进入完整页面。</h2></div>
+          <div><div class="kicker">浏览</div><h2>进入完整页面。</h2></div>
         </div>
         <div class="explore-grid">
-          <a class="explore-card reveal" href="education.html" style="background-image:url('images/edu.webp')"><strong>Education</strong><span>学习路径与方法</span></a>
-          <a class="explore-card reveal" href="courses.html" style="background-image:url('images/course.webp')"><strong>Study</strong><span>408、数学与视觉方向</span></a>
-          <a class="explore-card reveal" href="achievements.html" style="background-image:url('images/achieve.webp')"><strong>Achievements</strong><span>真实完成的成果</span></a>
-          <a class="explore-card reveal" href="life.html" style="background-image:url('images/life.webp')"><strong>Life</strong><span>技术之外与近期状态</span></a>
-          <a class="explore-card reveal" href="guestbook.html" style="background-image:url('images/hero.webp')"><strong>Guestbook</strong><span>Supabase 实时留言</span></a>
+          <a class="explore-card reveal" href="education.html" style="background-image:url('images/edu.webp')"><strong>教育</strong><span>学习路径与方法</span></a>
+          <a class="explore-card reveal" href="courses.html" style="background-image:url('images/course.webp')"><strong>学习</strong><span>408、数学与视觉方向</span></a>
+          <a class="explore-card reveal" href="achievements.html" style="background-image:url('images/achieve.webp')"><strong>成果</strong><span>真实完成的成果</span></a>
+          <a class="explore-card reveal" href="life.html" style="background-image:url('images/life.webp')"><strong>生活</strong><span>近期学习与研究状态</span></a>
+          <a class="explore-card reveal" href="guestbook.html" style="background-image:url('images/hero.webp')"><strong>留言板</strong><span>访客留言</span></a>
           <a class="explore-card reveal" href="https://github.com/yjj195679" target="_blank" rel="noreferrer" style="background-image:url('images/project.webp')"><strong>GitHub</strong><span>代码与公开项目</span></a>
         </div>
       </div>
@@ -180,9 +184,9 @@
       <div class="container">
         <article class="panel glass weather-panel reveal">
           <div>
-            <div class="kicker">Local weather</div>
+            <div class="kicker">本地天气</div>
             <h3>查看你所在位置的天气</h3>
-            <p>只有点击后才会请求浏览器定位；坐标仅用于即时查询，不会被本站保存。</p>
+            <p>查看当前位置的温度、湿度和风速。</p>
             <button class="button" id="weather-button" type="button">使用当前位置</button>
           </div>
           <div class="weather-reading" aria-live="polite">
@@ -196,7 +200,7 @@
     <section class="section anchor-offset" id="contact">
       <div class="container">
         <article class="panel glass contact-card reveal">
-          <div><div class="kicker">Contact</div><h3>欢迎交流项目与学习。</h3><p>可以查看 GitHub，也可以在留言板留下公开消息。</p></div>
+          <div><div class="kicker">联系</div><h3>欢迎交流项目与学习。</h3><p>可以查看 GitHub，也可以在留言板留下公开消息。</p></div>
           <div class="contact-actions"><a class="button-link" href="guestbook.html">打开留言板</a><a class="button-link" href="https://github.com/yjj195679" target="_blank" rel="noreferrer">GitHub <svg class="icon icon-external" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M11 4h5v5"></path><path d="m16 4-7 7"></path><path d="M14 11v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h4"></path></svg></a><a class="button-link" href="#home">回到顶部 <svg class="icon icon-arrow-up" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M10 16V5"></path><path d="m6 9 4-4 4 4"></path></svg></a></div>
         </article>
       </div>
@@ -206,7 +210,7 @@
   <footer class="footer">
     <div class="container footer-inner">
       <div>© <span id="year">2026</span> True Path M · Personal Portfolio</div>
-      <div class="footer-links"><a href="projects.html">Projects</a><a href="guestbook.html">Guestbook</a><a href="https://github.com/yjj195679" target="_blank" rel="noreferrer">GitHub <svg class="icon icon-external" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M11 4h5v5"></path><path d="m16 4-7 7"></path><path d="M14 11v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h4"></path></svg></a></div>
+      <div class="footer-links"><a href="projects.html">项目</a><a href="guestbook.html">留言板</a><a href="https://github.com/yjj195679" target="_blank" rel="noreferrer">GitHub <svg class="icon icon-external" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M11 4h5v5"></path><path d="m16 4-7 7"></path><path d="M14 11v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h4"></path></svg></a></div>
     </div>
   </footer>
   <script src="js/main.js" defer></script>

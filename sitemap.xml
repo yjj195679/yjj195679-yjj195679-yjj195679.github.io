@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://1956799.xyz/</loc><priority>1.0</priority></url>
-  <url><loc>https://1956799.xyz/projects.html</loc><priority>0.9</priority></url>
-  <url><loc>https://1956799.xyz/education.html</loc><priority>0.7</priority></url>
-  <url><loc>https://1956799.xyz/courses.html</loc><priority>0.8</priority></url>
-  <url><loc>https://1956799.xyz/achievements.html</loc><priority>0.8</priority></url>
-  <url><loc>https://1956799.xyz/life.html</loc><priority>0.6</priority></url>
-  <url><loc>https://1956799.xyz/guestbook.html</loc><priority>0.6</priority></url>
+  <url><loc>https://1956799.xyz/</loc></url>
+  <url><loc>https://1956799.xyz/projects.html</loc></url>
+  <url><loc>https://1956799.xyz/education.html</loc></url>
+  <url><loc>https://1956799.xyz/courses.html</loc></url>
+  <url><loc>https://1956799.xyz/achievements.html</loc></url>
+  <url><loc>https://1956799.xyz/life.html</loc></url>
+  <url><loc>https://1956799.xyz/guestbook.html</loc></url>
+  <url><loc>https://1956799.xyz/en/</loc></url>
+  <url><loc>https://1956799.xyz/en/projects.html</loc></url>
+  <url><loc>https://1956799.xyz/en/education.html</loc></url>
+  <url><loc>https://1956799.xyz/en/courses.html</loc></url>
+  <url><loc>https://1956799.xyz/en/achievements.html</loc></url>
+  <url><loc>https://1956799.xyz/en/life.html</loc></url>
+  <url><loc>https://1956799.xyz/en/guestbook.html</loc></url>
 </urlset>

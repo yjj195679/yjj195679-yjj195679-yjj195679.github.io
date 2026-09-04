@@ -122,6 +122,8 @@ img {
   background: linear-gradient(180deg, rgba(6, 8, 12, 0.16), rgba(6, 8, 12, 0.8) 58%, var(--bg) 96%);
 }
 
+body[data-page="home"] { --page-image: url("https://images.unsplash.com/photo-1770156812763-c1749bc0ebbf?auto=format&fit=crop&fm=jpg&q=80&w=1800"); }
+body[data-page="home"] .site-bg { background-position: center 42%; }
 body[data-page="projects"] { --page-image: url("../images/project.webp"); }
 body[data-page="education"] { --page-image: url("../images/edu.webp"); }
 body[data-page="study"] { --page-image: url("../images/course.webp"); }
@@ -232,6 +234,45 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
 .nav a:hover::after,
 .nav a[aria-current="page"]::after {
   transform: scaleX(1);
+}
+
+.language-switch {
+  display: inline-flex;
+  min-height: 34px;
+  padding: 3px;
+  align-items: center;
+  gap: 2px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.language-switch a,
+.language-switch span {
+  display: grid;
+  min-width: 34px;
+  min-height: 26px;
+  padding: 3px 8px;
+  place-items: center;
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.language-switch a {
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.language-switch a:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.language-switch span[aria-current="true"] {
+  color: #0c111a;
+  background: var(--accent-strong);
 }
 
 .topbar-tools {
@@ -1114,6 +1155,12 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
   }
 
   .clock { display: none; }
+
+  .language-switch a,
+  .language-switch span {
+    min-width: 31px;
+    padding-inline: 6px;
+  }
 
   .hero {
     padding-top: 80px;

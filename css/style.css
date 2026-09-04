@@ -457,10 +457,55 @@ body[data-page="life"] { --page-image: url("../images/life.webp"); }
   line-height: 1.12;
 }
 
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  flex: none;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .quick-arrow {
+  width: 22px;
+  height: 22px;
   align-self: flex-end;
   color: var(--accent-strong);
-  font-size: 24px;
+}
+
+.footer-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.icon-arrow-right,
+.icon-arrow-left,
+.icon-arrow-up,
+.icon-external {
+  transition: transform 0.2s ease;
+}
+
+.quick-card:hover .icon-arrow-right,
+.button:hover .icon-arrow-right {
+  transform: translateX(3px);
+}
+
+.back-link:hover .icon-arrow-left {
+  transform: translateX(-3px);
+}
+
+.button-link:hover .icon-arrow-up {
+  transform: translateY(-2px);
+}
+
+.button-link:hover .icon-external,
+.footer-links a:hover .icon-external {
+  transform: translate(1px, -1px);
 }
 
 .section {

@@ -12,7 +12,7 @@
 
 ## 1. 项目定位
 
-这个网站不是一张只陈列关键词的在线简历，而是一个可持续扩展的个人资料库，主要用于展示：
+网站主要展示：
 
 - 图像复原、深度学习与优化算法相关项目；
 - Primal–Dual 去模糊、DPSR、UNet、Restormer 等实践经历；
@@ -111,31 +111,31 @@
 
 ```text
 .
-├── index.html                 # 首页
-├── projects.html              # 项目经历
-├── education.html             # 教育与学习路径
-├── courses.html               # 课程和知识地图
-├── achievements.html          # 阶段成果
-├── life.html                  # 生活与近期状态
-├── guestbook.html             # 留言板页面
-├── 404.html                   # GitHub Pages 自定义 404
-├── CNAME                      # 自定义域名，只包含 1956799.xyz
-├── favicon.svg                # 浏览器标签页图标
-├── robots.txt                 # 搜索引擎抓取规则
-├── sitemap.xml                # 站点地图
-├── README.md                  # 项目说明文件
+├── index.html
+├── projects.html
+├── education.html
+├── courses.html
+├── achievements.html
+├── life.html
+├── guestbook.html
+├── 404.html
+├── CNAME
+├── favicon.svg
+├── robots.txt
+├── sitemap.xml
+├── README.md
 ├── css/
-│   └── style.css              # 全站主题、组件和响应式样式
+│   └── style.css
 ├── js/
-│   ├── main.js                # 全站公共交互与天气功能
-│   └── guestbook.js           # 留言读取、渲染、校验和提交
+│   ├── main.js
+│   └── guestbook.js
 └── images/
-    ├── hero.webp              # 首页、留言板和默认背景
-    ├── project.webp           # 项目页背景
-    ├── edu.webp               # 教育页背景
-    ├── course.webp            # 学习页背景
-    ├── achieve.webp           # 成果页背景
-    └── life.webp              # 生活页背景
+    ├── hero.webp
+    ├── project.webp
+    ├── edu.webp
+    ├── course.webp
+    ├── achieve.webp
+    └── life.webp
 ```
 
 当前六张 WebP 背景图均小于 150 KB，适合在保证清晰度的同时控制首屏资源体积。
@@ -248,10 +248,11 @@ aria-current="page"
 
 天气服务不需要 API Key。接口在点击按钮后按以下顺序运行：
 
-```text
-点击按钮 → 请求浏览器定位 → 获取经纬度 → 请求 Open-Meteo
-        → 解析当前温度、体感温度、湿度、天气代码和风速 → 更新页面
-```
+1. 访客点击天气按钮；
+2. 浏览器请求定位权限；
+3. 获得经纬度后请求 Open-Meteo；
+4. 解析温度、体感温度、湿度、天气代码和风速；
+5. 更新页面中的天气信息。
 
 定位通常要求 HTTPS 或本地开发环境。拒绝定位、请求超时或服务异常时，页面会给出对应提示，不会阻塞网站其他功能。
 
@@ -451,7 +452,7 @@ git commit -m "Update portfolio content"
 git push origin main
 ```
 
-推送完成后，GitHub Pages 会重新发布站点。可以在仓库的 **Actions** 或 **Settings → Pages** 中查看部署状态。
+推送完成后，GitHub Pages 会重新发布站点。可以在仓库的 **Actions** 或 **Settings / Pages** 中查看部署状态。
 
 官方参考：[Configuring a publishing source for GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
 
@@ -467,7 +468,7 @@ git push origin main
 1956799.xyz
 ```
 
-同时在 **Settings → Pages → Custom domain** 中填写 `1956799.xyz` 并保存。不要把协议、路径或多余空格写入 `CNAME`，例如不要写 `https://1956799.xyz/`。
+同时依次进入 **Settings**、**Pages**、**Custom domain**，填写 `1956799.xyz` 并保存。不要把协议、路径或多余空格写入 `CNAME`，例如不要写 `https://1956799.xyz/`。
 
 ### 9.2 Cloudflare / DNS 配置
 
@@ -559,20 +560,6 @@ body[data-page="notes"] {
   --page-image: url("../images/notes.webp");
 }
 ```
-
-### 10.3 添加 PDF、PPT 或 Word 资料
-
-当前版本尚未加入独立文档资源目录。如果以后扩展在线资料，建议：
-
-1. 新建 `documents/` 保存可公开文件；
-2. 新建独立目录页，不要把大量文件全部堆在首页；
-3. 为文件显示名称、类型、大小和更新时间；
-4. PDF 可使用浏览器原生 `<iframe>` / `<object>` 预览并提供下载链接；
-5. PPTX 和 DOCX 的浏览器支持不统一，应同时保留直接下载入口；
-6. 不要提交包含隐私、账号、证件或未授权材料的文件；
-7. 大文件会拖慢 Git 仓库与 Pages，应优先压缩或使用合适的外部存储。
-
----
 
 ## 11. 发布前检查清单
 
@@ -693,48 +680,4 @@ body[data-page="notes"] {
 - 留言表单明确提醒访客不要填写联系方式、账号或其他敏感信息；
 - DNS 不使用通配符记录，减少域名接管风险；
 - 修改数据库策略后，应使用匿名浏览器重新测试，而不能只用管理员会话测试。
-
----
-
-## 14. 当前限制
-
-- 网站内容需要直接编辑 HTML，暂时没有内容管理后台；
-- 留言板没有登录、管理员网页界面和服务端验证码；
-- 本地 30 秒冷却可以被绕过，不等于服务端限流；
-- 天气功能依赖访客定位权限和 Open-Meteo 可用性；
-- 文档在线预览、文件目录和图片管理仍需后续扩展；
-- 所有页面共享导航，但目前需要手动在各 HTML 文件中同步修改。
-
-这些限制不会影响网站作为个人展示与长期记录页面使用，但在增加用户系统、私有内容、文件上传或复杂管理功能前，应引入受控后端，而不是继续把权限逻辑放在前端。
-
----
-
-## 15. 维护建议
-
-- 每次更新只处理一个明确主题，提交信息写清修改内容；
-- 大改前新建分支，在本地完整检查后再合并到 `main`；
-- 定期检查站内链接、GitHub 外链、Supabase 和天气接口；
-- 新图片继续使用 WebP 并控制体积；
-- 新页面同步更新导航、背景映射、canonical 和 sitemap；
-- 修改留言表结构前先备份数据，并同步更新 RLS、grants 和前端字段；
-- 域名或仓库变更后，集中检查 `CNAME`、canonical、Open Graph、robots 和 sitemap；
-- 不要仅通过“页面看起来正常”判断完成，还要检查控制台、Network 和移动端交互。
-
----
-
-## 16. 相关文档
-
-- [GitHub Pages 文档](https://docs.github.com/en/pages)
-- [GitHub Pages 发布源配置](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
-- [GitHub Pages 自定义域名](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site)
-- [Supabase Data REST API](https://supabase.com/docs/guides/api)
-- [Supabase Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security)
-- [Supabase API keys](https://supabase.com/docs/guides/getting-started/api-keys)
-- [Open-Meteo API](https://open-meteo.com/en/docs)
-
----
-
-## 17. 版权说明
-
-本仓库当前未提供独立的开源许可证。网站代码、文字、图片与个人资料不因仓库公开而自动获得任意复制、再发布或商业使用授权；如需复用，请先联系仓库所有者。
 

@@ -1,10 +1,69 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#090c12"><meta name="description" content="个人项目：图像复原、机器学习、数学建模与优化。"><title>Projects · True Path M</title><link rel="icon" href="assets/images/favicon.svg"><link rel="stylesheet" href="css/style.css"></head><body><div class="site-bg" aria-hidden="true"></div><div class="noise" aria-hidden="true"></div><header class="topbar"><div class="container topbar-inner"><a class="brand" href="index.html"><span class="brand-dot"></span><span>TRUE PATH M</span></a><nav class="nav"><a href="index.html#about">About</a><a href="projects.html">Projects</a><a href="education.html">Education</a><a href="life.html">Life</a><a href="https://github.com/yjj195679" target="_blank" rel="noreferrer">GitHub</a></nav><button class="icon-btn" id="clock" aria-label="local time"></button></div></header>
-<main><section class="subhero"><div class="container"><div class="subhero-card glass reveal"><a class="back-link" href="index.html">← Home</a><div class="kicker">Projects</div><h1>Selected Work.</h1><p>从论文复现到工程实现，再到建模与算法实验。这里强调“做了什么、怎么做、下一步怎么改”。</p></div></div></section>
-<section class="section"><div class="container content-grid">
-<article class="content-card glass reveal" id="dpsr"><div class="kicker">Computer Vision</div><h3>DPSR Reproduction</h3><p>复现 Deep Plug-and-Play Super-Resolution for Arbitrary Blur Kernels，包含训练配置、模糊核处理、推理流程与实验记录。</p><div class="tags"><span class="tag">PyTorch</span><span class="tag">Super-Resolution</span><span class="tag">Plug-and-Play</span></div></article>
-<article class="content-card glass reveal" id="deblur"><div class="kicker">Image Restoration</div><h3>Deblurring & Primal–Dual</h3><p>围绕图像去模糊建立实验管线，比较优化算法、UNet 与 Transformer 类方法，并关注显存占用、训练稳定性与复现性。</p><div class="tags"><span class="tag">Primal–Dual</span><span class="tag">UNet</span><span class="tag">Transformer</span></div></article>
-<article class="content-card glass reveal" id="ecg"><div class="kicker">Machine Learning</div><h3>ECG Classification</h3><p>基于 WFDB 格式心电数据完成读取、预处理、可视化与分类实验，探索 CNN / Transformer 方向。</p><div class="tags"><span class="tag">WFDB</span><span class="tag">Signal Processing</span><span class="tag">Classification</span></div></article>
-<article class="content-card glass reveal"><div class="kicker">Mathematical Modeling</div><h3>Forecasting & Optimization</h3><p>在数学建模任务中处理需求预测、路径规划与优化问题，重视指标设计、约束建模以及结果可解释性。</p><div class="tags"><span class="tag">LightGBM</span><span class="tag">XGBoost</span><span class="tag">VRP</span></div></article>
-<article class="content-card glass reveal"><div class="kicker">Engineering</div><h3>FEM / Packaging Modeling</h3><p>围绕芯片封装结构进行有限元建模与参数分析，将材料参数、几何结构与结果验证形成可重复的建模流程。</p><div class="tags"><span class="tag">FEM</span><span class="tag">BGA / QFN</span><span class="tag">Simulation</span></div></article>
-<article class="content-card glass reveal"><div class="kicker">Portfolio</div><h3>This Website</h3><p>使用原生 HTML / CSS / JavaScript 构建。没有前端框架、天气 API 或音乐播放器依赖，优先保证 GitHub Pages 部署与首屏速度。</p><div class="tags"><span class="tag">Static</span><span class="tag">Responsive</span><span class="tag">Low dependency</span></div></article>
-</div></section></main><footer class="footer"><div class="container footer-inner"><div>© <span id="year">2026</span> True Path M · Personal Portfolio</div><div><a href="https://github.com/yjj195679" target="_blank" rel="noreferrer">GitHub ↗</a></div></div></footer><script>document.getElementById('year').textContent=new Date().getFullYear()</script><script src="js/main.js" defer></script></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080a0f">
+  <meta name="description" content="True Path M 的代表项目：DPSR、Primal–Dual 去模糊、UNet 与 Restormer 图像复原实验。">
+  <meta property="og:title" content="Projects · True Path M">
+  <meta property="og:description" content="图像复原、深度学习与优化算法项目。">
+  <meta property="og:image" content="https://1956799.xyz/images/project.webp">
+  <link rel="canonical" href="https://1956799.xyz/projects.html">
+  <link rel="preload" href="images/project.webp" as="image" type="image/webp">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <title>Projects · True Path M</title>
+</head>
+<body data-page="projects">
+  <a class="skip-link" href="#main">跳到主要内容</a><div class="site-bg" aria-hidden="true"></div><div class="noise" aria-hidden="true"></div>
+  <header class="topbar"><div class="container topbar-inner">
+    <a class="brand" href="index.html"><span class="brand-dot" aria-hidden="true"></span><span>TRUE PATH M</span></a>
+    <nav class="nav" id="site-nav" aria-label="主导航"><a href="index.html">Home</a><a href="projects.html" aria-current="page">Projects</a><a href="education.html">Education</a><a href="courses.html">Study</a><a href="achievements.html">Achievements</a><a href="life.html">Life</a><a href="guestbook.html">Guestbook</a><a href="https://github.com/yjj195679" target="_blank" rel="noreferrer">GitHub</a></nav>
+    <div class="topbar-tools"><span class="clock" id="clock" aria-label="本地时间"></span><button class="menu-toggle" id="menu-toggle" type="button" aria-label="打开导航" aria-controls="site-nav" aria-expanded="false"><span></span></button></div>
+  </div></header>
+
+  <main id="main">
+    <section class="subhero"><div class="container"><article class="subhero-card glass reveal">
+      <a class="back-link" href="index.html">← 返回首页</a><div class="kicker">Projects</div><h1>Selected Work.</h1>
+      <p>从数学模型、数据退化和网络训练，到显存适配、数值稳定与结果整理。这里记录“做了什么”，也保留“问题是怎样解决的”。</p>
+    </article></div></section>
+
+    <section class="section anchor-offset" id="dpsr"><div class="container">
+      <div class="section-head reveal"><div><div class="kicker">01 · Super-resolution</div><h2>DPSR 复现。</h2></div><p class="section-intro">Deep Plug-and-Play Super-Resolution for Arbitrary Blur Kernels：把数据一致性与超分辨率先验拆开处理。</p></div>
+      <div class="content-grid">
+        <article class="content-card glass reveal"><div class="kicker">Implementation</div><h3>训练与退化建模</h3><p>使用 DIV2K 高分辨率图像，在线采样高斯、运动和圆盘模糊核，完成卷积、Bicubic 下采样与 SRResNet 训练。训练配置包含 16 个残差块、L1 损失与 Adam 优化器。</p><div class="tags"><span class="tag">DIV2K</span><span class="tag">SRResNet</span><span class="tag">L1 Loss</span><span class="tag">Adam</span></div></article>
+        <article class="content-card glass reveal"><div class="kicker">Inference</div><h3>PnP-ADMM 推理</h3><p>通过变量分裂交替执行数据一致性更新、超分辨率先验更新与对偶变量更新，使模型能够显式接收模糊核并处理不同退化。</p><div class="tags"><span class="tag">Data consistency</span><span class="tag">Plug-and-Play</span><span class="tag">Arbitrary kernels</span></div></article>
+        <article class="content-card glass reveal"><div class="kicker">Engineering</div><h3>8 GB 显存适配</h3><p>针对整图推理的显存溢出，加入 Patch-wise 推理与分块拼接；统一输入归一化、模糊核处理和设备选择，保证训练权重可稳定加载。</p></article>
+        <article class="content-card glass reveal"><div class="kicker">Result</div><h3>可复现实验闭环</h3><p>完成模型训练、检查点保存、测试图推理和结果对比。训练 L1 损失从约 0.089 降至约 0.033，并形成配套说明与展示材料。</p></article>
+      </div>
+    </div></section>
+
+    <section class="section anchor-offset" id="deblur"><div class="container">
+      <div class="section-head reveal"><div><div class="kicker">02 · Optimization</div><h2>Primal–Dual 去模糊。</h2></div><p class="section-intro">以数据保真项和总变差先验构造目标函数，并使用 Chambolle–Pock 框架迭代求解。</p></div>
+      <article class="panel glass reveal">
+        <dl class="detail-list">
+          <div class="detail-row"><dt>模型</dt><dd>最小化模糊观测与重建结果之间的数据误差，同时用 TV 正则保留边缘并抑制噪声。</dd></div>
+          <div class="detail-row"><dt>对偶更新</dt><dd>对梯度变量执行上升与投影，把对偶变量约束在由正则化参数确定的可行域内。</dd></div>
+          <div class="detail-row"><dt>原始更新</dt><dd>在周期边界条件下利用 FFT 计算线性子问题的闭式解，减少逐像素求解开销。</dd></div>
+          <div class="detail-row"><dt>实验关注</dt><dd>步长条件、模糊核对齐、边界伪影、噪声强度与正则化参数之间的平衡。</dd></div>
+        </dl>
+      </article>
+    </div></section>
+
+    <section class="section anchor-offset" id="hybrid"><div class="container">
+      <div class="section-head reveal"><div><div class="kicker">03 · Deep restoration</div><h2>UNet / Restormer。</h2></div><p class="section-intro">比较卷积网络、Transformer 与优化后处理的特点，重点记录失败原因和修复过程。</p></div>
+      <div class="content-grid">
+        <article class="content-card glass reveal"><div class="kicker">Stability</div><h3>NaN 与偏色定位</h3><p>统一图像张量的取值范围、通道顺序和损失输入，修复归一化不一致导致的训练发散与推理偏色。</p></article>
+        <article class="content-card glass reveal"><div class="kicker">Memory</div><h3>显存与分辨率权衡</h3><p>通过裁块、批量大小调整、验证阶段禁用梯度和 Patch-wise 推理，在约 8 GB 显存环境中维持可用分辨率。</p></article>
+        <article class="content-card glass reveal"><div class="kicker">Architecture</div><h3>Restormer 训练</h3><p>使用成对清晰/模糊图像训练 Transformer 图像复原模型，保存最佳权重并跟踪验证结果。</p></article>
+        <article class="content-card glass reveal"><div class="kicker">Hybrid</div><h3>优化方法后处理</h3><p>尝试把深度网络输出与 Primal–Dual 约束结合，观察锐度、噪声、颜色稳定性和计算成本之间的变化。</p></article>
+      </div>
+    </div></section>
+
+    <section class="section"><div class="container"><article class="panel glass contact-card reveal"><div><div class="kicker">More</div><h3>实验会继续迭代。</h3><p>代码与可公开材料优先整理到 GitHub；学习过程和阶段性结论会在本站持续更新。</p></div><div class="contact-actions"><a class="button-link" href="achievements.html">查看成果</a><a class="button-link" href="https://github.com/yjj195679" target="_blank" rel="noreferrer">GitHub ↗</a></div></article></div></section>
+  </main>
+
+  <footer class="footer"><div class="container footer-inner"><div>© <span id="year">2026</span> True Path M · Personal Portfolio</div><div class="footer-links"><a href="index.html">Home</a><a href="guestbook.html">Guestbook</a><a href="https://github.com/yjj195679" target="_blank" rel="noreferrer">GitHub ↗</a></div></div></footer>
+  <script src="js/main.js" defer></script>
+</body>
+</html>

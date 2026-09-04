@@ -1,76 +1,74 @@
 # True Path M · Personal Portfolio
 
-一个纯静态、低依赖、适合 GitHub Pages 的个人主页。
+`1956799.xyz` 的纯静态多页面个人网站，使用原生 HTML、CSS 和 JavaScript 构建，通过 GitHub Pages 发布，并用 Supabase 提供公开留言数据。
 
-视觉方向参考了 `imsyy/home` 的沉浸式背景、玻璃卡片、站点导航与移动端体验，但页面结构、内容和代码均重新实现，并把重点放在“完整介绍个人”而不是天气/音乐等主页小组件。
+## 当前特性
 
-## Features
+- 深色学术风格与半透明玻璃面板
+- 中文宋体、英文 Times New Roman 字体栈
+- 首页、项目、教育、学习、成果、生活、留言与 404 页面
+- 每页独立背景图、统一导航和当前页面高亮
+- 移动端折叠菜单与完整键盘焦点样式
+- 滚动渐入、轻量背景位移和减少动态效果兼容
+- 本地天气按需加载；仅在访客主动点击后请求定位
+- Supabase 留言读取与提交，无需前端框架或第三方 JS CDN
+- WebP 背景资源均小于 150 KB
+- Open Graph、canonical、`robots.txt` 和 `sitemap.xml`
 
-- 沉浸式全屏首页
-- Glassmorphism / 深色视觉
-- Projects / Education / Study / Achievements / Life
-- 响应式布局
-- 动态本地时间
-- 滚动渐入
-- `prefers-reduced-motion` 兼容
-- 无框架、无 npm、无 CDN、无第三方字体
-- 本地 SVG 背景与项目封面，体积小、无版权依赖
-- GitHub Pages + 自定义域名可直接部署
-
-## Structure
+## 目录
 
 ```text
 .
 ├── index.html
 ├── projects.html
 ├── education.html
-├── achievements.html
 ├── courses.html
+├── achievements.html
 ├── life.html
+├── guestbook.html
 ├── 404.html
 ├── CNAME
+├── favicon.svg
+├── robots.txt
+├── sitemap.xml
 ├── css/
 │   └── style.css
 ├── js/
-│   └── main.js
-└── assets/
-    └── images/
-        ├── background.svg
-        ├── project-dpsr.svg
-        ├── project-deblur.svg
-        ├── project-ecg.svg
-        ├── project-modeling.svg
-        └── favicon.svg
+│   ├── main.js
+│   └── guestbook.js
+└── images/
+    ├── hero.webp
+    ├── project.webp
+    ├── edu.webp
+    ├── course.webp
+    ├── achieve.webp
+    └── life.webp
 ```
 
-## Local Preview
-
-直接打开 `index.html`，或在项目目录运行：
+## 本地预览
 
 ```bash
 python -m http.server 8000
 ```
 
-访问 `http://localhost:8000`。
+然后访问 `http://localhost:8000`。不要直接使用 `file://` 打开留言页，因为浏览器对跨域请求的处理可能不同。
 
-## Deploy to GitHub Pages
+## Supabase 留言板
 
-1. 把本目录文件上传到 GitHub Pages 仓库根目录。
-2. 确保入口文件名是 `index.html`。
-3. 仓库 `Settings → Pages` 中选择从默认分支部署。
-4. `CNAME` 已写入 `1956799.xyz`，如域名变化请同步修改。
+前端使用 publishable key，权限边界由 Postgres grants 和 RLS 共同控制：
 
-## Before publishing
+- `anon` / `authenticated` 只可读取 `is_visible = true` 的留言；
+- 只可向 `name`、`content` 两列插入数据；
+- 不可更新、删除，也不可自行写入 `id`、`created_at` 或 `is_visible`；
+- 前端不会包含 secret key 或 `service_role` key。
 
-建议你优先修改：
+表字段约束为：名字 1–40 字符，留言 1–500 字符。审核时可在 Supabase 后台把 `is_visible` 设置为 `false`。
 
-- `education.html`：学校、专业、时间
-- `achievements.html`：真实奖项/竞赛
-- `life.html`：换成个人照片与文字
-- 各页面中的项目文字与链接
+## 部署
 
-## Design reference
+仓库根目录由 GitHub Pages 直接发布，`CNAME` 固定为 `1956799.xyz`。合并到 `main` 后检查：
 
-- https://github.com/imsyy/home
-
-本项目不复制其源码，也不依赖其 API / 字体 / 音乐服务。
+1. 自定义域名 HTTPS 状态；
+2. `css/style.css`、`js/main.js` 和 WebP 图片是否返回 200；
+3. 留言页能否读取公开留言并提交一条测试消息；
+4. 首页移动端菜单、页面导航与定位天气按钮是否正常。

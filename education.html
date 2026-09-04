@@ -1,7 +1,56 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#090c12"><meta name="description" content="教育与学习路径。"><title>Education · True Path M</title><link rel="icon" href="assets/images/favicon.svg"><link rel="stylesheet" href="css/style.css"></head><body><div class="site-bg" aria-hidden="true"></div><div class="noise" aria-hidden="true"></div><header class="topbar"><div class="container topbar-inner"><a class="brand" href="index.html"><span class="brand-dot"></span><span>TRUE PATH M</span></a><nav class="nav"><a href="index.html#about">About</a><a href="projects.html">Projects</a><a href="education.html">Education</a><a href="life.html">Life</a><a href="https://github.com/yjj195679" target="_blank" rel="noreferrer">GitHub</a></nav><button class="icon-btn" id="clock" aria-label="local time"></button></div></header>
-<main><section class="subhero"><div class="container"><div class="subhero-card glass reveal"><a class="back-link" href="index.html">← Home</a><div class="kicker">Education</div><h1>Learning Path.</h1><p>这里不写虚构学校或学位信息。你可以在下方时间线中直接替换为自己的学校、专业、时间和课程。</p></div></div></section>
-<section class="section"><div class="container"><div class="timeline">
-<div class="timeline-item reveal"><div class="timeline-time">Undergraduate</div><div><h3>本科阶段</h3><p>请替换为：学校 · 专业 · 入学/毕业时间。建议只保留真正能帮助访客理解你技术背景的信息。</p></div></div>
-<div class="timeline-item reveal"><div class="timeline-time">Focus</div><div><h3>当前关注</h3><p>计算机视觉、图像复原、深度学习、优化算法、计算机基础与工程实践。</p></div></div>
-<div class="timeline-item reveal"><div class="timeline-time">Method</div><div><h3>学习方式</h3><p>课程基础 + 论文复现 + 工程实现 + 结果复盘。强调从理论概念到可运行代码的闭环。</p></div></div>
-</div></div></section></main><footer class="footer"><div class="container footer-inner"><div>© <span id="year">2026</span> True Path M · Personal Portfolio</div><div><a href="https://github.com/yjj195679" target="_blank" rel="noreferrer">GitHub ↗</a></div></div></footer><script>document.getElementById('year').textContent=new Date().getFullYear()</script><script src="js/main.js" defer></script></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080a0f">
+  <meta name="description" content="True Path M 的学习路径：计算机基础、数学、计算机视觉、论文复现与工程实践。">
+  <meta property="og:title" content="Education · True Path M">
+  <meta property="og:image" content="https://1956799.xyz/images/edu.webp">
+  <link rel="canonical" href="https://1956799.xyz/education.html">
+  <link rel="preload" href="images/edu.webp" as="image" type="image/webp">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <title>Education · True Path M</title>
+</head>
+<body data-page="education">
+  <a class="skip-link" href="#main">跳到主要内容</a><div class="site-bg" aria-hidden="true"></div><div class="noise" aria-hidden="true"></div>
+  <header class="topbar"><div class="container topbar-inner">
+    <a class="brand" href="index.html"><span class="brand-dot" aria-hidden="true"></span><span>TRUE PATH M</span></a>
+    <nav class="nav" id="site-nav" aria-label="主导航"><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="education.html" aria-current="page">Education</a><a href="courses.html">Study</a><a href="achievements.html">Achievements</a><a href="life.html">Life</a><a href="guestbook.html">Guestbook</a><a href="https://github.com/yjj195679" target="_blank" rel="noreferrer">GitHub</a></nav>
+    <div class="topbar-tools"><span class="clock" id="clock" aria-label="本地时间"></span><button class="menu-toggle" id="menu-toggle" type="button" aria-label="打开导航" aria-controls="site-nav" aria-expanded="false"><span></span></button></div>
+  </div></header>
+
+  <main id="main">
+    <section class="subhero"><div class="container"><article class="subhero-card glass reveal">
+      <a class="back-link" href="index.html">← 返回首页</a><div class="kicker">Education</div><h1>Learning Path.</h1>
+      <p>本科阶段的学习不只围绕课程完成，也包括论文复现、实验调试、工程整理和持续复盘。目标是让知识能被解释，也能被实现。</p>
+    </article></div></section>
+
+    <section class="section"><div class="container">
+      <div class="section-head reveal"><div><div class="kicker">Timeline</div><h2>学习主线。</h2></div><p class="section-intro">从基础知识建立结构，再通过真实项目暴露问题，最后回到原理解释结果。</p></div>
+      <div class="timeline">
+        <div class="timeline-item reveal"><div class="timeline-time">Foundation</div><div><h3>计算机与数学基础</h3><p>系统学习数据结构、计算机组成原理、操作系统和计算机网络，同时以高等数学、线性代数与概率论支撑算法理解。</p></div></div>
+        <div class="timeline-item reveal"><div class="timeline-time">Research</div><div><h3>图像复原与深度学习</h3><p>从卷积、频域分析和正则化出发，逐步扩展到 CNN、Transformer、Plug-and-Play 与 Primal–Dual 优化方法。</p></div></div>
+        <div class="timeline-item reveal"><div class="timeline-time">Practice</div><div><h3>论文复现与实验验证</h3><p>把论文中的退化模型、损失函数和推理步骤落实到代码，通过定量指标、可视化结果和消融思路检查实现是否可信。</p></div></div>
+        <div class="timeline-item reveal"><div class="timeline-time">Engineering</div><div><h3>可维护的实现</h3><p>关注环境依赖、数据组织、日志、检查点、显存占用与文档，使一次实验能够被复跑、比较和继续扩展。</p></div></div>
+      </div>
+    </div></section>
+
+    <section class="section"><div class="container">
+      <div class="section-head reveal"><div><div class="kicker">Method</div><h2>我的学习闭环。</h2></div><p class="section-intro">每一阶段都尽量留下可检查的中间结果，避免只记住结论。</p></div>
+      <div class="content-grid">
+        <article class="content-card glass reveal"><div class="kicker">01</div><h3>先建立概念边界</h3><p>明确对象、条件与结论，区分容易混淆的概念，并找出知识点的前置依赖和后续用途。</p></article>
+        <article class="content-card glass reveal"><div class="kicker">02</div><h3>再完成推导与例题</h3><p>对公式和算法保留关键推导，用典型问题验证每一步为什么成立，而不是只背最终形式。</p></article>
+        <article class="content-card glass reveal"><div class="kicker">03</div><h3>用代码暴露细节</h3><p>通过实现发现教材描述中省略的边界条件、数据格式、数值范围和计算成本。</p></article>
+        <article class="content-card glass reveal"><div class="kicker">04</div><h3>用结果反查原理</h3><p>当指标异常、出现 NaN、偏色或 OOM 时，从输入、模型、优化器和推理流程逐层定位，而不是盲目改参数。</p></article>
+      </div>
+    </div></section>
+
+    <section class="section"><div class="container"><article class="panel glass contact-card reveal"><div><div class="kicker">Next</div><h3>查看当前知识地图。</h3><p>学习页面按 408、数学与图像复原三个方向整理当前关注内容。</p></div><div class="contact-actions"><a class="button-link" href="courses.html">进入 Study</a><a class="button-link" href="projects.html">查看 Projects</a></div></article></div></section>
+  </main>
+
+  <footer class="footer"><div class="container footer-inner"><div>© <span id="year">2026</span> True Path M · Personal Portfolio</div><div class="footer-links"><a href="index.html">Home</a><a href="courses.html">Study</a><a href="guestbook.html">Guestbook</a></div></div></footer>
+  <script src="js/main.js" defer></script>
+</body>
+</html>

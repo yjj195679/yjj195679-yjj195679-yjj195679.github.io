@@ -38,12 +38,13 @@
 
 修改内容时应同时检查两种语言：
 
-1. 中文与英文页面结构保持对应；
-2. 英文采用自然表达，不逐字翻译；
-3. 模型、论文、数据集和技术缩写保留原名；
-4. 两种语言中的时间、数值、实验结果和链接保持一致；
-5. `lang`、`canonical`、`hreflang` 与当前页面一致；
-6. 新增或删除页面时同步更新导航和 `sitemap.xml`。
+1. 中文与英文的核心内容和页面入口保持对应，视觉排版可按各自阅读习惯单独优化；
+2. 标题换行、栏目措辞、段落宽度和页面节奏不要求完全一致；
+3. 英文采用自然表达，不逐字翻译；
+4. 模型、论文、数据集和技术缩写保留原名；
+5. 两种语言中的时间、数值、实验结果和链接保持一致；
+6. `lang`、`canonical`、`hreflang` 与当前页面一致；
+7. 新增或删除页面时同步更新导航和 `sitemap.xml`。
 
 根目录是默认中文入口，`x-default` 同样指向中文版。
 
@@ -116,7 +117,7 @@ python -m http.server 8000
 - 训练和推理条件；
 - 指标、数值与时间；
 - 已完成工作和后续计划的边界；
-- 中英文页面的一致性。
+- 中英文页面的核心信息一致性。
 
 计划中的内容不能写成已经完成的成果。
 
@@ -162,7 +163,7 @@ python -m http.server 8000
 - [ ] 每个主要页面都有对应英文版
 - [ ] 语言开关指向正确页面
 - [ ] 导航、按钮与页脚链接有效
-- [ ] 中文和英文内容保持一致
+- [ ] 中英文核心信息一致，排版按各自语言独立优化
 - [ ] 没有无关或未经确认的内容
 - [ ] 项目数据、时间和结果准确
 - [ ] 图片可以正常加载并保留来源
@@ -175,9 +176,15 @@ python -m http.server 8000
 
 首页图片由 Komorebi Photo 发布于 Unsplash：
 
-[Blurred lights streak through a dark library with bookshelves](https://unsplash.com/photos/blurred-lights-streak-through-a-dark-library-with-bookshelves-QeICm1euWuE)
+- [Blurred lights streak through a dark library with bookshelves](https://unsplash.com/photos/blurred-lights-streak-through-a-dark-library-with-bookshelves-QeICm1euWuE)
 
-其余页面使用仓库内的 WebP 图片。
+中文版的栏目视觉还使用：
+
+- 项目与图像复原：[Camera lens](https://unsplash.com/photos/a-close-up-of-a-camera-lens-hRz3-M5PTT0)，Claudio Schwarz，Unsplash License；
+- 课程与数学学习：[Blackboard of mathematical formulas](https://unsplash.com/photos/a-blackboard-with-a-lot-of-writing-on-it-OPpCbAAKWv8)，Thomas T，Unsplash License；
+- 教育与研究环境：[Rubin Observatory Control Room](https://commons.wikimedia.org/wiki/File:Rubin_Observatory_Control_Room_(rubin-Revelado-Rubin-N30-CC).jpg)，Rubin Observatory / NSF / AURA / A. Pizarro D.，[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。
+
+网站对上述图片进行了网页裁切、暗色遮罩与尺寸压缩，未改变图片表达的主题。其余页面继续使用仓库内的 WebP 图片。
 
 ## 许可
 

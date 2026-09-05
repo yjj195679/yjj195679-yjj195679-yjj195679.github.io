@@ -16,8 +16,8 @@
   --radius-lg: 30px;
   --radius-md: 22px;
   --max-width: 1180px;
-  --font-latin: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  --font-cjk: "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-latin: "Times New Roman", Times, serif;
+  --font-cjk: SimSun, "Songti SC", "STSong", serif;
   --type-meta: 0.8125rem;
   --type-ui: 0.875rem;
   --type-body: 1.0625rem;
@@ -53,6 +53,19 @@ body {
   font-kerning: normal;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.68), transparent 88%);
+  content: "";
 }
 
 html:lang(zh-CN) body {
@@ -264,6 +277,7 @@ dd {
   background-image: var(--page-image, url("../images/hero.webp"));
   background-position: center;
   background-size: cover;
+  filter: saturate(0.82) contrast(1.04);
   will-change: transform;
 }
 
@@ -284,7 +298,7 @@ dd {
   background: linear-gradient(180deg, rgba(6, 8, 12, 0.16), rgba(6, 8, 12, 0.8) 58%, var(--bg) 96%);
 }
 
-body[data-page="home"] { --page-image: url("https://images.unsplash.com/photo-1770156812763-c1749bc0ebbf?auto=format&fit=crop&fm=jpg&q=80&w=1800"); }
+body[data-page="home"] { --page-image: url("../images/hero.webp"); }
 body[data-page="home"] .site-bg { background-position: center 42%; }
 body[data-page="projects"] { --page-image: url("../images/project.webp"); }
 body[data-page="education"] { --page-image: url("../images/edu.webp"); }
@@ -293,9 +307,9 @@ body[data-page="achievements"] { --page-image: url("../images/achieve.webp"); }
 body[data-page="life"] { --page-image: url("../images/life.webp"); }
 
 /* 中文页面采用与栏目主题一致的独立视觉。 */
-html:lang(zh-CN) body[data-page="projects"] { --page-image: url("https://images.unsplash.com/photo-1652973968825-a0c3b28ad072?auto=format&fit=crop&fm=jpg&q=82&w=2000"); }
-html:lang(zh-CN) body[data-page="education"] { --page-image: url("https://thumb.wikimedia.org/wikipedia/commons/thumb/4/42/Rubin_Observatory_Control_Room_%28rubin-Revelado-Rubin-N30-CC%29.jpg/1280px-Rubin_Observatory_Control_Room_%28rubin-Revelado-Rubin-N30-CC%29.jpg"); }
-html:lang(zh-CN) body[data-page="study"] { --page-image: url("https://images.unsplash.com/photo-1635372722656-389f87a941b7?auto=format&fit=crop&fm=jpg&q=82&w=2000&h=1125"); }
+html:lang(zh-CN) body[data-page="projects"] { --page-image: url("../images/project.webp"); }
+html:lang(zh-CN) body[data-page="education"] { --page-image: url("../images/edu.webp"); }
+html:lang(zh-CN) body[data-page="study"] { --page-image: url("../images/course.webp"); }
 html:lang(zh-CN) body[data-page="projects"] .site-bg { background-position: center 48%; }
 html:lang(zh-CN) body[data-page="education"] .site-bg { background-position: center 52%; }
 html:lang(zh-CN) body[data-page="study"] .site-bg { background-position: center 50%; }
@@ -322,6 +336,12 @@ html:lang(zh-CN) body[data-page="study"] .site-bg { background-position: center 
   -webkit-backdrop-filter: blur(22px) saturate(120%);
 }
 
+.glass.interactive-surface {
+  background:
+    radial-gradient(360px circle at var(--pointer-x, 50%) var(--pointer-y, 50%), rgba(180, 212, 255, 0.105), transparent 52%),
+    var(--surface);
+}
+
 .topbar {
   position: fixed;
   top: 16px;
@@ -329,6 +349,7 @@ html:lang(zh-CN) body[data-page="study"] .site-bg { background-position: center 
   left: 0;
   z-index: 50;
   pointer-events: none;
+  transition: top 0.25s ease;
 }
 
 .topbar-inner {
@@ -345,6 +366,32 @@ html:lang(zh-CN) body[data-page="study"] .site-bg { background-position: center 
   backdrop-filter: blur(20px) saturate(135%);
   -webkit-backdrop-filter: blur(20px) saturate(135%);
   pointer-events: auto;
+  transition: min-height 0.25s ease, background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.topbar.is-scrolled {
+  top: 10px;
+}
+
+.topbar.is-scrolled .topbar-inner {
+  min-height: 52px;
+  border-color: rgba(255, 255, 255, 0.17);
+  background: rgba(7, 10, 16, 0.88);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+}
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 80;
+  height: 2px;
+  background: linear-gradient(90deg, #8ab8ff, #e8f2ff);
+  box-shadow: 0 0 14px rgba(167, 204, 255, 0.7);
+  transform: scaleX(0);
+  transform-origin: left center;
+  will-change: transform;
 }
 
 .brand {
@@ -511,8 +558,65 @@ html:lang(zh-CN) body[data-page="study"] .site-bg { background-position: center 
   padding: clamp(32px, 5vw, 58px);
   overflow: hidden;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: space-between;
   border-radius: var(--radius-lg);
+}
+
+.hero-status {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  width: fit-content;
+  max-width: 100%;
+  min-height: 38px;
+  padding: 7px 12px;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  color: #dce6f5;
+  background: rgba(6, 9, 14, 0.42);
+  font-size: var(--type-meta);
+  line-height: 1.35;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.live-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #eef5ff;
+  white-space: nowrap;
+}
+
+.status-pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 0 0 rgba(167, 232, 192, 0.45);
+  animation: status-pulse 2.4s ease-out infinite;
+}
+
+.hero-status-topic {
+  overflow: hidden;
+  color: var(--muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hero-date {
+  padding-left: 10px;
+  border-left: 1px solid var(--line);
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+@keyframes status-pulse {
+  70% { box-shadow: 0 0 0 8px rgba(167, 232, 192, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(167, 232, 192, 0); }
 }
 
 .hero-main::before {
@@ -1262,7 +1366,7 @@ html:lang(zh-CN) body[data-page="study"] .site-bg { background-position: center 
 .reveal {
   opacity: 0;
   transform: translateY(18px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transition: opacity 0.7s ease var(--reveal-delay, 0ms), transform 0.7s ease var(--reveal-delay, 0ms);
 }
 
 .reveal.visible {
@@ -1426,6 +1530,18 @@ html:lang(zh-CN) body[data-page="study"] .site-bg { background-position: center 
     padding: 29px 23px;
   }
 
+  .hero-status {
+    width: 100%;
+  }
+
+  .hero-status-topic {
+    flex: 1;
+  }
+
+  .hero-date {
+    display: none;
+  }
+
   .hero h1 { font-size: var(--type-display); }
 
   html:lang(zh-CN) .hero h1 { font-size: clamp(2.625rem, 12vw, 3.5rem); }
@@ -1500,6 +1616,19 @@ html:lang(zh-CN) body[data-page="study"] .site-bg { background-position: center 
     opacity: 1;
     transform: none;
   }
+
+  .status-pulse {
+    animation: none;
+  }
+}
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.28s;
 }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {

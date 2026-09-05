@@ -41,6 +41,17 @@
   const year = select("#year");
   if (year) year.textContent = String(new Date().getFullYear());
 
+  const heroDate = select("#hero-date");
+  if (heroDate) {
+    const now = new Date();
+    heroDate.dateTime = now.toISOString().slice(0, 10);
+    heroDate.textContent = new Intl.DateTimeFormat(locale, {
+      month: "short",
+      day: "numeric",
+      weekday: "short",
+    }).format(now);
+  }
+
   const clock = select("#clock");
   const updateClock = () => {
     if (!clock) return;
@@ -82,6 +93,11 @@
   }
 
   const revealItems = selectAll(".reveal");
+  revealItems.forEach((item) => {
+    const siblings = selectAll(".reveal", item.parentElement);
+    const index = siblings.indexOf(item);
+    item.style.setProperty("--reveal-delay", `${Math.min(index * 65, 260)}ms`);
+  });
   if ("IntersectionObserver" in window) {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -99,19 +115,46 @@
   }
 
   const background = select(".site-bg");
+  const topbar = select(".topbar");
+  const progress = document.createElement("div");
+  progress.className = "scroll-progress";
+  progress.setAttribute("aria-hidden", "true");
+  document.body.prepend(progress);
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   let framePending = false;
-  const moveBackground = () => {
-    if (!background || reducedMotion.matches) return;
+  const updateScrollEffects = () => {
     if (framePending) return;
     framePending = true;
     window.requestAnimationFrame(() => {
-      const offset = Math.min(window.scrollY * 0.028, 22);
-      background.style.transform = `translateY(${offset}px) scale(1.025)`;
+      const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+      progress.style.transform = `scaleX(${Math.max(0, Math.min(window.scrollY / maxScroll, 1))})`;
+      if (topbar) topbar.classList.toggle("is-scrolled", window.scrollY > 24);
+      if (background && !reducedMotion.matches) {
+        const offset = Math.min(window.scrollY * 0.028, 22);
+        background.style.transform = `translateY(${offset}px) scale(1.025)`;
+      }
       framePending = false;
     });
   };
-  window.addEventListener("scroll", moveBackground, { passive: true });
+  updateScrollEffects();
+  window.addEventListener("scroll", updateScrollEffects, { passive: true });
+  window.addEventListener("resize", updateScrollEffects, { passive: true });
+
+  const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+  if (finePointer.matches && !reducedMotion.matches) {
+    selectAll(".glass").forEach((surface) => {
+      surface.classList.add("interactive-surface");
+      surface.addEventListener("pointermove", (event) => {
+        const bounds = surface.getBoundingClientRect();
+        surface.style.setProperty("--pointer-x", `${event.clientX - bounds.left}px`);
+        surface.style.setProperty("--pointer-y", `${event.clientY - bounds.top}px`);
+      });
+      surface.addEventListener("pointerleave", () => {
+        surface.style.removeProperty("--pointer-x");
+        surface.style.removeProperty("--pointer-y");
+      });
+    });
+  }
 
   const weatherButton = select("#weather-button");
   const weatherValue = select("#weather-value");

@@ -14,8 +14,6 @@
   <link rel="alternate" hreflang="zh-CN" href="https://1956799.xyz/">
   <link rel="alternate" hreflang="en" href="https://1956799.xyz/en/">
   <link rel="alternate" hreflang="x-default" href="https://1956799.xyz/">
-  <link rel="preconnect" href="https://images.unsplash.com">
-  <link rel="preconnect" href="https://thumb.wikimedia.org">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css">
   <title>True Path M · 个人网站</title>
@@ -53,6 +51,11 @@
     <section class="hero anchor-offset" id="home">
       <div class="container hero-grid">
         <article class="hero-main glass reveal">
+          <div class="hero-status" aria-label="当前学习状态">
+            <span class="live-status"><span class="status-pulse" aria-hidden="true"></span>持续学习</span>
+            <span class="hero-status-topic">408 · 图像复原 · 工程实践</span>
+            <time class="hero-date" id="hero-date"></time>
+          </div>
           <div class="hero-copy">
             <div class="eyebrow">个人档案 · 研究 · 学习</div>
             <h1>研究与实现，<br>持续积累</h1>
@@ -66,13 +69,13 @@
         </article>
 
         <aside class="hero-side" aria-label="快捷入口">
-          <a class="quick-card glass reveal" href="projects.html" style="--card-image:url('https://images.unsplash.com/photo-1652973968825-a0c3b28ad072?auto=format&amp;fit=crop&amp;fm=jpg&amp;q=82&amp;w=2000')">
+          <a class="quick-card glass reveal" href="projects.html" style="--card-image:url('images/project.webp')">
             <span class="quick-label">项目实践</span><span class="quick-title">研究项目</span><svg class="icon quick-arrow icon-arrow-right" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11"></path><path d="m11 6 4 4-4 4"></path></svg>
           </a>
-          <a class="quick-card glass reveal" href="courses.html" style="--card-image:url('https://images.unsplash.com/photo-1635372722656-389f87a941b7?auto=format&amp;fit=crop&amp;fm=jpg&amp;q=82&amp;w=2000&amp;h=1125')">
+          <a class="quick-card glass reveal" href="courses.html" style="--card-image:url('images/course.webp')">
             <span class="quick-label">课程体系</span><span class="quick-title">知识地图</span><svg class="icon quick-arrow icon-arrow-right" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11"></path><path d="m11 6 4 4-4 4"></path></svg>
           </a>
-          <a class="quick-card glass reveal" href="education.html" style="--card-image:url('https://thumb.wikimedia.org/wikipedia/commons/thumb/4/42/Rubin_Observatory_Control_Room_%28rubin-Revelado-Rubin-N30-CC%29.jpg/1280px-Rubin_Observatory_Control_Room_%28rubin-Revelado-Rubin-N30-CC%29.jpg')">
+          <a class="quick-card glass reveal" href="education.html" style="--card-image:url('images/edu.webp')">
             <span class="quick-label">方法与经历</span><span class="quick-title">学习路径</span><svg class="icon quick-arrow icon-arrow-right" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11"></path><path d="m11 6 4 4-4 4"></path></svg>
           </a>
           <a class="quick-card glass reveal" href="achievements.html" style="--card-image:url('images/achieve.webp')">
@@ -121,7 +124,7 @@
         </div>
         <div class="project-grid">
           <a class="project-card featured reveal" href="projects.html#dpsr">
-            <div class="project-cover" style="background-image:url('https://images.unsplash.com/photo-1652973968825-a0c3b28ad072?auto=format&amp;fit=crop&amp;fm=jpg&amp;q=82&amp;w=2000')"></div>
+            <div class="project-cover" style="background-image:url('images/project.webp')"></div>
             <div class="project-content">
               <div class="kicker">计算机视觉</div>
               <h3>DPSR · Plug-and-Play Super-Resolution</h3>
@@ -139,7 +142,7 @@
             </div>
           </a>
           <a class="project-card reveal" href="projects.html#hybrid">
-            <div class="project-cover" style="background-image:linear-gradient(135deg,rgba(13,19,29,.28),rgba(3,6,10,.82)),url('https://images.unsplash.com/photo-1635372722656-389f87a941b7?auto=format&amp;fit=crop&amp;fm=jpg&amp;q=82&amp;w=2000&amp;h=1125')"></div>
+            <div class="project-cover" style="background-image:linear-gradient(135deg,rgba(13,19,29,.28),rgba(3,6,10,.82)),url('images/course.webp')"></div>
             <div class="project-content">
               <div class="kicker">深度学习</div>
               <h3>UNet / Restormer Experiments</h3>
@@ -171,12 +174,12 @@
           <div><div class="kicker">更多内容</div><h2>继续浏览</h2></div>
         </div>
         <div class="explore-grid">
-          <a class="explore-card reveal" href="education.html" style="background-image:url('https://thumb.wikimedia.org/wikipedia/commons/thumb/4/42/Rubin_Observatory_Control_Room_%28rubin-Revelado-Rubin-N30-CC%29.jpg/1280px-Rubin_Observatory_Control_Room_%28rubin-Revelado-Rubin-N30-CC%29.jpg')"><strong>教育</strong><span>学习路径与方法</span></a>
-          <a class="explore-card reveal" href="courses.html" style="background-image:url('https://images.unsplash.com/photo-1635372722656-389f87a941b7?auto=format&amp;fit=crop&amp;fm=jpg&amp;q=82&amp;w=2000&amp;h=1125')"><strong>学习</strong><span>408、数学与视觉方向</span></a>
+          <a class="explore-card reveal" href="education.html" style="background-image:url('images/edu.webp')"><strong>教育</strong><span>学习路径与方法</span></a>
+          <a class="explore-card reveal" href="courses.html" style="background-image:url('images/course.webp')"><strong>学习</strong><span>408、数学与视觉方向</span></a>
           <a class="explore-card reveal" href="achievements.html" style="background-image:url('images/achieve.webp')"><strong>成果</strong><span>真实完成的成果</span></a>
           <a class="explore-card reveal" href="life.html" style="background-image:url('images/life.webp')"><strong>生活</strong><span>近期学习与研究状态</span></a>
           <a class="explore-card reveal" href="guestbook.html" style="background-image:url('images/hero.webp')"><strong>留言板</strong><span>访客留言</span></a>
-          <a class="explore-card reveal" href="https://github.com/yjj195679" target="_blank" rel="noreferrer" style="background-image:url('https://images.unsplash.com/photo-1652973968825-a0c3b28ad072?auto=format&amp;fit=crop&amp;fm=jpg&amp;q=82&amp;w=2000')"><strong>GitHub</strong><span>代码与公开项目</span></a>
+          <a class="explore-card reveal" href="https://github.com/yjj195679" target="_blank" rel="noreferrer" style="background-image:url('images/project.webp')"><strong>GitHub</strong><span>代码与公开项目</span></a>
         </div>
       </div>
     </section>

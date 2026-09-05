@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080a0f">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; connect-src 'self' https://lbnmkxmvdalavcjdxtpy.supabase.co; img-src 'self' data:; style-src 'self'; font-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <title>留言管理 · True Path M</title>
+</head>
+<body data-page="guestbook" class="admin-page">
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <div class="site-bg" aria-hidden="true"></div><div class="noise" aria-hidden="true"></div>
+  <header class="topbar"><div class="container topbar-inner">
+    <a class="brand" href="index.html"><span class="brand-dot" aria-hidden="true"></span><span>TRUE PATH M</span></a>
+    <div class="topbar-tools"><a class="back-link admin-back" href="guestbook.html">返回留言板</a></div>
+  </div></header>
+
+  <main id="main" class="admin-main">
+    <div class="container admin-container">
+      <section class="admin-auth-card glass" id="login-panel" aria-labelledby="login-title">
+        <div class="kicker">管理员验证</div><h1 id="login-title">留言管理</h1>
+        <p>先使用管理员邮箱和密码登录，再输入验证器生成的六位动态密码。</p>
+        <form class="guestbook-form" id="login-form">
+          <div class="field"><label for="admin-email">管理员邮箱</label><input id="admin-email" name="email" type="email" autocomplete="username" required></div>
+          <div class="field"><label for="admin-password">密码</label><input id="admin-password" name="password" type="password" autocomplete="current-password" minlength="8" required></div>
+          <button class="button primary" type="submit">继续验证</button>
+        </form>
+      </section>
+
+      <section class="admin-auth-card glass" id="mfa-panel" aria-labelledby="mfa-title" hidden>
+        <div class="kicker">第二步</div><h1 id="mfa-title">输入动态密码</h1>
+        <p>打开验证器，输入当前显示的六位 TOTP 动态密码。</p>
+        <form class="guestbook-form" id="mfa-form">
+          <div class="field"><label for="admin-totp">动态密码</label><input id="admin-totp" name="totp" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" minlength="6" maxlength="6" required></div>
+          <button class="button primary" type="submit">进入管理页面</button>
+          <button class="button secondary" type="button" data-action="signout">取消登录</button>
+        </form>
+      </section>
+
+      <section class="admin-auth-card glass" id="enroll-panel" aria-labelledby="enroll-title" hidden>
+        <div class="kicker">首次设置</div><h1 id="enroll-title">绑定 TOTP 验证器</h1>
+        <p>当前账户尚未绑定验证器。扫描二维码后输入六位动态密码，完成绑定才能进入后台。</p>
+        <button class="button primary" id="start-enrollment" type="button">生成绑定二维码</button>
+        <div class="enrollment-details" id="enrollment-details" hidden>
+          <img id="totp-qr" alt="TOTP 验证器绑定二维码">
+          <div><span class="field-help">无法扫码时手动输入：</span><code id="totp-secret"></code></div>
+          <form class="guestbook-form" id="enroll-form">
+            <div class="field"><label for="enroll-code">动态密码</label><input id="enroll-code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" minlength="6" maxlength="6" required></div>
+            <button class="button primary" type="submit">确认绑定</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="admin-dashboard" id="dashboard-panel" aria-labelledby="dashboard-title" hidden>
+        <header class="admin-dashboard-head glass">
+          <div><div class="kicker">Guestbook Admin</div><h1 id="dashboard-title">留言与回复</h1><p id="admin-account"></p></div>
+          <div class="admin-head-actions"><button class="button secondary" type="button" id="refresh-messages">刷新</button><button class="button secondary" type="button" data-action="signout">退出</button></div>
+        </header>
+        <div class="admin-stats" id="admin-stats" aria-live="polite"></div>
+        <div class="admin-filter" role="group" aria-label="筛选留言">
+          <button type="button" class="page-tool" data-filter="all" aria-pressed="true">全部</button>
+          <button type="button" class="page-tool" data-filter="unreplied" aria-pressed="false">未回复</button>
+          <button type="button" class="page-tool" data-filter="hidden" aria-pressed="false">已隐藏</button>
+        </div>
+        <div class="admin-message-list" id="admin-message-list"><div class="empty-state">正在读取留言…</div></div>
+      </section>
+
+      <p class="form-status admin-status" id="admin-status" role="status" aria-live="polite"></p>
+    </div>
+  </main>
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>

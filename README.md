@@ -60,6 +60,7 @@
 - 浏览器本地时间与日期；
 - 基于 Open-Meteo 的当前位置天气；
 - 基于 Supabase REST API 的公开留言板；
+- 独立留言管理页，支持 TOTP 双重验证、公开/隐藏管理与站长回复；
 - 响应式移动导航；
 - 滚动进度、分组入场、背景视差和卡片指针光感；
 - 子页面章节导航、当前章节高亮和返回顶部；
@@ -104,6 +105,7 @@
 ├── achievements.html          # 中文成果页
 ├── life.html                  # 中文生活页
 ├── guestbook.html             # 中文留言板
+├── admin.html                 # 留言管理员页面（不公开索引）
 ├── 404.html                   # 中文 404
 ├── en/                        # 对应英文页面
 │   ├── index.html
@@ -119,8 +121,11 @@
 ├── js/
 │   ├── main.js                # 导航、时钟、日期、天气、滚动和交互效果
 │   ├── guestbook.js           # 留言加载、校验、提交和冷却控制
-│   └── extras.js              # 专注计时器与每日哲思
+│   ├── extras.js              # 专注计时器与每日哲思
+│   └── admin.js               # 管理员登录、TOTP 验证与留言回复
 ├── images/                    # WebP 背景与栏目图片
+├── supabase/
+│   └── admin_guestbook.sql    # 回复字段、管理员角色与 MFA/RLS 策略
 ├── favicon.svg                # 网站图标
 ├── CNAME                     # GitHub Pages 自定义域名
 ├── robots.txt                # 搜索引擎抓取规则
@@ -239,6 +244,12 @@ python -m http.server 8000
 | `content` | `text` | 留言内容，前端限制 1–500 字符 |
 | `created_at` | `timestamptz` | 创建时间 |
 | `is_visible` | `boolean` | 是否在公开列表显示 |
+| `reply` | `varchar(1000)` | 站长公开回复，可为空 |
+| `replied_at` | `timestamptz` | 回复时间，可为空 |
+
+管理员页面位于 `/admin.html`，不加入公开导航或站点地图，并通过 `robots.txt` 请求搜索引擎不要收录。页面位置本身不是安全措施：真正的权限由 Supabase Auth、TOTP 的 `aal2` 会话和数据库 RLS 共同执行。管理员必须先通过邮箱密码，再输入验证器生成的六位动态密码；只有 `app_metadata.role = admin` 的账户可以读取隐藏留言或修改回复与公开状态。
+
+管理员前端使用固定版本的 `@supabase/supabase-js`，只包含可公开的 publishable key。仓库和浏览器中都不应出现 secret / service-role key。首次绑定或更换验证器时，应在仍能登录的设备上完成，并额外保留一个受保护的备用验证器，以免设备遗失后无法进入后台。
 
 安全要求：
 

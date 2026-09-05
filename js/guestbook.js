@@ -21,6 +21,7 @@
         timeout: "The request timed out. Please try again.",
         failed: "The message could not be posted. Please try again.",
         requestFailed: (statusCode) => `Request failed (${statusCode})`,
+        adminReply: "Reply from the site owner",
       }
     : {
         submit: "发布留言",
@@ -35,6 +36,7 @@
         timeout: "请求超时，请稍后再试。",
         failed: "提交失败，请稍后再试。",
         requestFailed: (statusCode) => `请求失败（${statusCode}）`,
+        adminReply: "站长回复",
       };
 
   const form = document.querySelector("#guestbook-form");
@@ -117,6 +119,26 @@
 
       head.append(name, time);
       article.append(head, content);
+      if (message.reply) {
+        const reply = document.createElement("div");
+        reply.className = "message-reply";
+        const replyHead = document.createElement("div");
+        replyHead.className = "message-reply-head";
+        const replyLabel = document.createElement("strong");
+        replyLabel.textContent = copy.adminReply;
+        replyHead.append(replyLabel);
+        if (message.replied_at) {
+          const replyTime = document.createElement("time");
+          replyTime.className = "message-time";
+          replyTime.dateTime = message.replied_at;
+          replyTime.textContent = formatTime(message.replied_at);
+          replyHead.append(replyTime);
+        }
+        const replyContent = document.createElement("p");
+        replyContent.textContent = message.reply;
+        reply.append(replyHead, replyContent);
+        article.append(reply);
+      }
       fragment.append(article);
     });
     list.append(fragment);
@@ -125,7 +147,7 @@
   const loadMessages = async () => {
     list.setAttribute("aria-busy", "true");
     try {
-      const query = "?select=name,content,created_at&is_visible=eq.true&order=created_at.desc&limit=30";
+      const query = "?select=name,content,created_at,reply,replied_at&is_visible=eq.true&order=created_at.desc&limit=30";
       const response = await request(`${API_URL}${query}`);
       renderMessages(await response.json());
     } catch (error) {

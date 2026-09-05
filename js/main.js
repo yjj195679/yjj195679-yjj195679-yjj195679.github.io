@@ -25,6 +25,12 @@
         searchHint: "Type to filter · ↑↓ to select · Enter to open",
         closeSearch: "Close quick navigation",
         noResults: "No matching pages.",
+        readingMode: "Reading mode",
+        exitReadingMode: "Exit reading mode",
+        copyLink: "Copy link",
+        linkCopied: "Link copied",
+        copyFailed: "Copy failed",
+        printPage: "Print / save PDF",
         weatherDetails: (current) =>
           `Feels like ${Math.round(current.apparent_temperature)}°C · Humidity ${current.relative_humidity_2m}% · Wind ${Math.round(current.wind_speed_10m)} km/h`,
       }
@@ -48,6 +54,12 @@
         searchHint: "输入筛选 · ↑↓ 选择 · 回车打开",
         closeSearch: "关闭快捷导航",
         noResults: "没有匹配的页面。",
+        readingMode: "阅读模式",
+        exitReadingMode: "退出阅读",
+        copyLink: "复制链接",
+        linkCopied: "链接已复制",
+        copyFailed: "复制失败",
+        printPage: "打印 / 保存 PDF",
         weatherDetails: (current) =>
           `体感 ${Math.round(current.apparent_temperature)}°C　湿度 ${current.relative_humidity_2m}%　风速 ${Math.round(current.wind_speed_10m)} km/h`,
       };
@@ -186,8 +198,72 @@
   const main = select("#main");
   const page = document.body.dataset.page || "page";
   const pageSections = main
-    ? [...main.children].filter((element) => element.classList.contains("section"))
+    ? [...main.children].filter(
+        (element) => element.classList.contains("section") && !select(".contact-card", element),
+      )
     : [];
+
+  const documentPages = new Set(["projects", "education", "study", "achievements", "life"]);
+  const subheroCard = select(".subhero-card");
+  if (documentPages.has(page) && subheroCard) {
+    const pageTools = document.createElement("div");
+    pageTools.className = "page-tools";
+    pageTools.setAttribute("aria-label", isEnglish ? "Document tools" : "文档工具");
+    pageTools.innerHTML = `
+      <button class="page-tool" type="button" data-page-tool="reading" aria-pressed="false">
+        <svg class="icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.5 4.5c2.5-.7 4.7-.2 6.5 1.2v10c-1.8-1.4-4-1.9-6.5-1.2z"></path><path d="M16.5 4.5c-2.5-.7-4.7-.2-6.5 1.2v10c1.8-1.4 4-1.9 6.5-1.2z"></path></svg>
+        <span>${copy.readingMode}</span>
+      </button>
+      <button class="page-tool" type="button" data-page-tool="copy">
+        <svg class="icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M8 12 12 8"></path><path d="M6.5 13.5 5 15a3 3 0 0 1-4-4l3-3a3 3 0 0 1 4.2 0"></path><path d="m13.5 6.5 1.5-1.5a3 3 0 0 1 4 4l-3 3a3 3 0 0 1-4.2 0"></path></svg>
+        <span>${copy.copyLink}</span>
+      </button>
+      <button class="page-tool" type="button" data-page-tool="print">
+        <svg class="icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M5 7V3h10v4"></path><path d="M5 14H3V8h14v6h-2"></path><path d="M5 11h10v6H5z"></path></svg>
+        <span>${copy.printPage}</span>
+      </button>
+      <span class="page-tool-status" role="status" aria-live="polite"></span>`;
+    subheroCard.append(pageTools);
+
+    const readingButton = select('[data-page-tool="reading"]', pageTools);
+    const copyButton = select('[data-page-tool="copy"]', pageTools);
+    const printButton = select('[data-page-tool="print"]', pageTools);
+    const toolStatus = select(".page-tool-status", pageTools);
+    let statusTimer = 0;
+    const showToolStatus = (message) => {
+      window.clearTimeout(statusTimer);
+      toolStatus.textContent = message;
+      statusTimer = window.setTimeout(() => {
+        toolStatus.textContent = "";
+      }, 2400);
+    };
+
+    readingButton.addEventListener("click", () => {
+      const enabled = document.body.classList.toggle("reading-mode");
+      readingButton.setAttribute("aria-pressed", String(enabled));
+      select("span", readingButton).textContent = enabled ? copy.exitReadingMode : copy.readingMode;
+    });
+
+    copyButton.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        showToolStatus(copy.linkCopied);
+      } catch {
+        const helper = document.createElement("textarea");
+        helper.value = window.location.href;
+        helper.setAttribute("readonly", "");
+        helper.style.position = "fixed";
+        helper.style.opacity = "0";
+        document.body.append(helper);
+        helper.select();
+        const copied = document.execCommand("copy");
+        helper.remove();
+        showToolStatus(copied ? copy.linkCopied : copy.copyFailed);
+      }
+    });
+
+    printButton.addEventListener("click", () => window.print());
+  }
 
   if (page !== "home" && pageSections.length >= 2) {
     const sectionNav = document.createElement("nav");

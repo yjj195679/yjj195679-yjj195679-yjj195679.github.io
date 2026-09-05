@@ -141,24 +141,10 @@ html:lang(zh-CN) .project-content h3 {
   font-family: var(--font-cjk);
 }
 
-html:lang(zh-CN) .hero-grid {
-  grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
-  gap: 1rem;
-}
-
-html:lang(zh-CN) .hero-main {
-  min-height: 560px;
-}
-
 html:lang(zh-CN) .hero-lead {
   max-width: 34em;
   font-size: 1.125rem;
   line-height: 1.88;
-}
-
-html:lang(zh-CN) .quick-card {
-  min-height: 176px;
-  padding: 1.375rem;
 }
 
 html:lang(zh-CN) .quick-title {
@@ -304,18 +290,13 @@ dd {
 body[data-page="home"] { --page-image: url("../images/hero.webp"); }
 body[data-page="home"] .site-bg { background-position: center 42%; }
 body[data-page="projects"] { --page-image: url("../images/project.webp"); }
+body[data-page="projects"] .site-bg { background-position: center 48%; }
 body[data-page="education"] { --page-image: url("../images/edu.webp"); }
+body[data-page="education"] .site-bg { background-position: center 52%; }
 body[data-page="study"] { --page-image: url("../images/course.webp"); }
+body[data-page="study"] .site-bg { background-position: center 50%; }
 body[data-page="achievements"] { --page-image: url("../images/achieve.webp"); }
 body[data-page="life"] { --page-image: url("../images/life.webp"); }
-
-/* 中文页面采用与栏目主题一致的独立视觉。 */
-html:lang(zh-CN) body[data-page="projects"] { --page-image: url("../images/project.webp"); }
-html:lang(zh-CN) body[data-page="education"] { --page-image: url("../images/edu.webp"); }
-html:lang(zh-CN) body[data-page="study"] { --page-image: url("../images/course.webp"); }
-html:lang(zh-CN) body[data-page="projects"] .site-bg { background-position: center 48%; }
-html:lang(zh-CN) body[data-page="education"] .site-bg { background-position: center 52%; }
-html:lang(zh-CN) body[data-page="study"] .site-bg { background-position: center 50%; }
 
 .noise {
   position: fixed;
@@ -1701,6 +1682,70 @@ html[lang^="en"] .quote-translation {
   line-height: 1.76;
 }
 
+.page-tools {
+  display: flex;
+  margin-top: 1.75rem;
+  padding-top: 1.125rem;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.page-tool {
+  display: inline-flex;
+  min-height: 38px;
+  padding: 0.5rem 0.75rem;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: #dce4ef;
+  background: rgba(255, 255, 255, 0.045);
+  font-size: var(--type-ui);
+  line-height: 1.2;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.page-tool:hover,
+.page-tool[aria-pressed="true"] {
+  color: var(--text);
+  border-color: var(--line-strong);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.page-tool .icon {
+  width: 16px;
+  height: 16px;
+}
+
+.page-tool-status {
+  min-width: 7em;
+  color: var(--muted);
+  font-size: var(--type-ui);
+}
+
+body.reading-mode .site-bg {
+  opacity: 0.18;
+  filter: grayscale(0.7) saturate(0.45) contrast(0.92);
+}
+
+body.reading-mode .noise {
+  opacity: 0.025;
+}
+
+body.reading-mode .glass,
+body.reading-mode .timeline {
+  background-color: rgba(9, 12, 18, 0.94);
+  backdrop-filter: blur(8px) saturate(100%);
+  -webkit-backdrop-filter: blur(8px) saturate(100%);
+}
+
+body.reading-mode .project-card::after,
+body.reading-mode .quick-card::after {
+  opacity: 0.96;
+}
+
 .back-link {
   display: inline-flex;
   margin-bottom: 22px;
@@ -1988,14 +2033,6 @@ html[lang^="en"] .quote-translation {
 }
 
 @media (max-width: 980px) {
-  html:lang(zh-CN) .hero-grid {
-    grid-template-columns: 1fr;
-  }
-
-  html:lang(zh-CN) .hero-main {
-    min-height: 520px;
-  }
-
   html:lang(zh-CN) .section-head {
     display: grid;
   }
@@ -2080,17 +2117,9 @@ html[lang^="en"] .quote-translation {
 }
 
 @media (max-width: 640px) {
-  html:lang(zh-CN) .hero-main {
-    min-height: 480px;
-  }
-
   html:lang(zh-CN) .hero-lead {
     font-size: 1.0625rem;
     line-height: 1.84;
-  }
-
-  html:lang(zh-CN) .quick-card {
-    min-height: 152px;
   }
 
   html:lang(zh-CN) .timeline-item {
@@ -2194,7 +2223,11 @@ html[lang^="en"] .quote-translation {
     grid-template-columns: 1fr;
   }
 
-  .quick-card.wide { grid-column: auto; }
+  .quick-card,
+  .quick-card.wide {
+    min-height: 152px;
+    grid-column: auto;
+  }
 
   .section { padding: 60px 0; }
 
@@ -2218,6 +2251,15 @@ html[lang^="en"] .quote-translation {
   .subhero h1 { font-size: var(--type-subdisplay); }
 
   html:lang(zh-CN) .subhero h1 { font-size: clamp(2.5rem, 11.5vw, 3.375rem); }
+
+  .page-tools {
+    margin-top: 1.375rem;
+  }
+
+  .page-tool-status {
+    width: 100%;
+    min-height: 1.4em;
+  }
 
   .timeline-item {
     grid-template-columns: 1fr;
@@ -2315,6 +2357,7 @@ html[lang^="en"] .quote-translation {
   .timer-actions,
   .timer-presets,
   .quote-actions,
+  .page-tools,
   .weather-panel,
   .footer-links {
     display: none !important;

@@ -1942,6 +1942,23 @@ body.reading-mode .quick-card::after {
   align-items: start;
 }
 
+.guestbook-admin-entry {
+  display: flex;
+  margin-top: 1.4rem;
+}
+
+.guestbook-admin-entry .button {
+  min-height: 40px;
+  padding: 8px 14px;
+  color: #dce4ef;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.guestbook-admin-entry .icon {
+  width: 16px;
+  height: 16px;
+}
+
 .guestbook-form {
   display: grid;
   gap: 17px;

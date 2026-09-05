@@ -32,6 +32,18 @@
       <p>A record of image restoration models, training, inference, memory adaptation, and results.</p>
     </article></div></section>
 
+    <section class="section project-overview" id="overview"><div class="container">
+      <article class="project-summary glass reveal">
+        <div><div class="kicker">Research snapshot</div><h2>Methods tested under real constraints.</h2><p>Each project keeps the degradation model, numerical stability, memory limits, and failure analysis visible so the work remains reproducible and comparable.</p></div>
+        <dl class="summary-metrics">
+          <div class="summary-metric"><dt>3</dt><dd>image restoration research tracks</dd></div>
+          <div class="summary-metric"><dt>8 GB</dt><dd>GPU memory target</dd></div>
+          <div class="summary-metric"><dt>≈ 0.033</dt><dd>final DPSR training L1</dd></div>
+          <div class="summary-metric"><dt>200</dt><dd>DPSR training epochs</dd></div>
+        </dl>
+      </article>
+    </div></section>
+
     <section class="section anchor-offset" id="dpsr"><div class="container">
       <div class="section-head reveal"><div><div class="kicker">01 · Super-resolution</div><h2>DPSR Reproduction.</h2></div><p class="section-intro">Deep Plug-and-Play Super-Resolution for Arbitrary Blur Kernels separates data consistency from the super-resolution prior.</p></div>
       <div class="content-grid">
@@ -43,7 +55,7 @@
     </div></section>
 
     <section class="section anchor-offset" id="deblur"><div class="container">
-      <div class="section-head reveal"><div><div class="kicker">02 · Optimization</div><h2>Primal–Dual deblurring。</h2></div><p class="section-intro">Built an objective from data fidelity and total variation, solved iteratively with the Chambolle–Pock framework.</p></div>
+      <div class="section-head reveal"><div><div class="kicker">02 · Optimization</div><h2>Primal–Dual deblurring.</h2></div><p class="section-intro">Built an objective from data fidelity and total variation, solved iteratively with the Chambolle–Pock framework.</p></div>
       <article class="panel glass reveal">
         <dl class="detail-list">
           <div class="detail-row"><dt>Model</dt><dd>Minimizes reconstruction error against the blurred observation while TV regularization preserves edges and suppresses noise.</dd></div>

@@ -60,9 +60,25 @@
         <div class="detail-row"><dt>实验方法</dt><dd>退化一致性、数据集划分、指标解释、显存优化与可复现记录。</dd></div>
       </dl></article>
     </div></section>
+    <section class="section" id="focus"><div class="container">
+      <div class="section-head reveal"><div><div class="kicker">学习工具</div><h2>专注计时器</h2></div><p class="section-intro">在知识点切换之间留出明确的专注与休息节奏。计时只在当前浏览器运行，不上传数据。</p></div>
+      <article class="focus-tool glass reveal" data-focus-timer>
+        <div class="timer-face">
+          <span class="timer-mode" id="timer-mode">专注</span>
+          <strong class="timer-value" id="timer-value">25:00</strong>
+          <div class="timer-progress" role="progressbar" aria-label="专注计时进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
+        </div>
+        <div class="timer-settings">
+          <div class="timer-presets" aria-label="计时时长"><button class="selected" type="button" data-minutes="25" data-mode="专注">25 分钟</button><button type="button" data-minutes="5" data-mode="短休息">5 分钟</button><button type="button" data-minutes="15" data-mode="长休息">15 分钟</button></div>
+          <div class="timer-actions"><button class="button primary" id="timer-toggle" type="button">开始</button><button class="button" id="timer-reset" type="button">重置</button></div>
+          <p class="timer-status" id="timer-status" aria-live="polite">选择时长后开始计时。</p>
+        </div>
+      </article>
+    </div></section>
   </main>
 
   <footer class="footer"><div class="container footer-inner"><div>© <span id="year">2026</span> True Path M · Personal Portfolio</div><div class="footer-links"><a href="education.html">教育</a><a href="projects.html">项目</a><a href="guestbook.html">留言板</a></div></div></footer>
   <script src="js/main.js" defer></script>
+  <script src="js/extras.js" defer></script>
 </body>
 </html>

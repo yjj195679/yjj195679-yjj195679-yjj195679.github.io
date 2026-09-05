@@ -60,9 +60,25 @@
         <div class="detail-row"><dt>Experimental methods</dt><dd>Degradation consistency, dataset splits, metric interpretation, memory optimization, and reproducible records.</dd></div>
       </dl></article>
     </div></section>
+    <section class="section" id="focus"><div class="container">
+      <div class="section-head reveal"><div><div class="kicker">Study tool</div><h2>Focus timer.</h2></div><p class="section-intro">Create a clear rhythm between focused work and breaks. Timing stays in this browser and no activity data is uploaded.</p></div>
+      <article class="focus-tool glass reveal" data-focus-timer>
+        <div class="timer-face">
+          <span class="timer-mode" id="timer-mode">Focus</span>
+          <strong class="timer-value" id="timer-value">25:00</strong>
+          <div class="timer-progress" role="progressbar" aria-label="Focus timer progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
+        </div>
+        <div class="timer-settings">
+          <div class="timer-presets" aria-label="Timer duration"><button class="selected" type="button" data-minutes="25" data-mode="Focus">25 min</button><button type="button" data-minutes="5" data-mode="Short break">5 min</button><button type="button" data-minutes="15" data-mode="Long break">15 min</button></div>
+          <div class="timer-actions"><button class="button primary" id="timer-toggle" type="button">Start</button><button class="button" id="timer-reset" type="button">Reset</button></div>
+          <p class="timer-status" id="timer-status" aria-live="polite">Choose a duration and start the timer.</p>
+        </div>
+      </article>
+    </div></section>
   </main>
 
   <footer class="footer"><div class="container footer-inner"><div>© <span id="year">2026</span> True Path M · Personal Portfolio</div><div class="footer-links"><a href="education.html">Education</a><a href="projects.html">Projects</a><a href="guestbook.html">Guestbook</a></div></div></footer>
   <script src="../js/main.js" defer></script>
+  <script src="../js/extras.js" defer></script>
 </body>
 </html>

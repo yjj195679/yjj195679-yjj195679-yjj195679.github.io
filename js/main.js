@@ -18,6 +18,13 @@
         unavailable: "Unavailable",
         denied: "Location permission was not granted.",
         retry: "Try again",
+        sectionNav: "On this page",
+        backToTop: "Back to top",
+        search: "Quick navigation",
+        searchPlaceholder: "Search pages and projects…",
+        searchHint: "Type to filter · ↑↓ to select · Enter to open",
+        closeSearch: "Close quick navigation",
+        noResults: "No matching pages.",
         weatherDetails: (current) =>
           `Feels like ${Math.round(current.apparent_temperature)}°C · Humidity ${current.relative_humidity_2m}% · Wind ${Math.round(current.wind_speed_10m)} km/h`,
       }
@@ -34,6 +41,13 @@
         unavailable: "暂时无法显示",
         denied: "你没有授权定位",
         retry: "再次尝试",
+        sectionNav: "本页导航",
+        backToTop: "返回顶部",
+        search: "快捷导航",
+        searchPlaceholder: "搜索页面、项目或知识方向…",
+        searchHint: "输入筛选 · ↑↓ 选择 · 回车打开",
+        closeSearch: "关闭快捷导航",
+        noResults: "没有匹配的页面。",
         weatherDetails: (current) =>
           `体感 ${Math.round(current.apparent_temperature)}°C　湿度 ${current.relative_humidity_2m}%　风速 ${Math.round(current.wind_speed_10m)} km/h`,
       };
@@ -120,7 +134,19 @@
   progress.className = "scroll-progress";
   progress.setAttribute("aria-hidden", "true");
   document.body.prepend(progress);
+
+  const backToTop = document.createElement("button");
+  backToTop.className = "back-to-top";
+  backToTop.type = "button";
+  backToTop.setAttribute("aria-label", copy.backToTop);
+  backToTop.title = copy.backToTop;
+  backToTop.innerHTML = '<svg class="icon icon-arrow-up" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M10 16V5"></path><path d="m6 9 4-4 4 4"></path></svg>';
+  document.body.append(backToTop);
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  backToTop.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: reducedMotion.matches ? "auto" : "smooth" });
+  });
   let framePending = false;
   const updateScrollEffects = () => {
     if (framePending) return;
@@ -129,6 +155,7 @@
       const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
       progress.style.transform = `scaleX(${Math.max(0, Math.min(window.scrollY / maxScroll, 1))})`;
       if (topbar) topbar.classList.toggle("is-scrolled", window.scrollY > 24);
+      backToTop.classList.toggle("visible", window.scrollY > Math.max(window.innerHeight * 0.75, 520));
       if (background && !reducedMotion.matches) {
         const offset = Math.min(window.scrollY * 0.028, 22);
         background.style.transform = `translateY(${offset}px) scale(1.025)`;
@@ -153,6 +180,232 @@
         surface.style.removeProperty("--pointer-x");
         surface.style.removeProperty("--pointer-y");
       });
+    });
+  }
+
+  const main = select("#main");
+  const page = document.body.dataset.page || "page";
+  const pageSections = main
+    ? [...main.children].filter((element) => element.classList.contains("section"))
+    : [];
+
+  if (page !== "home" && pageSections.length >= 2) {
+    const sectionNav = document.createElement("nav");
+    sectionNav.className = "section-nav";
+    sectionNav.setAttribute("aria-label", copy.sectionNav);
+
+    const navInner = document.createElement("div");
+    navInner.className = "section-nav-inner";
+    const navLabel = document.createElement("span");
+    navLabel.className = "section-nav-label";
+    navLabel.textContent = copy.sectionNav;
+    navInner.append(navLabel);
+
+    const links = pageSections.map((section, index) => {
+      if (!section.id) section.id = `${page}-section-${index + 1}`;
+      const heading = select("h2, h3", section);
+      const link = document.createElement("a");
+      link.href = `#${section.id}`;
+      link.innerHTML = `<span aria-hidden="true"></span>${heading ? heading.textContent.trim() : `${index + 1}`}`;
+      navInner.append(link);
+      return link;
+    });
+
+    sectionNav.append(navInner);
+    main.prepend(sectionNav);
+
+    const setActiveSection = (id) => {
+      links.forEach((link) => {
+        if (link.hash === `#${id}`) link.setAttribute("aria-current", "location");
+        else link.removeAttribute("aria-current");
+      });
+    };
+    setActiveSection(pageSections[0].id);
+
+    if ("IntersectionObserver" in window) {
+      const sectionObserver = new IntersectionObserver(
+        (entries) => {
+          const visible = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+          if (visible[0]) setActiveSection(visible[0].target.id);
+        },
+        { rootMargin: "-24% 0px -62%", threshold: 0 },
+      );
+      pageSections.forEach((section) => sectionObserver.observe(section));
+    }
+  }
+
+  const topbarTools = select(".topbar-tools");
+  if (topbarTools) {
+    const searchItems = isEnglish
+      ? [
+          ["Home", "Profile and current focus", "index.html", "about research"],
+          ["Projects", "Research overview", "projects.html", "portfolio work"],
+          ["DPSR reproduction", "Super-resolution", "projects.html#dpsr", "srresnet pnp admm"],
+          ["Primal–Dual deblurring", "Optimization", "projects.html#deblur", "chambolle pock fft tv"],
+          ["UNet / Restormer", "Deep restoration", "projects.html#hybrid", "transformer stability"],
+          ["Education", "Learning path", "education.html", "methods timeline"],
+          ["Study", "Knowledge map", "courses.html", "408 mathematics vision"],
+          ["Achievements", "Completed work", "achievements.html", "results milestones"],
+          ["Life", "Current work", "life.html", "learning notes"],
+          ["Guestbook", "Visitor messages", "guestbook.html", "contact message"],
+          ["GitHub", "Code and repositories", "https://github.com/yjj195679", "source code"],
+        ]
+      : [
+          ["首页", "个人简介与当前方向", "index.html", "home 关于 研究"],
+          ["项目", "研究与实验概览", "projects.html", "作品 实验"],
+          ["DPSR 复现", "超分辨率", "projects.html#dpsr", "srresnet pnp admm"],
+          ["Primal–Dual 去模糊", "优化方法", "projects.html#deblur", "chambolle pock fft tv"],
+          ["UNet / Restormer", "深度图像复原", "projects.html#hybrid", "transformer 稳定性"],
+          ["教育", "学习路径", "education.html", "方法 时间线"],
+          ["学习", "知识地图", "courses.html", "408 数学 图像复原"],
+          ["成果", "已完成工作", "achievements.html", "结果 文档"],
+          ["生活", "近期状态", "life.html", "学习 记录"],
+          ["留言板", "访客交流", "guestbook.html", "联系 留言"],
+          ["GitHub", "代码与公开项目", "https://github.com/yjj195679", "仓库 源码"],
+        ];
+
+    const searchButton = document.createElement("button");
+    searchButton.className = "quick-search-toggle";
+    searchButton.type = "button";
+    searchButton.setAttribute("aria-label", copy.search);
+    searchButton.setAttribute("aria-haspopup", "dialog");
+    const shortcutLabel = /Mac|iPhone|iPad/.test(navigator.platform) ? "⌘K" : "Ctrl K";
+    searchButton.innerHTML = '<svg class="icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="4.5"></circle><path d="m12 12 4 4"></path></svg><span>' + copy.search + "</span><kbd>" + shortcutLabel + "</kbd>";
+    topbarTools.prepend(searchButton);
+
+    const overlay = document.createElement("div");
+    overlay.className = "command-overlay";
+    overlay.hidden = true;
+    overlay.innerHTML = `
+      <section class="command-panel" role="dialog" aria-modal="true" aria-labelledby="command-title">
+        <div class="command-head">
+          <label id="command-title" for="command-input">${copy.search}</label>
+          <button class="command-close" type="button" aria-label="${copy.closeSearch}">Esc</button>
+        </div>
+        <div class="command-input-wrap">
+          <svg class="icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="4.5"></circle><path d="m12 12 4 4"></path></svg>
+          <input id="command-input" type="search" autocomplete="off" spellcheck="false" placeholder="${copy.searchPlaceholder}">
+        </div>
+        <div class="command-results" role="listbox"></div>
+        <p class="command-hint">${copy.searchHint}</p>
+      </section>`;
+    document.body.append(overlay);
+
+    const searchInput = select("#command-input", overlay);
+    const searchResults = select(".command-results", overlay);
+    const closeSearchButton = select(".command-close", overlay);
+    let selectedResult = 0;
+    let lastFocused = null;
+
+    const updateSelectedResult = () => {
+      const results = selectAll("a", searchResults);
+      if (!results.length) return;
+      selectedResult = (selectedResult + results.length) % results.length;
+      results.forEach((result, index) => {
+        result.classList.toggle("selected", index === selectedResult);
+        result.setAttribute("aria-selected", String(index === selectedResult));
+      });
+      results[selectedResult].scrollIntoView({ block: "nearest" });
+    };
+
+    const renderSearchResults = (value = "") => {
+      const query = value.trim().toLocaleLowerCase(locale);
+      const matches = searchItems.filter((item) => item.join(" ").toLocaleLowerCase(locale).includes(query));
+      searchResults.replaceChildren();
+      selectedResult = 0;
+      if (!matches.length) {
+        const empty = document.createElement("p");
+        empty.className = "command-empty";
+        empty.textContent = copy.noResults;
+        searchResults.append(empty);
+        return;
+      }
+      const fragment = document.createDocumentFragment();
+      matches.forEach(([title, meta, url]) => {
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("role", "option");
+        if (url.startsWith("http")) {
+          link.target = "_blank";
+          link.rel = "noreferrer";
+        }
+        const text = document.createElement("span");
+        const strong = document.createElement("strong");
+        const small = document.createElement("small");
+        strong.textContent = title;
+        small.textContent = meta;
+        text.append(strong, small);
+        const arrow = document.createElement("span");
+        arrow.className = "command-arrow";
+        arrow.setAttribute("aria-hidden", "true");
+        arrow.textContent = "↗";
+        link.append(text, arrow);
+        fragment.append(link);
+      });
+      searchResults.append(fragment);
+      updateSelectedResult();
+    };
+
+    const openSearch = () => {
+      lastFocused = document.activeElement;
+      overlay.hidden = false;
+      document.body.classList.add("command-open");
+      renderSearchResults();
+      window.requestAnimationFrame(() => overlay.classList.add("open"));
+      searchInput.focus();
+    };
+
+    const closeSearch = () => {
+      overlay.classList.remove("open");
+      overlay.hidden = true;
+      document.body.classList.remove("command-open");
+      searchInput.value = "";
+      if (lastFocused && typeof lastFocused.focus === "function") lastFocused.focus();
+    };
+
+    searchButton.addEventListener("click", openSearch);
+    closeSearchButton.addEventListener("click", closeSearch);
+    overlay.addEventListener("click", (event) => {
+      if (event.target === overlay) closeSearch();
+    });
+    searchInput.addEventListener("input", () => renderSearchResults(searchInput.value));
+    searchInput.addEventListener("keydown", (event) => {
+      const results = selectAll("a", searchResults);
+      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+        event.preventDefault();
+        selectedResult += event.key === "ArrowDown" ? 1 : -1;
+        updateSelectedResult();
+      } else if (event.key === "Enter" && results[selectedResult]) {
+        event.preventDefault();
+        results[selectedResult].click();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      const element = event.target;
+      const isEditing = element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement || element.isContentEditable;
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        overlay.hidden ? openSearch() : closeSearch();
+      } else if (event.key === "/" && !isEditing && overlay.hidden) {
+        event.preventDefault();
+        openSearch();
+      } else if (event.key === "Escape" && !overlay.hidden) {
+        closeSearch();
+      } else if (event.key === "Tab" && !overlay.hidden) {
+        const focusable = [searchInput, ...selectAll("a", searchResults), closeSearchButton];
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
     });
   }
 

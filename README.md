@@ -19,7 +19,7 @@
 
 ## 2. 设计思路
 
-整体视觉参考了 [imsyy/home](https://github.com/imsyy/home) 的沉浸式个人主页体验，但没有复制其页面或技术栈。第二轮优化继续研究了 [Brittany Chiang v4](https://github.com/bchiang7/v4)、[Academic Pages](https://github.com/academicpages/academicpages.github.io) 和 [Magic Portfolio](https://github.com/once-ui-system/magic-portfolio)，分别吸收其章节导航、学术内容组织和项目案例化表达方式。本站始终保留自己的多页面结构、真实内容和纯静态技术路线。
+整体视觉参考了 [imsyy/home](https://github.com/imsyy/home) 的沉浸式个人主页体验，但没有复制其页面或技术栈。后续优化继续研究了 [Brittany Chiang v4](https://github.com/bchiang7/v4)、[Academic Pages](https://github.com/academicpages/academicpages.github.io) 和 [Magic Portfolio](https://github.com/once-ui-system/magic-portfolio)，分别吸收其章节导航、学术内容组织和项目案例化表达方式。本站始终保留自己的多页面结构、真实内容和纯静态技术路线。
 
 - 全屏背景与暗色遮罩，确保背景存在感和正文可读性同时成立；
 - 毛玻璃面板、圆角悬浮导航和轻量卡片动效；
@@ -28,6 +28,9 @@
 - 子页面自动生成页内章节导航，并随阅读位置高亮；
 - 桌面端指针光感、滚动入场和背景轻微视差；
 - 项目页先展示可核对的实验摘要，再进入详细过程；
+- 全站使用统一的 1120px 内容栅格、卡片圆角、阴影和 16px 模块间距；
+- 章节标题采用稳定的“标题 + 说明”双栏结构，时间线也纳入同一套卡片体系；
+- 首页只承担总览和分流职责，避免与各子页面重复展示相同内容；
 - 完整移动端适配，并尊重系统的“减少动态效果”设置。
 
 本站的视觉方向是“暗黑、克制、学术、可长期维护”。中文正文优先使用宋体体系，英文优先使用 Times New Roman。蓝灰色高光只用于层级、状态和交互提示，不改变内容本身的严肃感。
@@ -37,9 +40,9 @@
 - 中英文双语页面；
 - 多页面导航与当前栏目高亮；
 - 每个栏目独立背景图；
-- 首页项目、学习、教育、成果、生活与留言板入口；
+- 首页项目、方法、学习、成果、生活与留言板入口；
 - 图像复原项目与实验过程展示；
-- 408、数学和图像复原知识地图；
+- 408、数学和图像复原知识结构；
 - 浏览器本地时间与日期；
 - 基于 Open-Meteo 的当前位置天气；
 - 基于 Supabase REST API 的公开留言板；
@@ -55,17 +58,19 @@
 - 长页面离屏内容延迟渲染；
 - SEO 基础信息、双语 `hreflang`、站点地图和自定义 404 页面。
 
-## 4. 页面说明
+## 4. 内容架构与页面说明
+
+每个栏目只承担一种主要职责，减少相同内容在不同页面反复出现：
 
 | 页面 | 中文 | English | 主要内容 |
 | --- | --- | --- | --- |
-| 首页 | `index.html` | `en/index.html` | 个人简介、当前方向、精选项目与快速入口 |
-| 项目 | `projects.html` | `en/projects.html` | DPSR、Primal–Dual、UNet、Restormer |
-| 教育 | `education.html` | `en/education.html` | 学习路径、研究实践与学习闭环 |
-| 学习 | `courses.html` | `en/courses.html` | 408、数学、图像处理与优化方法 |
-| 成果 | `achievements.html` | `en/achievements.html` | 已完成的研究、实验和文档成果 |
-| 生活 | `life.html` | `en/life.html` | 近期状态与中英双语每日哲思 |
-| 留言板 | `guestbook.html` | `en/guestbook.html` | 访客公开留言 |
+| 首页 | `index.html` | `en/index.html` | 研究方向总览、代表项目和栏目入口 |
+| 项目 | `projects.html` | `en/projects.html` | 模型实现、实验过程和可核对证据 |
+| 方法 | `education.html` | `en/education.html` | 学习方法、实践路径和验证闭环 |
+| 学习 | `courses.html` | `en/courses.html` | 408、数学与图像复原的知识结构 |
+| 成果 | `achievements.html` | `en/achievements.html` | 只记录已经完成的研究、实验和文档输出 |
+| 生活 | `life.html` | `en/life.html` | 当前状态与中英双语每日哲思 |
+| 留言板 | `guestbook.html` | `en/guestbook.html` | 公开交流与访客反馈 |
 | 404 | `404.html` | `en/404.html` | 无效路径提示和返回入口 |
 
 网站默认进入中文版。每个主要页面都提供对应英文版，语言开关会切换到当前页面的另一语言版本。
@@ -76,7 +81,7 @@
 .
 ├── index.html                 # 中文首页
 ├── projects.html              # 中文项目页
-├── education.html             # 中文教育页
+├── education.html             # 中文学习方法页
 ├── courses.html               # 中文学习页
 ├── achievements.html          # 中文成果页
 ├── life.html                  # 中文生活页
@@ -140,8 +145,8 @@ python -m http.server 8000
   --text: #f5f7fb;
   --muted: #aeb7c6;
   --accent: #b9d5ff;
-  --radius-lg: 30px;
-  --max-width: 1180px;
+  --radius-lg: 26px;
+  --max-width: 1120px;
   --font-latin: "Times New Roman", Times, serif;
   --font-cjk: SimSun, "Songti SC", "STSong", serif;
 }
@@ -233,7 +238,7 @@ python -m http.server 8000
 ### 10.2 更新学习与成果
 
 - 学习路径：`education.html`、`en/education.html`
-- 知识地图：`courses.html`、`en/courses.html`
+- 知识结构：`courses.html`、`en/courses.html`
 - 阶段成果：`achievements.html`、`en/achievements.html`
 - 近期状态：`life.html`、`en/life.html`
 
@@ -327,7 +332,7 @@ python -m http.server 8000
 - 首页氛围图：[Blurred lights streak through a dark library with bookshelves](https://unsplash.com/photos/blurred-lights-streak-through-a-dark-library-with-bookshelves-QeICm1euWuE)，Komorebi Photo，Unsplash License；
 - 项目与图像复原：[Camera lens](https://unsplash.com/photos/a-close-up-of-a-camera-lens-hRz3-M5PTT0)，Claudio Schwarz，Unsplash License；
 - 课程与数学学习：[Blackboard of mathematical formulas](https://unsplash.com/photos/a-blackboard-with-a-lot-of-writing-on-it-OPpCbAAKWv8)，Thomas T，Unsplash License；
-- 教育与研究环境：[Rubin Observatory Control Room](https://commons.wikimedia.org/wiki/File:Rubin_Observatory_Control_Room_(rubin-Revelado-Rubin-N30-CC).jpg)，Rubin Observatory / NSF / AURA / A. Pizarro D.，CC BY 4.0。
+- 方法页研究环境：[Rubin Observatory Control Room](https://commons.wikimedia.org/wiki/File:Rubin_Observatory_Control_Room_(rubin-Revelado-Rubin-N30-CC).jpg)，Rubin Observatory / NSF / AURA / A. Pizarro D.，CC BY 4.0。
 
 替换图片时应重新核对来源和许可，不要假定网络图片可以自由使用。
 

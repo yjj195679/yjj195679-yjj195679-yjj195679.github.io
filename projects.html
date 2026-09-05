@@ -7,7 +7,10 @@
   <meta name="description" content="True Path M 的代表项目：DPSR、Primal–Dual 去模糊、UNet 与 Restormer 图像复原实验。">
   <meta property="og:title" content="项目 · True Path M">
   <meta property="og:description" content="图像复原、深度学习与优化算法项目。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://1956799.xyz/projects.html">
   <meta property="og:image" content="https://1956799.xyz/images/project.webp">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="canonical" href="https://1956799.xyz/projects.html">
   <link rel="alternate" hreflang="zh-CN" href="https://1956799.xyz/projects.html">
   <link rel="alternate" hreflang="en" href="https://1956799.xyz/en/projects.html">
@@ -52,6 +55,17 @@
         <article class="content-card glass reveal"><div class="kicker">工程适配</div><h3>8 GB 显存适配</h3><p>针对整图推理的显存溢出，加入 Patch-wise 推理与分块拼接；统一输入归一化、模糊核处理和设备选择，保证训练权重可稳定加载。</p></article>
         <article class="content-card glass reveal"><div class="kicker">结果</div><h3>可复现实验闭环</h3><p>完成模型训练、检查点保存、测试图推理和结果对比。训练 L1 损失从约 0.089 降至约 0.033，并形成配套说明与展示材料。</p></article>
       </div>
+      <article class="experiment-record glass reveal">
+        <div class="experiment-record-head"><div><div class="kicker">实验记录</div><h3>关键训练配置</h3></div><p>记录能够影响复现结果的设置，而不只展示模型名称。</p></div>
+        <dl class="experiment-specs">
+          <div class="experiment-spec"><dt>数据</dt><dd>DIV2K_train_HR</dd></div>
+          <div class="experiment-spec"><dt>放大倍率</dt><dd>×4</dd></div>
+          <div class="experiment-spec"><dt>训练裁块</dt><dd>192 × 192</dd></div>
+          <div class="experiment-spec"><dt>Batch / Epoch</dt><dd>16 / 200</dd></div>
+          <div class="experiment-spec"><dt>学习率</dt><dd>1×10<sup>−4</sup>；第 50/100/150 轮减半</dd></div>
+          <div class="experiment-spec"><dt>模型与权重</dt><dd>64 特征、16 残差块；sr_epoch_197.pth</dd></div>
+        </dl>
+      </article>
     </div></section>
 
     <section class="section anchor-offset" id="deblur"><div class="container">
@@ -63,6 +77,20 @@
           <div class="detail-row"><dt>原始更新</dt><dd>在周期边界条件下利用 FFT 计算线性子问题的闭式解，减少逐像素求解开销。</dd></div>
           <div class="detail-row"><dt>实验关注</dt><dd>步长条件、模糊核对齐、边界伪影、噪声强度与正则化参数之间的平衡。</dd></div>
         </dl>
+        <div class="formula-stack" aria-label="Primal–Dual 更新公式">
+          <div class="formula-row"><span>目标函数</span><code>minₓ ½‖Hx − y‖²₂ + λ‖∇x‖₁</code></div>
+          <div class="formula-row"><span>对偶更新</span><code>pᵏ⁺¹ = Π<sub>‖p‖∞≤λ</sub>(pᵏ + σ∇x̄ᵏ)</code></div>
+          <div class="formula-row"><span>原始更新</span><code>xᵏ⁺¹ = (I + τHᵀH)⁻¹(xᵏ − τ∇ᵀpᵏ⁺¹ + τHᵀy)</code></div>
+          <div class="formula-row"><span>松弛步骤</span><code>x̄ᵏ⁺¹ = xᵏ⁺¹ + θ(xᵏ⁺¹ − xᵏ), θ = 1</code></div>
+        </div>
+        <div class="result-table-wrap">
+          <table class="result-table">
+            <caption>Cameraman + 高斯模糊的未调参示例结果</caption>
+            <thead><tr><th scope="col">噪声 σ</th><th scope="col">PSNR</th><th scope="col">SSIM</th><th scope="col">迭代</th></tr></thead>
+            <tbody><tr><td>0.01</td><td>≈ 16.45 dB</td><td>≈ 0.78</td><td>150</td></tr><tr><td>0.03</td><td>≈ 14.32 dB</td><td>≈ 0.72</td><td>220</td></tr></tbody>
+          </table>
+          <p class="result-note">这些数值用于记录当前实现的基线表现，并非经过系统调参后的最佳结果。</p>
+        </div>
       </article>
     </div></section>
 

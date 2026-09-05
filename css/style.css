@@ -1168,6 +1168,27 @@ body.command-open {
   line-height: 1.12;
 }
 
+.section-anchor {
+  display: inline-grid;
+  width: 1.2em;
+  height: 1.2em;
+  margin-left: 0.32em;
+  place-items: center;
+  color: var(--muted);
+  font-family: var(--font-latin);
+  font-size: 0.52em;
+  font-weight: 400;
+  opacity: 0;
+  transform: translateY(-0.08em);
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.section-head:hover .section-anchor,
+.section-anchor:focus-visible {
+  color: var(--accent);
+  opacity: 1;
+}
+
 .section-intro {
   max-width: var(--measure-intro);
   margin: 0;
@@ -1211,6 +1232,118 @@ body.command-open {
 .content-card li {
   color: #cbd3df;
   line-height: 1.78;
+}
+
+.experiment-record {
+  margin-top: 16px;
+  padding: clamp(24px, 4vw, 32px);
+  border-radius: var(--radius-md);
+}
+
+.experiment-record-head {
+  display: grid;
+  margin-bottom: 1.25rem;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.72fr);
+  align-items: end;
+  gap: clamp(2rem, 6vw, 5rem);
+}
+
+.experiment-record-head h3 {
+  margin: 0.55rem 0 0;
+  font-size: var(--type-card-title);
+}
+
+.experiment-record-head p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.experiment-specs {
+  display: grid;
+  margin: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+}
+
+.experiment-spec {
+  min-width: 0;
+  padding: 1rem;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.experiment-spec dt,
+.formula-row span {
+  color: var(--muted);
+  font-size: var(--type-ui);
+}
+
+.experiment-spec dd {
+  margin: 0.45rem 0 0;
+  color: var(--text);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.formula-stack {
+  display: grid;
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.formula-row {
+  display: grid;
+  padding: 0.9rem 0;
+  grid-template-columns: minmax(7rem, 0.28fr) minmax(0, 1fr);
+  gap: 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.formula-row code {
+  color: #e8eef8;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1rem;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.result-table-wrap {
+  margin-top: 1.5rem;
+  overflow-x: auto;
+}
+
+.result-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.result-table caption {
+  margin-bottom: 0.75rem;
+  color: var(--text);
+  font-weight: 600;
+  text-align: left;
+}
+
+.result-table th,
+.result-table td {
+  padding: 0.75rem;
+  border: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.result-table th {
+  color: var(--muted);
+  font-size: var(--type-ui);
+  font-weight: 500;
+}
+
+.result-note {
+  margin: 0.75rem 0 0;
+  color: var(--muted);
+  font-size: var(--type-ui);
 }
 
 .panel p,
@@ -1692,6 +1825,13 @@ html[lang^="en"] .quote-translation {
   border-top: 1px solid var(--line);
 }
 
+.page-reading-meta {
+  margin-right: auto;
+  color: var(--muted);
+  font-size: var(--type-ui);
+  letter-spacing: 0.02em;
+}
+
 .page-tool {
   display: inline-flex;
   min-height: 38px;
@@ -1953,12 +2093,17 @@ body.reading-mode .quick-card::after {
 }
 
 .reveal {
+  opacity: 1;
+  transform: none;
+}
+
+.js-ready .reveal {
   opacity: 0;
   transform: translateY(18px);
   transition: opacity 0.7s ease var(--reveal-delay, 0ms), transform 0.7s ease var(--reveal-delay, 0ms);
 }
 
-.reveal.visible {
+.js-ready .reveal.visible {
   opacity: 1;
   transform: none;
 }
@@ -2107,6 +2252,11 @@ body.reading-mode .quick-card::after {
     gap: 0;
   }
 
+  .experiment-record-head,
+  .experiment-specs {
+    grid-template-columns: 1fr;
+  }
+
   .section-intro {
     margin-top: 16px;
   }
@@ -2135,6 +2285,16 @@ body.reading-mode .quick-card::after {
   }
 
   body { font-size: var(--type-body); }
+
+  .formula-row {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+
+  .page-reading-meta {
+    width: 100%;
+    margin-bottom: 0.25rem;
+  }
 
   .container {
     width: min(calc(100% - 24px), var(--max-width));
@@ -2358,6 +2518,7 @@ body.reading-mode .quick-card::after {
   .timer-presets,
   .quote-actions,
   .page-tools,
+  .section-anchor,
   .weather-panel,
   .footer-links {
     display: none !important;

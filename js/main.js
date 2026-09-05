@@ -1,6 +1,7 @@
 (() => {
   const select = (selector, root = document) => root.querySelector(selector);
   const selectAll = (selector, root = document) => [...root.querySelectorAll(selector)];
+  document.body.classList.add("js-ready");
 
   const isEnglish = document.documentElement.lang.toLowerCase().startsWith("en");
   const locale = isEnglish ? "en-US" : "zh-CN";
@@ -31,6 +32,8 @@
         linkCopied: "Link copied",
         copyFailed: "Copy failed",
         printPage: "Print / save PDF",
+        readingMeta: (sections, minutes) => `${sections} sections · about ${minutes} min read`,
+        sectionLink: "Link to this section",
         weatherDetails: (current) =>
           `Feels like ${Math.round(current.apparent_temperature)}°C · Humidity ${current.relative_humidity_2m}% · Wind ${Math.round(current.wind_speed_10m)} km/h`,
       }
@@ -60,6 +63,8 @@
         linkCopied: "链接已复制",
         copyFailed: "复制失败",
         printPage: "打印 / 保存 PDF",
+        readingMeta: (sections, minutes) => `${sections} 个章节 · 约 ${minutes} 分钟阅读`,
+        sectionLink: "链接到本章节",
         weatherDetails: (current) =>
           `体感 ${Math.round(current.apparent_temperature)}°C　湿度 ${current.relative_humidity_2m}%　风速 ${Math.round(current.wind_speed_10m)} km/h`,
       };
@@ -203,13 +208,31 @@
       )
     : [];
 
+  pageSections.forEach((section, index) => {
+    if (!section.id) section.id = `${page}-section-${index + 1}`;
+    const heading = select(".section-head h2, .section-head h3", section);
+    if (!heading || select(".section-anchor", heading)) return;
+    const anchor = document.createElement("a");
+    anchor.className = "section-anchor";
+    anchor.href = `#${section.id}`;
+    anchor.setAttribute("aria-label", `${copy.sectionLink}: ${heading.textContent.trim()}`);
+    anchor.title = copy.sectionLink;
+    anchor.textContent = "#";
+    heading.append(anchor);
+  });
+
   const documentPages = new Set(["projects", "education", "study", "achievements", "life"]);
   const subheroCard = select(".subhero-card");
   if (documentPages.has(page) && subheroCard) {
+    const mainText = main ? main.innerText : "";
+    const cjkCharacters = (mainText.match(/[\u3400-\u9fff]/g) || []).length;
+    const latinWords = (mainText.match(/[A-Za-z0-9]+(?:['’-][A-Za-z0-9]+)*/g) || []).length;
+    const readingMinutes = Math.max(1, Math.ceil(cjkCharacters / 350 + latinWords / 220));
     const pageTools = document.createElement("div");
     pageTools.className = "page-tools";
     pageTools.setAttribute("aria-label", isEnglish ? "Document tools" : "文档工具");
     pageTools.innerHTML = `
+      <span class="page-reading-meta">${copy.readingMeta(pageSections.length, readingMinutes)}</span>
       <button class="page-tool" type="button" data-page-tool="reading" aria-pressed="false">
         <svg class="icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.5 4.5c2.5-.7 4.7-.2 6.5 1.2v10c-1.8-1.4-4-1.9-6.5-1.2z"></path><path d="M16.5 4.5c-2.5-.7-4.7-.2-6.5 1.2v10c1.8-1.4 4-1.9 6.5-1.2z"></path></svg>
         <span>${copy.readingMode}</span>
@@ -238,10 +261,26 @@
       }, 2400);
     };
 
-    readingButton.addEventListener("click", () => {
-      const enabled = document.body.classList.toggle("reading-mode");
+    const readingStorageKey = "true-path-reading-mode";
+    const setReadingMode = (enabled) => {
+      document.body.classList.toggle("reading-mode", enabled);
       readingButton.setAttribute("aria-pressed", String(enabled));
       select("span", readingButton).textContent = enabled ? copy.exitReadingMode : copy.readingMode;
+    };
+    try {
+      setReadingMode(window.localStorage.getItem(readingStorageKey) === "true");
+    } catch {
+      setReadingMode(false);
+    }
+
+    readingButton.addEventListener("click", () => {
+      const enabled = !document.body.classList.contains("reading-mode");
+      setReadingMode(enabled);
+      try {
+        window.localStorage.setItem(readingStorageKey, String(enabled));
+      } catch {
+        // Reading mode still works when storage is unavailable.
+      }
     });
 
     copyButton.addEventListener("click", async () => {
@@ -277,8 +316,7 @@
     navLabel.textContent = copy.sectionNav;
     navInner.append(navLabel);
 
-    const links = pageSections.map((section, index) => {
-      if (!section.id) section.id = `${page}-section-${index + 1}`;
+    const links = pageSections.map((section) => {
       const heading = select("h2, h3", section);
       const link = document.createElement("a");
       link.href = `#${section.id}`;

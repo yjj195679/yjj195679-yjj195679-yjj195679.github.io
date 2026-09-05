@@ -7,7 +7,10 @@
   <meta name="description" content="Selected work in DPSR, Primal–Dual deblurring, UNet, and Restormer.">
   <meta property="og:title" content="Projects · True Path M">
   <meta property="og:description" content="Projects in image restoration, deep learning, and optimization.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://1956799.xyz/en/projects.html">
   <meta property="og:image" content="https://1956799.xyz/images/project.webp">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="canonical" href="https://1956799.xyz/en/projects.html">
   <link rel="alternate" hreflang="zh-CN" href="https://1956799.xyz/projects.html">
   <link rel="alternate" hreflang="en" href="https://1956799.xyz/en/projects.html">
@@ -52,6 +55,17 @@
         <article class="content-card glass reveal"><div class="kicker">Engineering</div><h3>8 GB memory adaptation</h3><p>Added patch-wise inference and tiled reconstruction to avoid full-image memory overflow, with consistent normalization, kernel handling, and device selection.</p></article>
         <article class="content-card glass reveal"><div class="kicker">Result</div><h3>Reproducible experiment pipeline</h3><p>Completed training, checkpointing, test-image inference, and comparisons. L1 loss decreased from about 0.089 to 0.033.</p></article>
       </div>
+      <article class="experiment-record glass reveal">
+        <div class="experiment-record-head"><div><div class="kicker">Experiment record</div><h3>Key training configuration</h3></div><p>Settings that materially affect reproduction are recorded—not just the model name.</p></div>
+        <dl class="experiment-specs">
+          <div class="experiment-spec"><dt>Data</dt><dd>DIV2K_train_HR</dd></div>
+          <div class="experiment-spec"><dt>Scale</dt><dd>×4</dd></div>
+          <div class="experiment-spec"><dt>Training patch</dt><dd>192 × 192</dd></div>
+          <div class="experiment-spec"><dt>Batch / Epoch</dt><dd>16 / 200</dd></div>
+          <div class="experiment-spec"><dt>Learning rate</dt><dd>1×10<sup>−4</sup>; halved at 50/100/150</dd></div>
+          <div class="experiment-spec"><dt>Model / checkpoint</dt><dd>64 features, 16 residual blocks; sr_epoch_197.pth</dd></div>
+        </dl>
+      </article>
     </div></section>
 
     <section class="section anchor-offset" id="deblur"><div class="container">
@@ -63,6 +77,20 @@
           <div class="detail-row"><dt>Primal update</dt><dd>Uses FFT under periodic boundaries to compute a closed-form linear update and avoid pixel-wise solving.</dd></div>
           <div class="detail-row"><dt>Experiment focus</dt><dd>Step-size conditions, kernel alignment, boundary artifacts, noise level, and regularization balance.</dd></div>
         </dl>
+        <div class="formula-stack" aria-label="Primal–Dual update equations">
+          <div class="formula-row"><span>Objective</span><code>minₓ ½‖Hx − y‖²₂ + λ‖∇x‖₁</code></div>
+          <div class="formula-row"><span>Dual update</span><code>pᵏ⁺¹ = Π<sub>‖p‖∞≤λ</sub>(pᵏ + σ∇x̄ᵏ)</code></div>
+          <div class="formula-row"><span>Primal update</span><code>xᵏ⁺¹ = (I + τHᵀH)⁻¹(xᵏ − τ∇ᵀpᵏ⁺¹ + τHᵀy)</code></div>
+          <div class="formula-row"><span>Relaxation</span><code>x̄ᵏ⁺¹ = xᵏ⁺¹ + θ(xᵏ⁺¹ − xᵏ), θ = 1</code></div>
+        </div>
+        <div class="result-table-wrap">
+          <table class="result-table">
+            <caption>Untuned examples on Cameraman with Gaussian blur</caption>
+            <thead><tr><th scope="col">Noise σ</th><th scope="col">PSNR</th><th scope="col">SSIM</th><th scope="col">Iterations</th></tr></thead>
+            <tbody><tr><td>0.01</td><td>≈ 16.45 dB</td><td>≈ 0.78</td><td>150</td></tr><tr><td>0.03</td><td>≈ 14.32 dB</td><td>≈ 0.72</td><td>220</td></tr></tbody>
+          </table>
+          <p class="result-note">These values document the current implementation baseline; they are not best results from systematic tuning.</p>
+        </div>
       </article>
     </div></section>
 

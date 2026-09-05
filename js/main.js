@@ -249,6 +249,8 @@
           ["Study", "Knowledge map", "courses.html", "408 mathematics vision"],
           ["Achievements", "Completed work", "achievements.html", "results milestones"],
           ["Life", "Current work", "life.html", "learning notes"],
+          ["Daily philosophy", "Bilingual thought of the day", "life.html#interlude", "philosophy Chinese English"],
+          ["Ambient player", "Generative study sound", "life.html#music", "music focus reading audio"],
           ["Guestbook", "Visitor messages", "guestbook.html", "contact message"],
           ["GitHub", "Code and repositories", "https://github.com/yjj195679", "source code"],
         ]
@@ -262,6 +264,8 @@
           ["学习", "知识地图", "courses.html", "408 数学 图像复原"],
           ["成果", "已完成工作", "achievements.html", "结果 文档"],
           ["生活", "近期状态", "life.html", "学习 记录"],
+          ["每日哲思", "中英对照的每日思考", "life.html#interlude", "哲学 中文 英文"],
+          ["氛围音乐", "浏览器生成的学习声音", "life.html#music", "音乐 专注 阅读 播放器"],
           ["留言板", "访客交流", "guestbook.html", "联系 留言"],
           ["GitHub", "代码与公开项目", "https://github.com/yjj195679", "仓库 源码"],
         ];

@@ -1665,6 +1665,19 @@ body.command-open {
   text-wrap: balance;
 }
 
+.quote-translation {
+  max-width: 35em;
+  margin: 16px 0 0;
+  color: #cbd4e0;
+  font-family: var(--font-latin);
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  line-height: 1.7;
+}
+
+html[lang^="en"] .quote-translation {
+  font-family: var(--font-cjk);
+}
+
 .quote-source {
   margin: 18px 0 0;
   color: var(--muted);
@@ -1689,6 +1702,223 @@ body.command-open {
 
 .quote-tool[data-state="loading"] .quote-content {
   opacity: 0.62;
+}
+
+.music-player {
+  display: grid;
+  min-height: 410px;
+  padding: clamp(24px, 4vw, 42px);
+  grid-template-columns: minmax(240px, 0.82fr) minmax(0, 1.18fr);
+  gap: clamp(28px, 6vw, 72px);
+  align-items: center;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+}
+
+.music-visual {
+  position: relative;
+  display: grid;
+  min-height: 310px;
+  padding: 28px;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 25px;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(185, 213, 255, 0.2), transparent 42%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.055), rgba(4, 7, 12, 0.48));
+}
+
+.music-disc {
+  position: relative;
+  width: min(58vw, 190px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, #d7e7ff 0 4%, transparent 4.5% 16%, rgba(255, 255, 255, 0.1) 16.5% 17%, transparent 17.5% 31%, rgba(255, 255, 255, 0.08) 31.5% 32%, transparent 32.5%),
+    conic-gradient(from 20deg, #0e1521, #273850, #090d14, #172538, #0e1521);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.4), inset 0 0 36px rgba(185, 213, 255, 0.08);
+}
+
+.music-disc::after {
+  position: absolute;
+  inset: 47%;
+  border-radius: 50%;
+  background: #07101b;
+  box-shadow: 0 0 0 7px rgba(185, 213, 255, 0.32);
+  content: "";
+}
+
+.music-player.is-playing .music-disc {
+  animation: music-spin 12s linear infinite;
+}
+
+.music-bars {
+  position: absolute;
+  right: 22px;
+  bottom: 25px;
+  left: 22px;
+  display: flex;
+  height: 44px;
+  align-items: end;
+  justify-content: center;
+  gap: 5px;
+}
+
+.music-bars i {
+  width: 4px;
+  height: 22%;
+  border-radius: 999px;
+  background: rgba(185, 213, 255, 0.72);
+  transform-origin: bottom;
+}
+
+.music-player.is-playing .music-bars i {
+  animation: music-level 1.1s ease-in-out infinite alternate;
+}
+
+.music-bars i:nth-child(2n) { animation-delay: -0.45s; }
+.music-bars i:nth-child(3n) { animation-delay: -0.8s; }
+.music-bars i:nth-child(4n) { animation-duration: 1.45s; }
+
+.music-engine {
+  position: absolute;
+  top: 22px;
+  left: 24px;
+  color: rgba(226, 237, 252, 0.62);
+  font-family: var(--font-latin);
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+}
+
+.music-console {
+  display: grid;
+  gap: 20px;
+}
+
+.music-now > span {
+  color: var(--accent);
+  font-size: var(--type-meta);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.music-now h3 {
+  margin-top: 8px;
+  font-size: clamp(1.8rem, 4vw, 2.75rem);
+}
+
+.music-now p {
+  max-width: 42em;
+  margin: 10px 0 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.music-modes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.music-modes button,
+.music-skip {
+  min-height: 40px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.04);
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.music-modes button {
+  padding: 8px 13px;
+  border-radius: 999px;
+  font-size: var(--type-ui);
+}
+
+.music-modes button:hover,
+.music-modes button.selected,
+.music-skip:hover {
+  color: var(--text);
+  border-color: var(--line-strong);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.music-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.music-skip {
+  width: 42px;
+  padding: 0;
+  border-radius: 50%;
+  font-family: var(--font-latin);
+  font-size: 1.25rem;
+}
+
+.music-toggle {
+  min-width: 96px;
+  min-height: 46px;
+  padding: 10px 21px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: #07101a;
+  background: var(--accent-strong);
+  font-weight: 700;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.music-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(111, 163, 230, 0.2);
+}
+
+.music-controls time {
+  margin-left: auto;
+  color: #dce5f2;
+  font-family: var(--font-latin);
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.music-volume {
+  display: grid;
+  grid-template-columns: auto minmax(100px, 1fr) 42px;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+  font-size: var(--type-ui);
+}
+
+.music-volume input {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.music-volume output {
+  color: #dce5f2;
+  font-family: var(--font-latin);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.music-status {
+  min-height: 1.6em;
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--type-meta);
+}
+
+@keyframes music-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes music-level {
+  0% { height: 18%; opacity: 0.55; }
+  100% { height: 92%; opacity: 1; }
 }
 
 .subhero {
@@ -2057,8 +2287,13 @@ body.command-open {
   .guestbook-grid,
   .weather-panel,
   .project-summary,
-  .focus-tool {
+  .focus-tool,
+  .music-player {
     grid-template-columns: 1fr;
+  }
+
+  .music-visual {
+    min-height: 280px;
   }
 
   .quote-tool {
@@ -2266,6 +2501,29 @@ body.command-open {
     grid-column: 1;
   }
 
+  .music-player {
+    min-height: 0;
+    padding: 20px;
+    gap: 24px;
+  }
+
+  .music-visual {
+    min-height: 245px;
+  }
+
+  .music-disc {
+    width: 155px;
+  }
+
+  .music-controls {
+    flex-wrap: wrap;
+  }
+
+  .music-controls time {
+    width: 100%;
+    margin: 4px 0 0;
+  }
+
   .detail-row {
     grid-template-columns: 1fr;
     gap: 2px;
@@ -2322,6 +2580,10 @@ body.command-open {
   .timer-actions,
   .timer-presets,
   .quote-actions,
+  .music-modes,
+  .music-controls,
+  .music-volume,
+  .music-visual,
   .weather-panel,
   .footer-links {
     display: none !important;
@@ -2393,6 +2655,10 @@ body.command-open {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .music-player.is-playing .music-disc,
+  .music-player.is-playing .music-bars i {
+    animation: none;
+  }
   *,
   *::before,
   *::after {

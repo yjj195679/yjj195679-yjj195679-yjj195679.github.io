@@ -603,4 +603,22 @@
       }
     });
   }
+
+  const alignInitialHash = () => {
+    if (!window.location.hash) return;
+    let id;
+    try {
+      id = decodeURIComponent(window.location.hash.slice(1));
+    } catch {
+      return;
+    }
+    const target = document.getElementById(id);
+    if (!target) return;
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => target.scrollIntoView({ block: "start" }));
+    });
+  };
+
+  if (document.readyState === "complete") alignInitialHash();
+  else window.addEventListener("load", alignInitialHash, { once: true });
 })();

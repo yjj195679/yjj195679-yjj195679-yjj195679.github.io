@@ -313,6 +313,29 @@ body[data-page="education"] .site-bg { background-position: center 52%; }
 body[data-page="study"] { --page-image: url("../images/course.webp"); }
 body[data-page="study"] .site-bg { background-position: center 50%; }
 body[data-page="achievements"] { --page-image: url("../images/achieve.webp"); }
+body[data-page="achievements"] .subhero p,
+body[data-page="achievements"] .section-intro {
+  color: #e4ebf4;
+  font-weight: 500;
+}
+
+body[data-page="achievements"] .timeline {
+  background: rgba(8, 11, 17, 0.78);
+}
+
+body[data-page="achievements"] .timeline-time {
+  color: #d7e7ff;
+  font-weight: 600;
+}
+
+body[data-page="achievements"] .timeline-item h3 {
+  color: #fff;
+}
+
+body[data-page="achievements"] .timeline-item p {
+  color: #edf2f8;
+  font-weight: 500;
+}
 body[data-page="life"] { --page-image: url("../images/life.webp"); }
 
 .noise {
@@ -2730,6 +2753,12 @@ html[data-theme="light"] .hero-status { color: var(--text); border-color: var(--
 html[data-theme="light"] .live-status { color: var(--text); }
 html[data-theme="light"] .eyebrow { color: var(--accent-strong); }
 html[data-theme="light"] .timeline { background: rgba(255, 255, 255, 0.68); }
+html[data-theme="light"] body[data-page="achievements"] .subhero p,
+html[data-theme="light"] body[data-page="achievements"] .section-intro,
+html[data-theme="light"] body[data-page="achievements"] .timeline-item p { color: #283241; }
+html[data-theme="light"] body[data-page="achievements"] .timeline { background: rgba(255, 255, 255, 0.88); }
+html[data-theme="light"] body[data-page="achievements"] .timeline-time { color: #214f86; }
+html[data-theme="light"] body[data-page="achievements"] .timeline-item h3 { color: #111927; }
 html[data-theme="light"] .quote-translation { color: #334256; }
 html[data-theme="light"] .quote-credit { text-decoration-color: rgba(24, 40, 63, 0.24); }
 html[data-theme="light"] .field input,

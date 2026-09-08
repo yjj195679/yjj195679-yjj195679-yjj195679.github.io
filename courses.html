@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#080a0f">
-  <script src="js/theme.js?v=20260908-5"></script>
-  <meta name="description" content="True Path M 当前学习的 408、数学和图像复原内容，以及这些知识之间的联系。">
+  <script src="js/theme.js?v=20260908-7"></script>
+  <meta name="description" content="从复杂度、存储层次、TCP、噪声模型和优化算法理解计算机基础与图像复原。">
   <meta property="og:title" content="学习 · True Path M">
-  <meta property="og:description" content="True Path M 当前学习的 408、数学和图像复原内容，以及这些知识之间的联系。">
+  <meta property="og:description" content="从复杂度、存储层次、TCP、噪声模型和优化算法理解计算机基础与图像复原。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://1956799.xyz/courses.html">
   <meta property="og:image" content="https://1956799.xyz/images/course.webp">
@@ -18,7 +18,7 @@
   <link rel="alternate" hreflang="x-default" href="https://1956799.xyz/courses.html">
   <link rel="preload" href="images/course.webp" as="image" type="image/webp">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=20260908-5">
+  <link rel="stylesheet" href="css/style.css?v=20260908-7">
   <title>学习 · True Path M</title>
 </head>
 <body data-page="study">
@@ -32,58 +32,51 @@
 
   <main id="main">
     <section class="subhero"><div class="container"><article class="subhero-card glass reveal">
-      <a class="back-link" href="index.html"><svg class="icon icon-arrow-left" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M16 10H5"></path><path d="m9 6-4 4 4 4"></path></svg> 返回首页</a><div class="kicker">学习</div><h1>学习内容与知识联系</h1>
-      <p>当前学习分为 408、数学和图像复原三部分。整理时重点记录概念的定义、成立条件、执行过程和相互联系。</p>
+      <a class="back-link" href="index.html"><svg class="icon icon-arrow-left" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M16 10H5"></path><path d="m9 6-4 4 4 4"></path></svg> 返回首页</a><div class="kicker">学习</div><h1>理解机制，建立联系</h1>
+      <p>只记录能解释复杂度、执行过程或算法假设的内容。</p>
     </article></div></section>
 
     <section class="section anchor-offset" id="computer-science"><div class="container">
       <div class="section-head reveal"><div><div class="kicker">408</div><h2>计算机基础：机制与联系</h2></div><p class="section-intro">按照“数据如何组织、指令如何执行、系统如何管理资源、主机如何通信”的顺序理解四门课程，并把跨章节机制连接起来。</p></div>
       <div class="content-grid">
-        <article class="content-card glass reveal"><div class="kicker">数据结构</div><h3>算法与数据组织</h3><ul><li>线性表、树、图与查找结构的适用场景</li><li>排序算法的稳定性、复杂度与存储特点</li><li>KMP、图遍历和典型递归算法</li><li>从数据组织方式推导算法代价</li></ul></article>
-        <article class="content-card glass reveal"><div class="kicker">计算机组成</div><h3>计算机组成原理</h3><ul><li>数据表示、运算电路与标志位</li><li>指令系统、数据通路与控制器</li><li>Cache、虚拟存储与主存组织</li><li>流水线、中断、DMA 与总线时序</li></ul></article>
-        <article class="content-card glass reveal"><div class="kicker">操作系统</div><h3>进程、内存与文件系统</h3><ul><li>进程状态、调度、同步与死锁</li><li>页表、TLB、驻留集与页面置换</li><li>文件系统、磁盘与 I/O 管理</li><li>把抽象机制映射到硬件执行过程</li></ul></article>
-        <article class="content-card glass reveal"><div class="kicker">计算机网络</div><h3>网络体系与协议</h3><ul><li>从链路层到应用层的封装与转发</li><li>IPv4 / IPv6、路由与地址解析</li><li>TCP 可靠传输、流量与拥塞控制</li><li>DNS、HTTP 与常见应用协议</li></ul></article>
+        <article class="content-card glass reveal"><div class="kicker">数据结构</div><h3>结构决定代价</h3><p>数组支持 O(1) 随机访问且局部性好；链表按位置访问为 O(n)；哈希表平均查找 O(1)，但最坏为 O(n)；平衡搜索树以 O(log n) 保持有序查询。</p></article>
+        <article class="content-card glass reveal"><div class="kicker">计算机组成</div><h3>地址转换与缓存</h3><p>TLB 缓存页表项以减少地址转换开销；Cache 以块为单位利用时间与空间局部性。Cache 缺失会访问下级缓存或主存，页表项无效且页面不在内存时才触发缺页并访问外存。</p></article>
+        <article class="content-card glass reveal"><div class="kicker">操作系统</div><h3>并发与资源约束</h3><p>互斥解决临界区竞争，信号量还能表达资源计数与执行顺序；互斥、占有且等待、不可剥夺和循环等待同时成立时，系统才具备死锁条件。</p></article>
+        <article class="content-card glass reveal"><div class="kicker">计算机网络</div><h3>可靠传输与拥塞控制</h3><p>TCP 用序号、确认和重传保证可靠性，用滑动窗口限制未确认数据；接收窗口约束接收端能力，拥塞窗口约束网络承载能力，发送上限取二者较小值。</p></article>
       </div>
     </div></section>
 
     <section class="section anchor-offset" id="mathematics"><div class="container">
       <div class="section-head reveal"><div><div class="kicker">数学</div><h2>条件、推导与几何直觉</h2></div><p class="section-intro">先确认公式的适用条件和对应的几何对象，再通过推导、区域判断与反例检查结论。</p></div>
       <div class="content-grid">
-        <article class="content-card glass reveal"><div class="kicker">高等数学</div><h3>微积分与空间解析</h3><p>极限、导数、积分、级数与多元微积分；重点训练积分区域、变量替换、曲线曲面积分和空间几何关系。</p></article>
-        <article class="content-card glass reveal"><div class="kicker">线性代数</div><h3>矩阵、秩与二次型</h3><p>矩阵运算、线性方程组、特征值与二次型，并关注每个结论的秩条件和几何意义。</p></article>
-        <article class="content-card glass reveal"><div class="kicker">概率论</div><h3>概率论与数理统计</h3><p>随机变量分布、联合密度、独立性、数字特征和参数估计，强调从区域和积分表达概率关系。</p></article>
-        <article class="content-card glass reveal"><div class="kicker">优化方法</div><h3>凸优化与数值方法</h3><p>把梯度、凸性、对偶与近端算子连接到图像复原问题，为理解 Primal–Dual 和 Plug-and-Play 方法建立基础。</p></article>
+        <article class="content-card glass reveal"><div class="kicker">微积分</div><h3>梯度与局部变化</h3><p>对单位方向 v，方向导数满足 <code>Dᵥf = ∇fᵀv</code>；梯度给出最速上升方向，Hessian 描述局部曲率。优化算法的更新方向和步长都依赖这些局部信息。</p></article>
+        <article class="content-card glass reveal"><div class="kicker">线性代数</div><h3>算子与频域</h3><p>模糊可写成线性算子 H；数据项梯度包含 <code>Hᵀ(Hx-y)</code>。采用周期边界时，循环卷积矩阵可由 DFT 对角化，从而把线性求解转为逐频率除法。</p></article>
+        <article class="content-card glass reveal"><div class="kicker">概率论</div><h3>噪声与数据项</h3><p>独立高斯噪声的负对数似然对应 L2 数据项；拉普拉斯噪声对应 L1 数据项。损失函数应由噪声假设推导，而不是只凭习惯选择。</p></article>
+        <article class="content-card glass reveal"><div class="kicker">优化</div><h3>不可微项与变量分裂</h3><p>近端算子处理 L1、TV 等不可微正则项；ADMM 通过变量分裂交替求解，Primal–Dual 则在原始变量与对偶变量之间迭代，并受步长条件约束。</p></article>
       </div>
     </div></section>
 
     <section class="section anchor-offset" id="image-restoration"><div class="container">
       <div class="section-head reveal"><div><div class="kicker">图像复原</div><h2>模型、先验与实验验证</h2></div><p class="section-intro">先写清清晰图像如何退化为观测图像，再比较优化先验与深度模型如何利用这一退化过程完成重建。</p></div>
       <article class="panel glass reveal"><dl class="detail-list">
-        <div class="detail-row"><dt>图像基础</dt><dd>卷积、频域、点扩散函数、采样、噪声模型与 PSNR / SSIM。</dd></div>
-        <div class="detail-row"><dt>优化先验</dt><dd>总变差、近端映射、变量分裂、ADMM 与 Primal–Dual。</dd></div>
-        <div class="detail-row"><dt>深度模型</dt><dd>CNN、残差网络、UNet、Transformer 与训练稳定性。</dd></div>
-        <div class="detail-row"><dt>实验方法</dt><dd>退化一致性、数据集划分、指标解释、显存优化与可复现记录。</dd></div>
+        <div class="detail-row"><dt>退化模型</dt><dd><code>y = DBx + n</code>：B 表示模糊，D 表示下采样，n 表示噪声；训练与测试必须使用一致的核中心、边界规则和数值范围。</dd></div>
+        <div class="detail-row"><dt>显式先验</dt><dd>TV 约束图像梯度的稀疏性，能抑制噪声并保留主要边缘，但正则过强会造成阶梯效应和纹理损失。</dd></div>
+        <div class="detail-row"><dt>学习先验</dt><dd>CNN 依靠局部感受野与层级特征，Transformer 建模更长距离依赖；两者的结果仍受训练退化分布与测试输入匹配程度限制。</dd></div>
+        <div class="detail-row"><dt>评测</dt><dd>PSNR 衡量像素误差，SSIM 比较局部结构；二者都不能单代替视觉检查，也不能跨不同数据集或退化设置直接比较。</dd></div>
       </dl></article>
     </div></section>
-    <section class="section" id="focus"><div class="container">
-      <div class="section-head reveal"><div><div class="kicker">学习工具</div><h2>专注计时器</h2></div><p class="section-intro">为阅读、推导和休息划分清晰时段；计时仅在当前页面运行，不记录学习数据。</p></div>
-      <article class="focus-tool glass reveal" data-focus-timer>
-        <div class="timer-face">
-          <span class="timer-mode" id="timer-mode">专注</span>
-          <strong class="timer-value" id="timer-value">25:00</strong>
-          <div class="timer-progress" role="progressbar" aria-label="专注计时进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
-        </div>
-        <div class="timer-settings">
-          <div class="timer-presets" aria-label="计时时长"><button class="selected" type="button" data-minutes="25" data-mode="专注">25 分钟</button><button type="button" data-minutes="5" data-mode="短休息">5 分钟</button><button type="button" data-minutes="15" data-mode="长休息">15 分钟</button></div>
-          <div class="timer-actions"><button class="button primary" id="timer-toggle" type="button">开始</button><button class="button" id="timer-reset" type="button">重置</button></div>
-          <p class="timer-status" id="timer-status" aria-live="polite">选择时长后开始计时。</p>
-        </div>
-      </article>
+
+    <section class="section anchor-offset" id="connections"><div class="container">
+      <div class="section-head reveal"><div><div class="kicker">跨主题联系</div><h2>横向连接，纵向理解</h2></div><p class="section-intro">同一问题往往跨越多门课程。下面三条联系用于把概念放回完整执行过程，而不是按章节孤立记忆。</p></div>
+      <article class="panel glass reveal"><dl class="detail-list">
+        <div class="detail-row"><dt>从访问模式到存储层次</dt><dd>数据结构决定访问顺序和局部性；局部性进一步影响 Cache 命中、TLB 与缺页行为，数据规模继续增大时还会涉及文件组织和磁盘 I/O。</dd></div>
+        <div class="detail-row"><dt>从函数调用到设备完成</dt><dd>应用程序的输入输出请求会经过库函数、系统调用、设备无关软件和驱动程序。采用中断驱动方式时，设备以中断报告完成；DMA 可以成块搬运数据，但仍需要处理器配置传送并处理完成通知。</dd></div>
+        <div class="detail-row"><dt>从退化模型到优化求解</dt><dd>卷积把模糊写成线性算子，傅里叶变换简化周期边界下的求解，概率模型描述噪声，梯度、凸性与对偶理论则用于构造和分析复原算法。</dd></div>
+      </dl></article>
     </div></section>
   </main>
 
   <footer class="footer"><div class="container footer-inner"><div>© <span id="year">2026</span> True Path M · Personal Portfolio</div><div class="footer-links"><a href="education.html">方法</a><a href="projects.html">项目</a><a href="guestbook.html">留言板</a></div></div></footer>
-  <script src="js/main.js?v=20260908-5" defer></script>
-  <script src="js/extras.js?v=20260908-5" defer></script>
+  <script src="js/main.js?v=20260908-7" defer></script>
 </body>
 </html>

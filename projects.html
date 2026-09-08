@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#080a0f">
-  <script src="js/theme.js?v=20260908-5"></script>
+  <script src="js/theme.js?v=20260908-7"></script>
   <meta name="description" content="True Path M 的代表项目：DPSR、Primal–Dual 去模糊、UNet 与 Restormer 图像复原实验。">
   <meta property="og:title" content="项目 · True Path M">
   <meta property="og:description" content="DPSR、Primal–Dual、UNet 与 Restormer 的实现过程、实验配置和现有结果。">
@@ -18,7 +18,7 @@
   <link rel="alternate" hreflang="x-default" href="https://1956799.xyz/projects.html">
   <link rel="preload" href="images/project.webp" as="image" type="image/webp">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=20260908-5">
+  <link rel="stylesheet" href="css/style.css?v=20260908-7">
   <title>项目 · True Path M</title>
 </head>
 <body data-page="projects">
@@ -104,9 +104,18 @@
         <article class="content-card glass reveal"><div class="kicker">组合实验</div><h3>优化方法后处理</h3><p>将深度网络输出作为 Primal–Dual 后处理的输入，比较处理前后的锐度、噪声、颜色稳定性和计算时间，判断额外优化步骤是否值得保留。</p></article>
       </div>
     </div></section>
+
+    <section class="section anchor-offset" id="limits"><div class="container">
+      <div class="section-head reveal"><div><div class="kicker">结论与边界</div><h2>已完成什么，尚缺什么</h2></div><p class="section-intro">现有结果用于确认实现是否跑通、问题是否被定位；没有统一测试条件的数据，不作方法优劣结论。</p></div>
+      <div class="content-grid">
+        <article class="content-card glass reveal"><div class="kicker">DPSR</div><h3>流程已跑通，评测仍需扩展</h3><p>训练损失下降、检查点保存和测试图推理说明实现链路能够运行。当前测试噪声设为 0，尚未在统一数据集上覆盖多种模糊核与噪声水平，因此不据此声称优于其他超分辨率方法。</p></article>
+        <article class="content-card glass reveal"><div class="kicker">Primal–Dual</div><h3>基线已建立，参数仍需系统比较</h3><p>Cameraman 上的两组结果验证了迭代与频域求解的基本实现。由于示例只使用高斯模糊且未系统调参，这些数值只能作为当前基线，不能代表算法的最佳性能。</p></article>
+        <article class="content-card glass reveal"><div class="kicker">UNet / Restormer</div><h3>问题已定位，模型比较仍需统一</h3><p>现阶段确认了归一化和显存策略对稳定性的影响，也保存了 Restormer 最佳权重。不同模型尚未在完全一致的退化、数据划分和指标下评测，因此这里只记录工程结论。</p></article>
+      </div>
+    </div></section>
   </main>
 
   <footer class="footer"><div class="container footer-inner"><div>© <span id="year">2026</span> True Path M · Personal Portfolio</div><div class="footer-links"><a href="index.html">首页</a><a href="guestbook.html">留言板</a><a href="https://github.com/yjj195679" target="_blank" rel="noreferrer">GitHub <svg class="icon icon-external" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M11 4h5v5"></path><path d="m16 4-7 7"></path><path d="M14 11v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h4"></path></svg></a></div></div></footer>
-  <script src="js/main.js?v=20260908-5" defer></script>
+  <script src="js/main.js?v=20260908-7" defer></script>
 </body>
 </html>

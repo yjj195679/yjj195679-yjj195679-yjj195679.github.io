@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#080a0f">
-  <script src="../js/theme.js?v=20260908-5"></script>
+  <script src="../js/theme.js?v=20260908-7"></script>
   <meta name="description" content="Selected work in DPSR, Primal–Dual deblurring, UNet, and Restormer.">
   <meta property="og:title" content="Projects · True Path M">
   <meta property="og:description" content="Implementation details, experimental settings, and current results for DPSR, Primal–Dual, UNet, and Restormer.">
@@ -18,7 +18,7 @@
   <link rel="alternate" hreflang="x-default" href="https://1956799.xyz/projects.html">
   <link rel="preload" href="../images/project.webp" as="image" type="image/webp">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=20260908-5">
+  <link rel="stylesheet" href="../css/style.css?v=20260908-7">
   <title>Projects · True Path M</title>
 </head>
 <body data-page="projects">
@@ -104,9 +104,18 @@
         <article class="content-card glass reveal"><div class="kicker">Hybrid</div><h3>Optimization-based post-processing</h3><p>Used deep-network output as the input to Primal–Dual post-processing, then compared sharpness, noise, color stability, and runtime to decide whether the extra optimization step was useful.</p></article>
       </div>
     </div></section>
+
+    <section class="section anchor-offset" id="limits"><div class="container">
+      <div class="section-head reveal"><div><div class="kicker">Conclusions &amp; limits</div><h2>What is complete, what remains</h2></div><p class="section-intro">The current results establish whether an implementation runs and whether a failure has been diagnosed. I do not compare methods without results obtained under the same test conditions.</p></div>
+      <div class="content-grid">
+        <article class="content-card glass reveal"><div class="kicker">DPSR</div><h3>The pipeline runs; evaluation remains limited</h3><p>The falling training loss, saved checkpoint, and test-image inference show that the implementation pipeline runs. Current tests use zero added noise and do not yet cover multiple kernels and noise levels on one benchmark, so they do not establish superiority over other SR methods.</p></article>
+        <article class="content-card glass reveal"><div class="kicker">Primal–Dual</div><h3>A baseline exists; parameters need comparison</h3><p>The two Cameraman results verify the basic iteration and frequency-domain solve. Because they use Gaussian blur and have not been systematically tuned, they are implementation baselines rather than the method’s best performance.</p></article>
+        <article class="content-card glass reveal"><div class="kicker">UNet / Restormer</div><h3>Failures are diagnosed; comparison needs one protocol</h3><p>The experiments confirm how normalization and memory handling affect stability, and the best Restormer checkpoint has been saved. The models have not yet been evaluated with identical degradations, splits, and metrics, so this section reports engineering findings only.</p></article>
+      </div>
+    </div></section>
   </main>
 
   <footer class="footer"><div class="container footer-inner"><div>© <span id="year">2026</span> True Path M · Personal Portfolio</div><div class="footer-links"><a href="index.html">Home</a><a href="guestbook.html">Guestbook</a><a href="https://github.com/yjj195679" target="_blank" rel="noreferrer">GitHub <svg class="icon icon-external" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M11 4h5v5"></path><path d="m16 4-7 7"></path><path d="M14 11v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h4"></path></svg></a></div></div></footer>
-  <script src="../js/main.js?v=20260908-5" defer></script>
+  <script src="../js/main.js?v=20260908-7" defer></script>
 </body>
 </html>

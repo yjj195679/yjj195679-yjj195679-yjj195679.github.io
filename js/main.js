@@ -636,6 +636,12 @@
     });
   };
 
-  if (document.readyState === "complete") alignInitialHash();
-  else window.addEventListener("load", alignInitialHash, { once: true });
+  const stabilizeInitialHash = () => {
+    alignInitialHash();
+    if (document.fonts?.ready) document.fonts.ready.then(alignInitialHash);
+    window.setTimeout(alignInitialHash, 1200);
+  };
+
+  if (document.readyState === "complete") stabilizeInitialHash();
+  else window.addEventListener("load", stabilizeInitialHash, { once: true });
 })();

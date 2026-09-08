@@ -316,11 +316,14 @@
     navLabel.textContent = copy.sectionNav;
     navInner.append(navLabel);
 
-    const links = pageSections.map((section) => {
+    const links = pageSections.map((section, index) => {
       const heading = select("h2, h3", section);
       const link = document.createElement("a");
       link.href = `#${section.id}`;
-      link.innerHTML = `<span aria-hidden="true"></span>${heading ? heading.textContent.trim() : `${index + 1}`}`;
+      const label = heading ? heading.textContent.replace("#", "").trim() : `${copy.sectionNav} ${index + 1}`;
+      const marker = document.createElement("span");
+      marker.setAttribute("aria-hidden", "true");
+      link.append(marker, document.createTextNode(label));
       navInner.append(link);
       return link;
     });

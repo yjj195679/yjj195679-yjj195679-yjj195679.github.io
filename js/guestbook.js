@@ -20,6 +20,7 @@
         success: "Message posted. Thank you.",
         timeout: "The request timed out. Please try again.",
         failed: "The message could not be posted. Please try again.",
+        rateLimited: "The guestbook is receiving several messages. Please try again in one minute.",
         requestFailed: (statusCode) => `Request failed (${statusCode})`,
         adminReply: "Reply from the site owner",
       }
@@ -35,6 +36,7 @@
         success: "留言已发布，谢谢你。",
         timeout: "请求超时，请稍后再试。",
         failed: "提交失败，请稍后再试。",
+        rateLimited: "当前留言较多，请一分钟后再试。",
         requestFailed: (statusCode) => `请求失败（${statusCode}）`,
         adminReply: "站长回复",
       };
@@ -70,7 +72,11 @@
         signal: controller.signal,
         headers: { ...headers, ...(options.headers || {}) },
       });
-      if (!response.ok) throw new Error(copy.requestFailed(response.status));
+      if (!response.ok) {
+        const error = new Error(copy.requestFailed(response.status));
+        error.status = response.status;
+        throw error;
+      }
       return response;
     } finally {
       window.clearTimeout(timer);
@@ -214,7 +220,7 @@
       setStatus(copy.success, "success");
       await loadMessages();
     } catch (error) {
-      const message = error.name === "AbortError" ? copy.timeout : copy.failed;
+      const message = error.name === "AbortError" ? copy.timeout : error.status === 429 ? copy.rateLimited : copy.failed;
       setStatus(message, "error");
     } finally {
       setLoading(false);

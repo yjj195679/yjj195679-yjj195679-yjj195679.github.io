@@ -162,8 +162,16 @@ const routeSession = async (session) => {
     showPanel("login");
     return;
   }
-  if (!isAdmin(session)) {
-    await supabase.auth.signOut();
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+  if (userError || !userData.user) {
+    await supabase.auth.signOut({ scope: "local" });
+    showPanel("login");
+    setStatus("登录状态已失效，请重新登录。", "error");
+    return;
+  }
+  const verifiedSession = { ...session, user: userData.user };
+  if (!isAdmin(verifiedSession)) {
+    await supabase.auth.signOut({ scope: "local" });
     showPanel("login");
     setStatus("当前账户没有管理员权限。", "error");
     return;
@@ -174,7 +182,7 @@ const routeSession = async (session) => {
     return;
   }
   if (data.currentLevel === "aal2") {
-    await enterDashboard(session);
+    await enterDashboard(verifiedSession);
   } else if (data.nextLevel === "aal2") {
     showPanel("mfa");
     document.querySelector("#admin-totp").focus();

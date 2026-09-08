@@ -2501,6 +2501,10 @@ body.reading-mode .quick-card::after {
 }
 
 @media (max-width: 640px) {
+  .site-bg {
+    will-change: auto;
+  }
+
   html:lang(zh-CN) .hero-lead {
     font-size: 1.0625rem;
     line-height: 1.84;
@@ -3052,6 +3056,11 @@ html[data-theme="light"] body.reading-mode .timeline { background-color: rgba(25
   .reveal {
     opacity: 1;
     transform: none;
+  }
+
+  .site-bg {
+    transform: none !important;
+    will-change: auto;
   }
 
   .status-pulse {

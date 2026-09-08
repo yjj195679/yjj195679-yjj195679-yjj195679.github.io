@@ -98,28 +98,42 @@
 
   const menuButton = select("#menu-toggle");
   const nav = select("#site-nav");
-  const closeMenu = () => {
+  const closeMenu = ({ restoreFocus = false } = {}) => {
     if (!menuButton || !nav) return;
     menuButton.setAttribute("aria-expanded", "false");
     menuButton.setAttribute("aria-label", copy.openMenu);
     nav.classList.remove("open");
     document.body.classList.remove("menu-open");
+    if (restoreFocus) menuButton.focus();
   };
 
   if (menuButton && nav) {
-    menuButton.addEventListener("click", () => {
+    menuButton.addEventListener("click", (event) => {
       const isOpen = menuButton.getAttribute("aria-expanded") === "true";
-      menuButton.setAttribute("aria-expanded", String(!isOpen));
-      menuButton.setAttribute("aria-label", isOpen ? copy.openMenu : copy.closeMenu);
-      nav.classList.toggle("open", !isOpen);
-      document.body.classList.toggle("menu-open", !isOpen);
+      if (isOpen) {
+        closeMenu();
+        return;
+      }
+      menuButton.setAttribute("aria-expanded", "true");
+      menuButton.setAttribute("aria-label", copy.closeMenu);
+      nav.classList.add("open");
+      document.body.classList.add("menu-open");
+      if (event.detail === 0) {
+        window.requestAnimationFrame(() => select("a", nav)?.focus());
+      }
     });
     selectAll("a", nav).forEach((link) => link.addEventListener("click", closeMenu));
+    document.addEventListener("pointerdown", (event) => {
+      const isOpen = menuButton.getAttribute("aria-expanded") === "true";
+      if (isOpen && !nav.contains(event.target) && !menuButton.contains(event.target)) closeMenu();
+    });
     window.addEventListener("resize", () => {
       if (window.innerWidth > 980) closeMenu();
     });
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") closeMenu();
+      if (event.key === "Escape" && menuButton.getAttribute("aria-expanded") === "true") {
+        closeMenu({ restoreFocus: true });
+      }
     });
   }
 
@@ -160,6 +174,7 @@
   backToTop.innerHTML = '<svg class="icon icon-arrow-up" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M10 16V5"></path><path d="m6 9 4-4 4 4"></path></svg>';
   document.body.append(backToTop);
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const allowParallax = window.matchMedia("(prefers-reduced-motion: no-preference) and (min-width: 641px)");
 
   backToTop.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: reducedMotion.matches ? "auto" : "smooth" });
@@ -173,9 +188,11 @@
       progress.style.transform = `scaleX(${Math.max(0, Math.min(window.scrollY / maxScroll, 1))})`;
       if (topbar) topbar.classList.toggle("is-scrolled", window.scrollY > 24);
       backToTop.classList.toggle("visible", window.scrollY > Math.max(window.innerHeight * 0.75, 520));
-      if (background && !reducedMotion.matches) {
+      if (background && allowParallax.matches) {
         const offset = Math.min(window.scrollY * 0.028, 22);
         background.style.transform = `translateY(${offset}px) scale(1.025)`;
+      } else if (background) {
+        background.style.removeProperty("transform");
       }
       framePending = false;
     });

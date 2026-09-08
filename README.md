@@ -124,12 +124,13 @@
 ├── js/
 │   ├── main.js                # 导航、时钟、日期、天气、滚动和交互效果
 │   ├── theme.js               # 明暗主题初始化、系统监听、切换菜单与偏好记忆
-│   ├── guestbook.js           # 留言加载、校验、提交和冷却控制
+│   ├── guestbook.js           # 留言加载、校验、提交和客户端冷却提示
 │   ├── extras.js              # 专注计时器与每日哲思
 │   └── admin.js               # 管理员登录、TOTP 验证与留言回复
 ├── images/                    # WebP 背景与栏目图片
 ├── supabase/
-│   └── admin_guestbook.sql    # 回复字段、管理员角色与 MFA/RLS 策略
+│   ├── admin_guestbook.sql    # 回复字段、管理员角色与 MFA/RLS 策略
+│   └── fix_guestbook_insert.sql # 公开提交权限、字段限制与数据库端限流
 ├── favicon.svg                # 网站图标
 ├── CNAME                     # GitHub Pages 自定义域名
 ├── robots.txt                # 搜索引擎抓取规则
@@ -239,6 +240,8 @@ python -m http.server 8000
 
 留言板前端代码位于 `js/guestbook.js`，通过 Supabase REST API 读取和写入 `messages` 表。
 
+数据库配置分为两个脚本：先执行 `supabase/admin_guestbook.sql` 建立字段、管理员权限与 RLS，再执行 `supabase/fix_guestbook_insert.sql` 恢复公开提交，并通过私有触发器统一清理输入和执行每分钟、每日总量限制。触发器函数不向 `anon` 或 `authenticated` 角色开放直接调用。
+
 前端当前使用以下字段：
 
 | 字段 | 建议类型 | 用途 |
@@ -262,7 +265,7 @@ python -m http.server 8000
 - 公开查询只允许读取 `is_visible = true` 的留言；
 - 插入策略只允许写入必要字段，并在数据库端再次限制长度；
 - 管理、审核和删除应在可信后台完成，不应暴露到公开网页；
-- 前端的 30 秒冷却和蜜罐字段只用于降低普通滥用，不能替代数据库策略或服务端限流。
+- 前端的 30 秒冷却和蜜罐字段用于降低普通滥用；真正的总量限制由数据库私有触发器执行。
 
 更换 Supabase 项目时，修改 `js/guestbook.js` 顶部的 `SUPABASE_URL` 和 publishable key，并同步检查表名、字段和 RLS 策略。
 

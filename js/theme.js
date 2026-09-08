@@ -44,30 +44,53 @@
   if (typeof systemTheme.addEventListener === "function") systemTheme.addEventListener("change", handleSystemThemeChange);
   else if (typeof systemTheme.addListener === "function") systemTheme.addListener(handleSystemThemeChange);
 
+  window.addEventListener("storage", (event) => {
+    if (event.key === storageKey) applyTheme(getStoredMode());
+  });
+
   const icons = {
-    system: '<svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="10.5" rx="2"></rect><path d="M7 17h6M10 14v3"></path></svg>',
-    light: '<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.2"></circle><path d="M10 1.7v2M10 16.3v2M1.7 10h2M16.3 10h2M4.1 4.1l1.4 1.4M14.5 14.5l1.4 1.4M15.9 4.1l-1.4 1.4M5.5 14.5l-1.4 1.4"></path></svg>',
-    dark: '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M16.7 12.6A7 7 0 0 1 7.4 3.3 7 7 0 1 0 16.7 12.6Z"></path></svg>',
+    system: '<svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><rect x="2.5" y="3.5" width="15" height="10.5" rx="2"></rect><path d="M7 17h6M10 14v3"></path></svg>',
+    light: '<svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="3.2"></circle><path d="M10 1.7v2M10 16.3v2M1.7 10h2M16.3 10h2M4.1 4.1l1.4 1.4M14.5 14.5l1.4 1.4M15.9 4.1l-1.4 1.4M5.5 14.5l-1.4 1.4"></path></svg>',
+    dark: '<svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M16.7 12.6A7 7 0 0 1 7.4 3.3 7 7 0 1 0 16.7 12.6Z"></path></svg>',
+    home: '<svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="m3 9 7-6 7 6"></path><path d="M5 8.5V17h10V8.5"></path><path d="M8 17v-5h4v5"></path></svg>',
+    back: '<svg class="icon icon-arrow-left" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M16 10H5"></path><path d="m9 6-4 4 4 4"></path></svg>',
+    check: '<svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="m5.5 10.2 3 3 6-6"></path></svg>',
   };
 
   const initControl = () => {
     const isEnglish = root.lang.toLowerCase().startsWith("en");
     const labels = isEnglish
-      ? { title: "Appearance", system: "System", light: "Light", dark: "Dark", follows: "Follows device settings" }
-      : { title: "外观模式", system: "跟随系统", light: "浅色", dark: "深色", follows: "随设备明暗设置自动切换" };
+      ? { title: "Appearance", system: "System", light: "Light", dark: "Dark", follows: "Follows device settings", home: "Back to home" }
+      : { title: "外观模式", system: "跟随系统", light: "浅色", dark: "深色", follows: "随设备明暗设置自动切换", home: "返回主页" };
+
+    applyTheme(root.dataset.themeMode || getStoredMode());
+    document.querySelectorAll(".back-link").forEach((link) => {
+      if (link.querySelector("svg")) return;
+      link.innerHTML = link.innerHTML.replace(/^\s*←\s*/, "");
+      link.insertAdjacentHTML("afterbegin", icons.back);
+    });
     const switcher = document.createElement("div");
     switcher.className = "theme-switcher";
     switcher.innerHTML = `
-      <button class="theme-toggle" type="button" aria-label="${labels.title}" aria-haspopup="true" aria-expanded="false"></button>
-      <div class="theme-menu" role="radiogroup" aria-label="${labels.title}" hidden>
+      <button class="theme-toggle" type="button" aria-label="${labels.title}" aria-haspopup="true" aria-controls="theme-menu" aria-expanded="false"></button>
+      <div class="theme-menu" id="theme-menu" role="radiogroup" aria-label="${labels.title}" hidden>
         <div class="theme-menu-head"><strong>${labels.title}</strong><span>${labels.follows}</span></div>
         ${["system", "light", "dark"].map((mode) => `
           <button type="button" role="radio" data-theme-choice="${mode}" aria-checked="false">
-            <span class="theme-option-icon">${icons[mode]}</span><span>${labels[mode]}</span><span class="theme-check" aria-hidden="true">✓</span>
+            <span class="theme-option-icon">${icons[mode]}</span><span>${labels[mode]}</span><span class="theme-check" aria-hidden="true">${icons.check}</span>
           </button>`).join("")}
       </div>`;
 
     const tools = document.querySelector(".topbar-tools");
+    if (document.body.dataset.page === "admin" && tools && !tools.querySelector(".home-shortcut")) {
+      const home = document.createElement("a");
+      home.className = "home-shortcut";
+      home.href = "index.html";
+      home.setAttribute("aria-label", labels.home);
+      home.title = labels.home;
+      home.innerHTML = icons.home;
+      tools.prepend(home);
+    }
     if (tools) {
       const menuToggle = tools.querySelector(".menu-toggle");
       tools.insertBefore(switcher, menuToggle || null);
@@ -83,8 +106,9 @@
     const syncControl = () => {
       const mode = root.dataset.themeMode || "system";
       toggle.innerHTML = icons[mode];
-      toggle.title = `${labels.title}：${labels[mode]}`;
-      toggle.setAttribute("aria-label", `${labels.title}：${labels[mode]}`);
+      const separator = isEnglish ? ": " : "：";
+      toggle.title = `${labels.title}${separator}${labels[mode]}`;
+      toggle.setAttribute("aria-label", `${labels.title}${separator}${labels[mode]}`);
       choices.forEach((choice) => choice.setAttribute("aria-checked", String(choice.dataset.themeChoice === mode)));
     };
     const closeMenu = (restoreFocus = false) => {
@@ -93,6 +117,7 @@
       if (restoreFocus) toggle.focus();
     };
     const openMenu = () => {
+      window.dispatchEvent(new CustomEvent("ui-overlay-open", { detail: { source: "theme" } }));
       menu.hidden = false;
       toggle.setAttribute("aria-expanded", "true");
       const selected = choices.find((choice) => choice.getAttribute("aria-checked") === "true");
@@ -107,6 +132,7 @@
     }));
     switcher.addEventListener("keydown", (event) => {
       if (event.key === "Escape") closeMenu(true);
+      if (!menu.hidden && event.key === "Tab") closeMenu();
       if (!menu.hidden && ["ArrowDown", "ArrowUp"].includes(event.key)) {
         event.preventDefault();
         const index = choices.indexOf(document.activeElement);
@@ -116,6 +142,9 @@
     });
     document.addEventListener("pointerdown", (event) => {
       if (!menu.hidden && !switcher.contains(event.target)) closeMenu();
+    });
+    window.addEventListener("ui-overlay-open", (event) => {
+      if (event.detail?.source !== "theme") closeMenu();
     });
     window.addEventListener("themechange", syncControl);
     syncControl();

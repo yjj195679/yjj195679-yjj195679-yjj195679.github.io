@@ -124,6 +124,7 @@
       menuButton.setAttribute("aria-label", copy.closeMenu);
       nav.classList.add("open");
       document.body.classList.add("menu-open");
+      window.dispatchEvent(new CustomEvent("ui-overlay-open", { detail: { source: "navigation" } }));
       if (event.detail === 0) {
         window.requestAnimationFrame(() => select("a", nav)?.focus());
       }
@@ -140,17 +141,15 @@
       if (event.key === "Escape" && menuButton.getAttribute("aria-expanded") === "true") {
         closeMenu({ restoreFocus: true });
       } else if (event.key === "Tab" && menuButton.getAttribute("aria-expanded") === "true") {
-        const focusable = [...selectAll("a", nav), menuButton];
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
-        if (event.shiftKey && document.activeElement === first) {
-          event.preventDefault();
-          last.focus();
-        } else if (!event.shiftKey && document.activeElement === last) {
-          event.preventDefault();
-          first.focus();
-        }
+        const focusable = [menuButton, ...selectAll("a", nav)];
+        const current = Math.max(0, focusable.indexOf(document.activeElement));
+        const step = event.shiftKey ? -1 : 1;
+        event.preventDefault();
+        focusable[(current + step + focusable.length) % focusable.length].focus();
       }
+    });
+    window.addEventListener("ui-overlay-open", (event) => {
+      if (event.detail?.source !== "navigation") closeMenu();
     });
   }
 
@@ -401,9 +400,13 @@
     };
     navToggle.addEventListener("click", () => {
       const open = navToggle.getAttribute("aria-expanded") === "true";
+      if (!open) window.dispatchEvent(new CustomEvent("ui-overlay-open", { detail: { source: "section-navigation" } }));
       navInner.classList.toggle("open", !open);
       navToggle.setAttribute("aria-expanded", String(!open));
       navToggle.setAttribute("aria-label", open ? copy.openSectionNav : copy.closeSectionNav);
+    });
+    window.addEventListener("ui-overlay-open", (event) => {
+      if (event.detail?.source !== "section-navigation") closeSectionNav();
     });
     links.forEach((link) => {
       link.addEventListener("click", () => {
@@ -549,7 +552,7 @@
         const arrow = document.createElement("span");
         arrow.className = "command-arrow";
         arrow.setAttribute("aria-hidden", "true");
-        arrow.textContent = "↗";
+        arrow.innerHTML = '<svg class="icon icon-arrow-right" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M5 15 15 5"></path><path d="M8 5h7v7"></path></svg>';
         link.append(text, arrow);
         fragment.append(link);
       });
@@ -558,6 +561,7 @@
     };
 
     const openSearch = () => {
+      window.dispatchEvent(new CustomEvent("ui-overlay-open", { detail: { source: "search" } }));
       lastFocused = document.activeElement;
       overlay.hidden = false;
       document.body.classList.add("command-open");
@@ -605,16 +609,14 @@
         closeSearch();
       } else if (event.key === "Tab" && !overlay.hidden) {
         const focusable = [searchInput, ...selectAll("a", searchResults), closeSearchButton];
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
-        if (event.shiftKey && document.activeElement === first) {
-          event.preventDefault();
-          last.focus();
-        } else if (!event.shiftKey && document.activeElement === last) {
-          event.preventDefault();
-          first.focus();
-        }
+        const current = Math.max(0, focusable.indexOf(document.activeElement));
+        const step = event.shiftKey ? -1 : 1;
+        event.preventDefault();
+        focusable[(current + step + focusable.length) % focusable.length].focus();
       }
+    });
+    window.addEventListener("ui-overlay-open", (event) => {
+      if (event.detail?.source !== "search" && !overlay.hidden) closeSearch();
     });
   }
 

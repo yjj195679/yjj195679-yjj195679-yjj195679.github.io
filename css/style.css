@@ -1275,9 +1275,30 @@ body.command-open {
 }
 
 .content-placeholder {
-  color: var(--accent) !important;
+  display: inline-flex;
+  min-height: 36px;
+  margin-top: 0.35rem;
+  padding: 7px 12px;
+  align-items: center;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  color: var(--text) !important;
+  background: var(--surface-soft);
+  font-size: 0.9375rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
+}
+
+html[data-theme="light"] .content-placeholder {
+  color: #182233 !important;
+  border-color: rgba(24, 40, 63, 0.2);
+  background: rgba(255, 255, 255, 0.78);
+}
+
+html[data-theme="light"] .project-card .content-placeholder {
+  color: #f5f7fb !important;
+  border-color: rgba(255, 255, 255, 0.22);
+  background: rgba(7, 10, 16, 0.5);
 }
 
 .experiment-record {

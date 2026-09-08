@@ -1,121 +1,13 @@
-<!doctype html>
-<html lang="zh-CN">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#080a0f">
-  <script src="js/theme.js?v=20260908-9"></script>
-  <meta name="description" content="True Path M 的代表项目：DPSR、Primal–Dual 去模糊、UNet 与 Restormer 图像复原实验。">
-  <meta property="og:title" content="项目 · True Path M">
-  <meta property="og:description" content="DPSR、Primal–Dual、UNet 与 Restormer 的实现过程、实验配置和现有结果。">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://1956799.xyz/projects.html">
-  <meta property="og:image" content="https://1956799.xyz/images/project.webp">
-  <meta name="twitter:card" content="summary_large_image">
-  <link rel="canonical" href="https://1956799.xyz/projects.html">
-  <link rel="alternate" hreflang="zh-CN" href="https://1956799.xyz/projects.html">
-  <link rel="alternate" hreflang="en" href="https://1956799.xyz/en/projects.html">
-  <link rel="alternate" hreflang="x-default" href="https://1956799.xyz/projects.html">
-  <link rel="preload" href="images/project.webp" as="image" type="image/webp">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=20260908-9">
-  <title>项目 · True Path M</title>
-</head>
-<body data-page="projects">
-  <a class="skip-link" href="#main">跳到主要内容</a><div class="site-bg" aria-hidden="true"></div><div class="noise" aria-hidden="true"></div>
-  <header class="topbar"><div class="container topbar-inner">
-    <a class="brand" href="index.html"><span class="brand-dot" aria-hidden="true"></span><span>TRUE PATH M</span></a>
-    <nav class="nav" id="site-nav" aria-label="主导航"><a href="index.html">首页</a><a href="projects.html" aria-current="page">项目</a><a href="education.html">方法</a><a href="courses.html">学习</a><a href="achievements.html">成果</a><a href="life.html">生活</a><a href="guestbook.html">留言板</a><a href="https://github.com/yjj195679" target="_blank" rel="noreferrer">GitHub</a></nav>
-    <div class="topbar-tools">
-        <div class="language-switch" aria-label="语言切换"><span aria-current="true">中文</span><a href="en/projects.html" lang="en" hreflang="en">EN</a></div><span class="clock" id="clock" aria-label="本地时间"></span><button class="menu-toggle" id="menu-toggle" type="button" aria-label="打开导航" aria-controls="site-nav" aria-expanded="false"><span></span></button></div>
-  </div></header>
-
-  <main id="main">
-    <section class="subhero"><div class="container"><article class="subhero-card glass reveal">
-      <a class="back-link" href="index.html"><svg class="icon icon-arrow-left" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M16 10H5"></path><path d="m9 6-4 4 4 4"></path></svg> 返回首页</a><div class="kicker">项目</div><h1>图像复原项目</h1>
-      <p>这里记录三个图像复原项目，内容包括问题定义、模型与算法、训练配置、显存适配、错误修复和当前结果。</p>
-    </article></div></section>
-
-    <section class="section project-overview" id="overview"><div class="container">
-      <article class="project-summary glass reveal">
-        <div><div class="kicker">研究概览</div><h2>三个项目的范围与结果</h2><p>项目分别研究任意模糊核超分辨率、基于优化的去模糊，以及深度复原模型的训练稳定性。下列数字概括当前完成情况。</p></div>
-        <dl class="summary-metrics">
-          <div class="summary-metric"><dt>3</dt><dd>个图像复原项目</dd></div>
-          <div class="summary-metric"><dt>8 GB</dt><dd>显存约束下完成适配</dd></div>
-          <div class="summary-metric"><dt>≈ 0.033</dt><dd>DPSR 最终训练 L1</dd></div>
-          <div class="summary-metric"><dt>200</dt><dd>DPSR 训练轮次</dd></div>
-        </dl>
-      </article>
-    </div></section>
-
-    <section class="section anchor-offset" id="dpsr"><div class="container">
-      <div class="section-head reveal"><div><div class="kicker">01 · 超分辨率</div><h2>DPSR 复现</h2></div><p class="section-intro">目标是让同一个超分辨率网络处理不同模糊核。PnP-ADMM 将退化模型的数据一致性约束与 SRResNet 先验分开更新。</p></div>
-      <div class="content-grid">
-        <article class="content-card glass reveal"><div class="kicker">实现</div><h3>训练与退化建模</h3><p>以 DIV2K 高分辨率图像为训练数据，在线采样高斯、运动和圆盘模糊核，再卷积并进行 Bicubic 下采样。SRResNet 使用 16 个残差块，以 L1 为损失函数并用 Adam 优化。</p><div class="tags"><span class="tag">DIV2K</span><span class="tag">SRResNet</span><span class="tag">L1 Loss</span><span class="tag">Adam</span></div></article>
-        <article class="content-card glass reveal"><div class="kicker">推理</div><h3>PnP-ADMM 推理</h3><p>推理阶段交替更新数据一致性项、SRResNet 先验和对偶变量。模糊核进入数据一致性步骤，因此更换模糊核时不需要重新训练一套网络。</p><div class="tags"><span class="tag">Data consistency</span><span class="tag">Plug-and-Play</span><span class="tag">Arbitrary kernels</span></div></article>
-        <article class="content-card glass reveal"><div class="kicker">工程适配</div><h3>8 GB 显存适配</h3><p>整图推理超出显存后，改为分块推理并在输出端拼接。同时统一输入归一化、模糊核格式和设备选择，避免训练权重在测试阶段因接口不一致而加载失败。</p></article>
-        <article class="content-card glass reveal"><div class="kicker">结果</div><h3>训练与推理结果</h3><p>已完成训练、检查点保存、测试图推理和结果对比。训练 L1 损失由约 0.089 降至约 0.033，最终保留 sr_epoch_197.pth。</p></article>
-      </div>
-      <article class="experiment-record glass reveal">
-        <div class="experiment-record-head"><div><div class="kicker">实验记录</div><h3>关键训练配置</h3></div><p>以下配置直接影响退化强度、训练成本和最终结果，因此与模型名称一起保留。</p></div>
-        <dl class="experiment-specs">
-          <div class="experiment-spec"><dt>数据</dt><dd>DIV2K_train_HR</dd></div>
-          <div class="experiment-spec"><dt>放大倍率</dt><dd>×4</dd></div>
-          <div class="experiment-spec"><dt>训练裁块</dt><dd>192 × 192</dd></div>
-          <div class="experiment-spec"><dt>Batch / Epoch</dt><dd>16 / 200</dd></div>
-          <div class="experiment-spec"><dt>学习率</dt><dd>1×10<sup>−4</sup>；第 50/100/150 轮减半</dd></div>
-          <div class="experiment-spec"><dt>模型与权重</dt><dd>64 特征、16 残差块；sr_epoch_197.pth</dd></div>
-        </dl>
-      </article>
-    </div></section>
-
-    <section class="section anchor-offset" id="deblur"><div class="container">
-      <div class="section-head reveal"><div><div class="kicker">02 · 优化方法</div><h2>Primal–Dual 去模糊</h2></div><p class="section-intro">该项目用数据保真项约束重建结果与模糊观测的一致性，用总变差抑制噪声并保留边缘，再通过 Chambolle–Pock 算法求解。</p></div>
-      <article class="panel glass reveal">
-        <dl class="detail-list">
-          <div class="detail-row"><dt>模型</dt><dd>目标函数由二次数据保真项和 TV 正则项组成：前者约束重建图像经过模糊后接近观测，后者抑制噪声并保留主要边缘。</dd></div>
-          <div class="detail-row"><dt>对偶更新</dt><dd>先对图像梯度对应的对偶变量做梯度上升，再投影到由正则化参数 λ 决定的范数球内。</dd></div>
-          <div class="detail-row"><dt>原始更新</dt><dd>原始变量更新需要求解一个线性子问题；在周期边界假设下，卷积可在频域对角化，因此可以用 FFT 直接计算。</dd></div>
-          <div class="detail-row"><dt>实验关注</dt><dd>步长条件、模糊核对齐、边界伪影、噪声强度与正则化参数之间的平衡。</dd></div>
-        </dl>
-        <div class="formula-stack" aria-label="Primal–Dual 更新公式">
-          <div class="formula-row"><span>目标函数</span><code>minₓ ½‖Hx − y‖²₂ + λ‖∇x‖₁</code></div>
-          <div class="formula-row"><span>对偶更新</span><code>pᵏ⁺¹ = Π<sub>‖p‖∞≤λ</sub>(pᵏ + σ∇x̄ᵏ)</code></div>
-          <div class="formula-row"><span>原始更新</span><code>xᵏ⁺¹ = (I + τHᵀH)⁻¹(xᵏ − τ∇ᵀpᵏ⁺¹ + τHᵀy)</code></div>
-          <div class="formula-row"><span>松弛步骤</span><code>x̄ᵏ⁺¹ = xᵏ⁺¹ + θ(xᵏ⁺¹ − xᵏ), θ = 1</code></div>
-        </div>
-        <div class="result-table-wrap">
-          <table class="result-table">
-            <caption>Cameraman + 高斯模糊的未调参示例结果</caption>
-            <thead><tr><th scope="col">噪声 σ</th><th scope="col">PSNR</th><th scope="col">SSIM</th><th scope="col">迭代</th></tr></thead>
-            <tbody><tr><td>0.01</td><td>≈ 16.45 dB</td><td>≈ 0.78</td><td>150</td></tr><tr><td>0.03</td><td>≈ 14.32 dB</td><td>≈ 0.72</td><td>220</td></tr></tbody>
-          </table>
-          <p class="result-note">这些数值用于记录当前实现的基线表现，并非经过系统调参后的最佳结果。</p>
-        </div>
-      </article>
-    </div></section>
-
-    <section class="section anchor-offset" id="hybrid"><div class="container">
-      <div class="section-head reveal"><div><div class="kicker">03 · 深度复原</div><h2>UNet / Restormer</h2></div><p class="section-intro">这部分记录 UNet 与 Restormer 的训练和推理，并说明 NaN、偏色与显存溢出的原因及处理方法。</p></div>
-      <div class="content-grid">
-        <article class="content-card glass reveal"><div class="kicker">稳定性</div><h3>NaN 与偏色定位</h3><p>检查数据读取、模型输入和损失函数后，将图像张量统一到相同取值范围，并固定通道顺序，从而消除归一化不一致造成的 NaN 与偏色。</p></article>
-        <article class="content-card glass reveal"><div class="kicker">显存</div><h3>显存与分辨率权衡</h3><p>训练时通过裁块和减小批量降低显存占用；验证时关闭梯度；整图测试时使用分块推理，使模型能在约 8 GB 显存上处理较高分辨率图像。</p></article>
-        <article class="content-card glass reveal"><div class="kicker">模型</div><h3>Restormer 训练</h3><p>使用约 700 对清晰/模糊图像训练 Restormer，在每轮验证后比较指标并保存当前最佳权重 best_restormer.pth。</p></article>
-        <article class="content-card glass reveal"><div class="kicker">组合实验</div><h3>优化方法后处理</h3><p>将深度网络输出作为 Primal–Dual 后处理的输入，比较处理前后的锐度、噪声、颜色稳定性和计算时间，判断额外优化步骤是否值得保留。</p></article>
-      </div>
-    </div></section>
-
-    <section class="section anchor-offset" id="limits"><div class="container">
-      <div class="section-head reveal"><div><div class="kicker">结论与边界</div><h2>已完成什么，尚缺什么</h2></div><p class="section-intro">现有结果用于确认实现是否跑通、问题是否被定位；没有统一测试条件的数据，不作方法优劣结论。</p></div>
-      <div class="content-grid">
-        <article class="content-card glass reveal"><div class="kicker">DPSR</div><h3>流程已跑通，评测仍需扩展</h3><p>训练损失下降、检查点保存和测试图推理说明实现链路能够运行。当前测试噪声设为 0，尚未在统一数据集上覆盖多种模糊核与噪声水平，因此不据此声称优于其他超分辨率方法。</p></article>
-        <article class="content-card glass reveal"><div class="kicker">Primal–Dual</div><h3>基线已建立，参数仍需系统比较</h3><p>Cameraman 上的两组结果验证了迭代与频域求解的基本实现。由于示例只使用高斯模糊且未系统调参，这些数值只能作为当前基线，不能代表算法的最佳性能。</p></article>
-        <article class="content-card glass reveal"><div class="kicker">UNet / Restormer</div><h3>问题已定位，模型比较仍需统一</h3><p>现阶段确认了归一化和显存策略对稳定性的影响，也保存了 Restormer 最佳权重。不同模型尚未在完全一致的退化、数据划分和指标下评测，因此这里只记录工程结论。</p></article>
-      </div>
-    </div></section>
-  </main>
-
-  <footer class="footer"><div class="container footer-inner"><div>© <span id="year">2026</span> True Path M · Personal Portfolio</div><div class="footer-links"><a href="index.html">首页</a><a href="guestbook.html">留言板</a><a href="https://github.com/yjj195679" target="_blank" rel="noreferrer">GitHub <svg class="icon icon-external" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M11 4h5v5"></path><path d="m16 4-7 7"></path><path d="M14 11v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h4"></path></svg></a></div></div></footer>
-  <script src="js/main.js?v=20260908-9" defer></script>
-</body>
-</html>
+<!doctype html><html lang="zh-CN"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080a0f"><script src="js/theme.js?v=20260908-10"></script>
+<meta name="description" content="True Path M 的项目内容框架。"><meta property="og:title" content="项目 · True Path M"><meta property="og:description" content="项目的背景、过程、结果与复盘框架。"><meta property="og:type" content="website"><meta property="og:url" content="https://1956799.xyz/projects.html"><meta property="og:image" content="https://1956799.xyz/images/project.webp"><meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://1956799.xyz/projects.html"><link rel="alternate" hreflang="zh-CN" href="https://1956799.xyz/projects.html"><link rel="alternate" hreflang="en" href="https://1956799.xyz/en/projects.html"><link rel="alternate" hreflang="x-default" href="https://1956799.xyz/projects.html"><link rel="preload" href="images/project.webp" as="image" type="image/webp"><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="css/style.css?v=20260908-10"><title>项目 · True Path M</title></head>
+<body data-page="projects"><a class="skip-link" href="#main">跳到主要内容</a><div class="site-bg" aria-hidden="true"></div><div class="noise" aria-hidden="true"></div>
+<header class="topbar"><div class="container topbar-inner"><a class="brand" href="index.html"><span class="brand-dot" aria-hidden="true"></span><span>TRUE PATH M</span></a><nav class="nav" id="site-nav" aria-label="主导航"><a href="index.html">首页</a><a href="projects.html" aria-current="page">项目</a><a href="education.html">方法</a><a href="courses.html">学习</a><a href="achievements.html">成果</a><a href="life.html">生活</a><a href="guestbook.html">留言板</a><a href="https://github.com/yjj195679" target="_blank" rel="noreferrer">GitHub</a></nav><div class="topbar-tools"><div class="language-switch"><span aria-current="true">中文</span><a href="en/projects.html">EN</a></div><span class="clock" id="clock"></span><button class="menu-toggle" id="menu-toggle" type="button" aria-label="打开导航" aria-controls="site-nav" aria-expanded="false"><span></span></button></div></div></header>
+<main id="main">
+<section class="subhero"><div class="container"><article class="subhero-card glass reveal"><a class="back-link" href="index.html">← 返回首页</a><div class="kicker">项目</div><h1>问题、过程、结果</h1><p>只保留项目组织框架，具体内容等待补充。</p></article></div></section>
+<section class="section project-overview" id="overview"><div class="container"><article class="project-summary glass reveal"><div><div class="kicker">总览</div><h2>项目目录</h2><p class="content-placeholder">内容待补充</p></div><dl class="summary-metrics"><div class="summary-metric"><dt>01</dt><dd>背景</dd></div><div class="summary-metric"><dt>02</dt><dd>方法</dd></div><div class="summary-metric"><dt>03</dt><dd>结果</dd></div><div class="summary-metric"><dt>04</dt><dd>复盘</dd></div></dl></article></div></section>
+<section class="section anchor-offset" id="project-1"><div class="container"><div class="section-head reveal"><div><div class="kicker">项目一</div><h2>项目标题待补充</h2></div><p class="section-intro">内容待补充</p></div><div class="content-grid"><article class="content-card glass reveal"><div class="kicker">背景</div><h3>问题与目标</h3><p class="content-placeholder">内容待补充</p></article><article class="content-card glass reveal"><div class="kicker">过程</div><h3>方法与实现</h3><p class="content-placeholder">内容待补充</p></article><article class="content-card glass reveal"><div class="kicker">结果</div><h3>结果与证据</h3><p class="content-placeholder">内容待补充</p></article><article class="content-card glass reveal"><div class="kicker">复盘</div><h3>限制与改进</h3><p class="content-placeholder">内容待补充</p></article></div></div></section>
+<section class="section anchor-offset" id="project-2"><div class="container"><div class="section-head reveal"><div><div class="kicker">项目二</div><h2>项目标题待补充</h2></div><p class="section-intro">内容待补充</p></div><article class="panel glass reveal"><p class="content-placeholder">内容待补充</p></article></div></section>
+<section class="section anchor-offset" id="project-3"><div class="container"><div class="section-head reveal"><div><div class="kicker">项目三</div><h2>项目标题待补充</h2></div><p class="section-intro">内容待补充</p></div><article class="panel glass reveal"><p class="content-placeholder">内容待补充</p></article></div></section>
+</main><footer class="footer"><div class="container footer-inner"><div>© <span id="year">2026</span> True Path M · Personal Website</div><div class="footer-links"><a href="index.html">首页</a><a href="education.html">方法</a><a href="guestbook.html">留言板</a></div></div></footer><script src="js/main.js?v=20260908-10" defer></script></body></html>

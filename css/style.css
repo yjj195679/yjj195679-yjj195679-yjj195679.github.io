@@ -1274,6 +1274,12 @@ body.command-open {
   line-height: 1.78;
 }
 
+.content-placeholder {
+  color: var(--accent) !important;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
 .experiment-record {
   margin-top: 16px;
   padding: clamp(24px, 4vw, 32px);

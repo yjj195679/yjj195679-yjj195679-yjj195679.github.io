@@ -88,8 +88,8 @@
 | --- | --- | --- | --- |
 | 首页 | `index.html` | `en/index.html` | 研究方向总览、代表项目和栏目入口 |
 | 项目 | `projects.html` | `en/projects.html` | 模型实现、实验过程和可核对证据 |
-| 方法 | `education.html` | `en/education.html` | 学习方法、实践路径和验证闭环 |
-| 学习 | `courses.html` | `en/courses.html` | 408、数学与图像复原的知识结构 |
+| 方法 | `education.html` | `en/education.html` | 实际使用的学习顺序、推导方法和错误定位步骤 |
+| 学习 | `courses.html` | `en/courses.html` | 408、数学与图像复原的学习内容和知识联系 |
 | 成果 | `achievements.html` | `en/achievements.html` | 只记录已经完成的研究、实验和文档输出 |
 | 生活 | `life.html` | `en/life.html` | 当前状态与中英双语每日哲思 |
 | 留言板 | `guestbook.html` | `en/guestbook.html` | 公开交流与访客反馈 |

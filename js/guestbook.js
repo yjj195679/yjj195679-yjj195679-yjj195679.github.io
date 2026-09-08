@@ -23,6 +23,8 @@
         rateLimited: "The guestbook is receiving several messages. Please try again in one minute.",
         requestFailed: (statusCode) => `Request failed (${statusCode})`,
         adminReply: "Reply from the site owner",
+        offline: "You appear to be offline. Reconnect and try again.",
+        charactersRemaining: (remaining) => `${remaining} characters remaining`,
       }
     : {
         submit: "发布留言",
@@ -39,6 +41,8 @@
         rateLimited: "当前留言较多，请一分钟后再试。",
         requestFailed: (statusCode) => `请求失败（${statusCode}）`,
         adminReply: "站长回复",
+        offline: "当前似乎已离线，请恢复网络后重试。",
+        charactersRemaining: (remaining) => `还可输入 ${remaining} 个字符`,
       };
 
   const form = document.querySelector("#guestbook-form");
@@ -60,6 +64,41 @@
   const setLoading = (loading) => {
     submitButton.disabled = loading;
     submitButton.textContent = loading ? copy.submitting : copy.submit;
+  };
+
+  const fieldsWithLimits = [...form.querySelectorAll("input[maxlength], textarea[maxlength]")];
+  const updateCounters = () => {
+    fieldsWithLimits.forEach((field) => {
+      const counter = document.querySelector(`#${field.id}-counter`);
+      if (!counter) return;
+      const remaining = Number(field.maxLength) - field.value.length;
+      counter.textContent = copy.charactersRemaining(remaining);
+      counter.dataset.state = remaining < Math.min(50, Math.ceil(Number(field.maxLength) * 0.1)) ? "near-limit" : "";
+    });
+  };
+  fieldsWithLimits.forEach((field) => {
+    const help = field.closest(".field")?.querySelector(".field-help");
+    if (!help) return;
+    const counter = document.createElement("span");
+    counter.className = "field-counter";
+    counter.id = `${field.id}-counter`;
+    help.id = `${field.id}-help`;
+    help.append(counter);
+    field.setAttribute("aria-describedby", help.id);
+    field.addEventListener("input", updateCounters);
+  });
+  updateCounters();
+
+  const renderLoading = () => {
+    const fragment = document.createDocumentFragment();
+    for (let index = 0; index < 3; index += 1) {
+      const skeleton = document.createElement("div");
+      skeleton.className = "message-card message-skeleton";
+      skeleton.setAttribute("aria-hidden", "true");
+      skeleton.innerHTML = '<span></span><span></span><span></span>';
+      fragment.append(skeleton);
+    }
+    list.replaceChildren(fragment);
   };
 
   const request = async (url, options = {}) => {
@@ -152,6 +191,7 @@
 
   const loadMessages = async () => {
     list.setAttribute("aria-busy", "true");
+    renderLoading();
     try {
       const query = "?select=name,content,created_at,reply,replied_at&is_visible=eq.true&order=created_at.desc&limit=30";
       const response = await request(`${API_URL}${query}`);
@@ -159,7 +199,7 @@
     } catch (error) {
       const empty = document.createElement("div");
       empty.className = "empty-state";
-      empty.textContent = copy.loadFailed;
+      empty.textContent = navigator.onLine ? copy.loadFailed : copy.offline;
       list.replaceChildren(empty);
     } finally {
       list.removeAttribute("aria-busy");
@@ -217,10 +257,17 @@
       });
       rememberSubmit();
       form.reset();
+      updateCounters();
       setStatus(copy.success, "success");
       await loadMessages();
     } catch (error) {
-      const message = error.name === "AbortError" ? copy.timeout : error.status === 429 ? copy.rateLimited : copy.failed;
+      const message = !navigator.onLine
+        ? copy.offline
+        : error.name === "AbortError"
+          ? copy.timeout
+          : error.status === 429
+            ? copy.rateLimited
+            : copy.failed;
       setStatus(message, "error");
     } finally {
       setLoading(false);

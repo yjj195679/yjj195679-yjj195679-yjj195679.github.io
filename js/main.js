@@ -13,6 +13,7 @@
         locating: "Locating…",
         awaitingPermission: "Waiting for location permission",
         weatherUnavailable: "Weather service is temporarily unavailable.",
+        weatherTimeout: "Weather request timed out. Please try again.",
         noWeatherData: "No weather data was returned.",
         weatherUpdating: "Weather updating",
         relocate: "Update location",
@@ -20,6 +21,8 @@
         denied: "Location permission was not granted.",
         retry: "Try again",
         sectionNav: "On this page",
+        openSectionNav: "Open section navigation",
+        closeSectionNav: "Close section navigation",
         backToTop: "Back to top",
         search: "Quick navigation",
         searchPlaceholder: "Search pages and projects…",
@@ -44,6 +47,7 @@
         locating: "正在获取…",
         awaitingPermission: "等待浏览器定位授权",
         weatherUnavailable: "天气服务暂时不可用",
+        weatherTimeout: "天气请求超时，请再次尝试",
         noWeatherData: "未获取到天气数据",
         weatherUpdating: "天气更新中",
         relocate: "重新定位",
@@ -51,6 +55,8 @@
         denied: "你没有授权定位",
         retry: "再次尝试",
         sectionNav: "本页导航",
+        openSectionNav: "展开本页导航",
+        closeSectionNav: "收起本页导航",
         backToTop: "返回顶部",
         search: "快捷导航",
         searchPlaceholder: "搜索页面、项目或知识方向…",
@@ -128,11 +134,22 @@
       if (isOpen && !nav.contains(event.target) && !menuButton.contains(event.target)) closeMenu();
     });
     window.addEventListener("resize", () => {
-      if (window.innerWidth > 980) closeMenu();
+      if (window.innerWidth > 1199) closeMenu();
     });
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape" && menuButton.getAttribute("aria-expanded") === "true") {
         closeMenu({ restoreFocus: true });
+      } else if (event.key === "Tab" && menuButton.getAttribute("aria-expanded") === "true") {
+        const focusable = [...selectAll("a", nav), menuButton];
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
       }
     });
   }
@@ -221,12 +238,11 @@
   const page = document.body.dataset.page || "page";
   const pageSections = main
     ? [...main.children].filter(
-        (element) => element.classList.contains("section") && !select(".contact-card", element),
+        (element) => element.classList.contains("section") && element.id && !select(".contact-card", element),
       )
     : [];
 
-  pageSections.forEach((section, index) => {
-    if (!section.id) section.id = `${page}-section-${index + 1}`;
+  pageSections.forEach((section) => {
     const heading = select(".section-head h2, .section-head h3", section);
     if (!heading || select(".section-anchor", heading)) return;
     const anchor = document.createElement("a");
@@ -333,6 +349,23 @@
     navLabel.textContent = copy.sectionNav;
     navInner.append(navLabel);
 
+    const navToggle = document.createElement("button");
+    navToggle.className = "section-nav-toggle";
+    navToggle.type = "button";
+    navToggle.setAttribute("aria-expanded", "false");
+    navToggle.setAttribute("aria-label", copy.openSectionNav);
+    const navToggleLabel = document.createElement("span");
+    const navToggleIcon = document.createElement("span");
+    navToggleIcon.className = "section-nav-chevron";
+    navToggleIcon.setAttribute("aria-hidden", "true");
+    navToggle.append(navToggleLabel, navToggleIcon);
+    navInner.append(navToggle);
+
+    const navLinks = document.createElement("div");
+    navLinks.className = "section-nav-links";
+    navLinks.id = `section-nav-links-${page}`;
+    navToggle.setAttribute("aria-controls", navLinks.id);
+
     const links = pageSections.map((section, index) => {
       const heading = select("h2, h3", section);
       const link = document.createElement("a");
@@ -341,20 +374,48 @@
       const marker = document.createElement("span");
       marker.setAttribute("aria-hidden", "true");
       link.append(marker, document.createTextNode(label));
-      navInner.append(link);
+      navLinks.append(link);
       return link;
     });
+    navInner.append(navLinks);
 
     sectionNav.append(navInner);
     main.prepend(sectionNav);
 
     const setActiveSection = (id) => {
       links.forEach((link) => {
-        if (link.hash === `#${id}`) link.setAttribute("aria-current", "location");
-        else link.removeAttribute("aria-current");
+        const isActive = link.hash === `#${id}`;
+        if (isActive) {
+          link.setAttribute("aria-current", "location");
+          navToggleLabel.textContent = link.textContent.trim();
+          link.scrollIntoView({ block: "nearest", inline: "nearest" });
+        } else link.removeAttribute("aria-current");
       });
     };
     setActiveSection(pageSections[0].id);
+
+    const closeSectionNav = () => {
+      navInner.classList.remove("open");
+      navToggle.setAttribute("aria-expanded", "false");
+      navToggle.setAttribute("aria-label", copy.openSectionNav);
+    };
+    navToggle.addEventListener("click", () => {
+      const open = navToggle.getAttribute("aria-expanded") === "true";
+      navInner.classList.toggle("open", !open);
+      navToggle.setAttribute("aria-expanded", String(!open));
+      navToggle.setAttribute("aria-label", open ? copy.openSectionNav : copy.closeSectionNav);
+    });
+    links.forEach((link) => {
+      link.addEventListener("click", () => {
+        closeSectionNav();
+        const target = document.getElementById(decodeURIComponent(link.hash.slice(1)));
+        const heading = target && select("h2, h3", target);
+        if (heading) {
+          heading.tabIndex = -1;
+          window.setTimeout(() => heading.focus({ preventScroll: true }), 420);
+        }
+      });
+    });
 
     if ("IntersectionObserver" in window) {
       const sectionObserver = new IntersectionObserver(
@@ -369,6 +430,20 @@
       pageSections.forEach((section) => sectionObserver.observe(section));
     }
   }
+
+  const prefetched = new Set();
+  const prefetchPage = (link) => {
+    if (!link || link.origin !== window.location.origin || link.pathname === window.location.pathname) return;
+    const href = link.href.split("#")[0];
+    if (!href || prefetched.has(href)) return;
+    const hint = document.createElement("link");
+    hint.rel = "prefetch";
+    hint.href = href;
+    document.head.append(hint);
+    prefetched.add(href);
+  };
+  document.addEventListener("pointerover", (event) => prefetchPage(event.target.closest?.("a")), { passive: true });
+  document.addEventListener("focusin", (event) => prefetchPage(event.target.closest?.("a")));
 
   const topbarTools = select(".topbar-tools");
   if (topbarTools) {
@@ -569,6 +644,26 @@
     if (weatherMeta) weatherMeta.textContent = meta;
   };
 
+  const weatherCacheKey = `true-path-weather-${locale}`;
+  const restoreWeather = () => {
+    try {
+      const cached = JSON.parse(window.sessionStorage.getItem(weatherCacheKey) || "null");
+      if (!cached || Date.now() - cached.savedAt > 15 * 60 * 1000) return;
+      setWeather(cached.value, cached.meta);
+      if (weatherButton) weatherButton.textContent = copy.relocate;
+    } catch {
+      // Weather still works when storage is unavailable.
+    }
+  };
+
+  const cacheWeather = (value, meta) => {
+    try {
+      window.sessionStorage.setItem(weatherCacheKey, JSON.stringify({ value, meta, savedAt: Date.now() }));
+    } catch {
+      // Weather still works when storage is unavailable.
+    }
+  };
+
   const requestPosition = () =>
     new Promise((resolve, reject) => {
       if (!("geolocation" in navigator)) {
@@ -598,25 +693,38 @@
           "temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m",
         );
         endpoint.searchParams.set("timezone", "auto");
-        const response = await fetch(endpoint, { headers: { Accept: "application/json" } });
+        const controller = new AbortController();
+        const timeout = window.setTimeout(() => controller.abort(), 10_000);
+        let response;
+        try {
+          response = await fetch(endpoint, { headers: { Accept: "application/json" }, signal: controller.signal });
+        } finally {
+          window.clearTimeout(timeout);
+        }
         if (!response.ok) throw new Error(copy.weatherUnavailable);
         const data = await response.json();
         const current = data.current;
         if (!current) throw new Error(copy.noWeatherData);
         const description = weatherDescriptions[current.weather_code] || copy.weatherUpdating;
-        setWeather(
-          `${Math.round(current.temperature_2m)}°C · ${description}`,
-          copy.weatherDetails(current),
-        );
+        const value = `${Math.round(current.temperature_2m)}°C · ${description}`;
+        const meta = copy.weatherDetails(current);
+        setWeather(value, meta);
+        cacheWeather(value, meta);
         weatherButton.textContent = copy.relocate;
       } catch (error) {
         const denied = error && error.code === 1;
-        setWeather(copy.unavailable, denied ? copy.denied : error.message || copy.weatherUnavailable);
+        const message = denied
+          ? copy.denied
+          : error?.name === "AbortError"
+            ? copy.weatherTimeout
+            : error.message || copy.weatherUnavailable;
+        setWeather(copy.unavailable, message);
         weatherButton.textContent = copy.retry;
       } finally {
         weatherButton.disabled = false;
       }
     });
+    restoreWeather();
   }
 
   const alignInitialHash = () => {

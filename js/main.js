@@ -379,7 +379,9 @@
     navInner.append(navLinks);
 
     sectionNav.append(navInner);
-    main.prepend(sectionNav);
+    const subhero = select(".subhero", main);
+    if (subhero) subhero.insertAdjacentElement("afterend", sectionNav);
+    else main.prepend(sectionNav);
 
     const setActiveSection = (id) => {
       links.forEach((link) => {

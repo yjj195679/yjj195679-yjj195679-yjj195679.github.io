@@ -2,13 +2,13 @@
 
 [中文网站](https://1956799.xyz/) · [English](https://1956799.xyz/en/) · [GitHub](https://github.com/yjj195679)
 
-这是一个使用原生 HTML、CSS 和 JavaScript 构建的双语多页面网站，直接托管于 GitHub Pages。当前阶段以介绍网站功能、结构与实现方式为主；个人经历、项目、笔记和成果只保留统一的可扩展框架，等待真实内容确认后再填写。
+这是一个使用原生 HTML、CSS 和 JavaScript 构建的双语个人网站，直接托管于 GitHub Pages。当前版本保留完整的网站结构和交互，只提供内容框架，具体经历、项目、笔记和成果将在确认后逐步填写。
 
 ## 页面结构
 
 | 栏目 | 中文页面 | 英文页面 | 内容结构 |
 | --- | --- | --- | --- |
-| 首页 | `index.html` | `en/index.html` | 设计目标、核心功能、实现方式、天气演示与入口 |
+| 首页 | `index.html` | `en/index.html` | 总览、简介、项目入口、历程、天气、联系 |
 | 项目 | `projects.html` | `en/projects.html` | 背景、过程、结果、复盘 |
 | 方法 | `education.html` | `en/education.html` | 定义、推演、验证、复盘 |
 | 学习 | `courses.html` | `en/courses.html` | 学习方向、专题与知识联系 |

@@ -454,9 +454,7 @@
   if (topbarTools) {
     const searchItems = isEnglish
       ? [
-          ["Home", "Website features and implementation", "index.html", "features implementation architecture"],
-          ["Core features", "Navigation, reading, and interaction", "index.html#capabilities", "bilingual search theme responsive guestbook weather"],
-          ["Implementation", "HTML, CSS, JavaScript, and services", "index.html#implementation", "semantic progressive enhancement GitHub Pages Supabase"],
+          ["Home", "Identity and direction", "index.html", "profile about"],
           ["Projects", "Question, process, and result", "projects.html", "portfolio work"],
           ["Project 01", "Reserved project space", "projects.html#project-1", "context method result review"],
           ["Project 02", "Reserved project space", "projects.html#project-2", "project"],
@@ -469,9 +467,7 @@
           ["GitHub", "Code and repositories", "https://github.com/yjj195679", "source code"],
         ]
       : [
-          ["首页", "网站功能与实现", "index.html", "功能 实现 架构"],
-          ["核心功能", "导航、阅读与互动", "index.html#capabilities", "双语 搜索 主题 响应式 留言 天气"],
-          ["实现方式", "HTML、CSS、JavaScript 与外部服务", "index.html#implementation", "语义 渐进增强 GitHub Pages Supabase"],
+          ["首页", "认识与方向", "index.html", "个人 关于"],
           ["项目", "问题、过程与结果", "projects.html", "实践 作品"],
           ["项目一", "预留项目位置", "projects.html#project-1", "背景 方法 结果 复盘"],
           ["项目二", "预留项目位置", "projects.html#project-2", "项目"],

@@ -1,12 +1,4 @@
 @font-face {
-  font-family: "TPM Sans";
-  src: url("../fonts/tpm-sans.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: swap;
-}
-
-@font-face {
   font-family: "TPM Serif";
   src: url("../fonts/tpm-serif.woff2") format("woff2");
   font-style: normal;
@@ -35,10 +27,11 @@
   --page-gutter: 32px;
   --grid-gap: 24px;
   --section-space: 112px;
-  --font-ui: "TPM Sans", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
-  --font-display: "TPM Serif", "Noto Serif SC", "Songti SC", STSong, SimSun, serif;
-  --font-latin: var(--font-ui);
-  --font-cjk: var(--font-ui);
+  --font-site: "TPM Serif", "Noto Serif SC", "Songti SC", STSong, SimSun, "Times New Roman", Times, serif;
+  --font-ui: var(--font-site);
+  --font-display: var(--font-site);
+  --font-latin: var(--font-site);
+  --font-cjk: var(--font-site);
   --type-meta: 0.8125rem;
   --type-ui: 0.875rem;
   --type-body: 1rem;
@@ -1392,7 +1385,7 @@ html[data-theme="light"] .project-card .content-placeholder {
 
 .formula-row code {
   color: #e8eef8;
-  font-family: "Times New Roman", Times, serif;
+  font-family: var(--font-site);
   font-size: 1rem;
   white-space: normal;
   overflow-wrap: anywhere;
@@ -1715,7 +1708,7 @@ html[data-theme="light"] .project-card .content-placeholder {
 .quote-mark {
   align-self: start;
   color: rgba(185, 213, 255, 0.5);
-  font-family: Georgia, serif;
+  font-family: var(--font-site);
   font-size: clamp(4rem, 9vw, 7rem);
   line-height: 0.82;
 }
@@ -2899,7 +2892,7 @@ html[data-theme="light"] body.reading-mode .timeline { background-color: rgba(25
   }
 }
 
-/* Visual system v14: self-hosted bilingual typography with restrained grids */
+/* Visual system v15: one self-hosted bilingual typeface across every component */
 :root {
   --max-width: 1180px;
   --page-gutter: clamp(24px, 4vw, 40px);
@@ -2907,11 +2900,12 @@ html[data-theme="light"] body.reading-mode .timeline { background-color: rgba(25
   --section-space: 92px;
   --radius-lg: 22px;
   --radius-md: 16px;
-  --font-ui: "TPM Sans", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
-  --font-display: "TPM Serif", "Noto Serif SC", "Songti SC", STSong, SimSun, serif;
-  --font-sans: var(--font-ui);
-  --font-latin: var(--font-ui);
-  --font-cjk: var(--font-ui);
+  --font-site: "TPM Serif", "Noto Serif SC", "Songti SC", STSong, SimSun, "Times New Roman", Times, serif;
+  --font-ui: var(--font-site);
+  --font-display: var(--font-site);
+  --font-sans: var(--font-site);
+  --font-latin: var(--font-site);
+  --font-cjk: var(--font-site);
   --type-meta: 0.8125rem;
   --type-ui: 0.875rem;
   --type-body: 1rem;

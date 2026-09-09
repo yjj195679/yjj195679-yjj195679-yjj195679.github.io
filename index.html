@@ -4,34 +4,83 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#080a0f">
-  <script src="js/theme.js?v=20260909-15"></script>
-  <meta name="description" content="True Path M 的个人网站，用于整理项目、方法、学习、成果与生活记录。">
-  <meta property="og:title" content="True Path M · 个人网站">
-  <meta property="og:description" content="项目、方法、学习、成果与生活记录。">
-  <meta property="og:type" content="website"><meta property="og:url" content="https://1956799.xyz/"><meta property="og:image" content="https://1956799.xyz/images/hero.webp"><meta name="twitter:card" content="summary_large_image">
-  <link rel="canonical" href="https://1956799.xyz/"><link rel="alternate" hreflang="zh-CN" href="https://1956799.xyz/"><link rel="alternate" hreflang="en" href="https://1956799.xyz/en/"><link rel="alternate" hreflang="x-default" href="https://1956799.xyz/"><link rel="preload" href="images/hero.webp" as="image" type="image/webp"><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="preload" href="/fonts/tpm-serif.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="css/style.css?v=20260909-15">
-  <title>True Path M · 个人网站</title>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfilePage","name":"True Path M · 个人网站","url":"https://1956799.xyz/","inLanguage":["zh-CN","en"],"mainEntity":{"@type":"Person","name":"True Path M","url":"https://1956799.xyz/","sameAs":["https://github.com/yjj195679"]}}</script>
+  <script src="js/theme.js?v=20260909-16"></script>
+  <meta name="description" content="True Path M 的网站功能与实现说明：多页面结构、双语导航、主题切换、响应式布局、站内检索与互动服务。">
+  <meta property="og:title" content="True Path M · 网站功能与实现">
+  <meta property="og:description" content="一个低依赖、可扩展的双语个人网站系统。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://1956799.xyz/">
+  <meta property="og:image" content="https://1956799.xyz/images/hero.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://1956799.xyz/">
+  <link rel="alternate" hreflang="zh-CN" href="https://1956799.xyz/">
+  <link rel="alternate" hreflang="en" href="https://1956799.xyz/en/">
+  <link rel="alternate" hreflang="x-default" href="https://1956799.xyz/">
+  <link rel="preload" href="images/hero.webp" as="image" type="image/webp">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/fonts/tpm-serif.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css?v=20260909-16">
+  <title>True Path M · 网站功能与实现</title>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"True Path M","url":"https://1956799.xyz/","inLanguage":["zh-CN","en"],"author":{"@type":"Person","name":"True Path M","url":"https://1956799.xyz/","sameAs":["https://github.com/yjj195679"]}}</script>
 </head>
 <body data-page="home">
-  <a class="skip-link" href="#main">跳到主要内容</a><div class="site-bg" aria-hidden="true"></div><div class="noise" aria-hidden="true"></div>
-  <header class="topbar"><div class="container topbar-inner"><a class="brand" href="index.html" aria-label="True Path M 首页"><span class="brand-dot" aria-hidden="true"></span><span>TRUE PATH M</span></a><nav class="nav" id="site-nav" aria-label="主导航"><a href="index.html" aria-current="page">首页</a><a href="projects.html">项目</a><a href="education.html">方法</a><a href="courses.html">学习</a><a href="achievements.html">成果</a><a href="life.html">生活</a><a href="guestbook.html">留言板</a><a href="https://github.com/yjj195679" target="_blank" rel="noopener noreferrer">GitHub</a></nav><div class="topbar-tools"><div class="language-switch" aria-label="语言切换"><span aria-current="true">中文</span><a href="en/index.html" lang="en" hreflang="en">EN</a></div><span class="clock" id="clock" aria-label="本地时间"></span><button class="menu-toggle" id="menu-toggle" type="button" aria-label="打开导航" aria-controls="site-nav" aria-expanded="false"><span></span></button></div></div></header>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <div class="site-bg" aria-hidden="true"></div><div class="noise" aria-hidden="true"></div>
+  <header class="topbar"><div class="container topbar-inner">
+    <a class="brand" href="index.html" aria-label="True Path M 首页"><span class="brand-dot" aria-hidden="true"></span><span>TRUE PATH M</span></a>
+    <nav class="nav" id="site-nav" aria-label="主导航"><a href="index.html" aria-current="page">首页</a><a href="projects.html">项目</a><a href="education.html">方法</a><a href="courses.html">学习</a><a href="achievements.html">成果</a><a href="life.html">生活</a><a href="guestbook.html">留言板</a><a href="https://github.com/yjj195679" target="_blank" rel="noopener noreferrer">GitHub</a></nav>
+    <div class="topbar-tools"><div class="language-switch" aria-label="语言切换"><span aria-current="true">中文</span><a href="en/index.html" lang="en" hreflang="en">EN</a></div><span class="clock" id="clock" aria-label="本地时间"></span><button class="menu-toggle" id="menu-toggle" type="button" aria-label="打开导航" aria-controls="site-nav" aria-expanded="false"><span></span></button></div>
+  </div></header>
   <main id="main">
     <section class="hero anchor-offset" id="home"><div class="container hero-grid">
-      <article class="hero-main glass reveal"><div class="hero-status" aria-label="网站状态"><span class="live-status"><span class="status-pulse" aria-hidden="true"></span>持续更新</span><span class="hero-status-topic">项目 · 学习 · 生活</span><time class="hero-date" id="hero-date"></time></div><div class="hero-copy"><div class="eyebrow">个人主页 · 内容档案</div><h1>记录所行，<br>沉淀所思</h1><p class="hero-lead">这里将用于整理我的经历、项目、学习与生活。具体内容将在后续逐步补充。</p><div class="hero-actions"><a class="button primary" href="projects.html">浏览框架 <svg class="icon icon-arrow-right" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11"></path><path d="m11 6 4 4-4 4"></path></svg></a><a class="button" href="guestbook.html">给我留言</a><a class="button" href="https://github.com/yjj195679" target="_blank" rel="noopener noreferrer">GitHub</a></div></div></article>
-      <aside class="hero-side" aria-label="快捷入口">
-        <a class="quick-card glass reveal" href="projects.html" style="--card-image:url('/images/project.webp')"><span class="quick-label">问题 · 过程 · 结果</span><span class="quick-title">项目</span><svg class="icon quick-arrow icon-arrow-right" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11"></path><path d="m11 6 4 4-4 4"></path></svg></a>
-        <a class="quick-card glass reveal" href="education.html" style="--card-image:url('/images/edu.webp')"><span class="quick-label">定义 · 推演 · 验证</span><span class="quick-title">方法</span><svg class="icon quick-arrow icon-arrow-right" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11"></path><path d="m11 6 4 4-4 4"></path></svg></a>
-        <a class="quick-card glass reveal" href="courses.html" style="--card-image:url('/images/course.webp')"><span class="quick-label">理解 · 联结 · 应用</span><span class="quick-title">学习</span><svg class="icon quick-arrow icon-arrow-right" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11"></path><path d="m11 6 4 4-4 4"></path></svg></a>
-        <a class="quick-card glass reveal" href="achievements.html" style="--card-image:url('/images/achieve.webp')"><span class="quick-label">完成 · 证据 · 反思</span><span class="quick-title">成果</span><svg class="icon quick-arrow icon-arrow-right" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11"></path><path d="m11 6 4 4-4 4"></path></svg></a>
-        <a class="quick-card wide glass reveal" href="life.html" style="--card-image:url('/images/life.webp')"><span class="quick-label">日常 · 兴趣 · 片段</span><span class="quick-title">生活</span><svg class="icon quick-arrow icon-arrow-right" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11"></path><path d="m11 6 4 4-4 4"></path></svg></a>
+      <article class="hero-main glass reveal">
+        <div class="hero-status" aria-label="网站状态"><span class="live-status"><span class="status-pulse" aria-hidden="true"></span>持续迭代</span><span class="hero-status-topic">原生前端 · 双语 · 响应式</span><time class="hero-date" id="hero-date"></time></div>
+        <div class="hero-copy"><div class="eyebrow">网站功能 · 实现说明</div><h1>清晰呈现，<br>稳定运行</h1><p class="hero-lead">这是一个以原生 HTML、CSS 与 JavaScript 构建的多页面网站。当前阶段重点展示功能、结构与实现方式；个人内容只保留可继续扩展的框架。</p><div class="hero-actions"><a class="button primary" href="#capabilities">查看功能</a><a class="button" href="#implementation">了解实现</a><a class="button" href="guestbook.html">体验留言板</a></div></div>
+      </article>
+      <aside class="hero-side" aria-label="内容模块">
+        <a class="quick-card glass reveal" href="projects.html" style="--card-image:url('/images/project.webp')"><span class="quick-label">问题 · 过程 · 结果</span><span class="quick-title">项目结构</span><svg class="icon quick-arrow icon-arrow-right" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11"></path><path d="m11 6 4 4-4 4"></path></svg></a>
+        <a class="quick-card glass reveal" href="education.html" style="--card-image:url('/images/edu.webp')"><span class="quick-label">定义 · 推演 · 验证</span><span class="quick-title">方法结构</span><svg class="icon quick-arrow icon-arrow-right" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11"></path><path d="m11 6 4 4-4 4"></path></svg></a>
+        <a class="quick-card glass reveal" href="courses.html" style="--card-image:url('/images/course.webp')"><span class="quick-label">理解 · 联结 · 应用</span><span class="quick-title">学习结构</span><svg class="icon quick-arrow icon-arrow-right" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11"></path><path d="m11 6 4 4-4 4"></path></svg></a>
+        <a class="quick-card glass reveal" href="achievements.html" style="--card-image:url('/images/achieve.webp')"><span class="quick-label">完成 · 证据 · 反思</span><span class="quick-title">成果结构</span><svg class="icon quick-arrow icon-arrow-right" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11"></path><path d="m11 6 4 4-4 4"></path></svg></a>
+        <a class="quick-card wide glass reveal" href="life.html" style="--card-image:url('/images/life.webp')"><span class="quick-label">日常 · 兴趣 · 片段</span><span class="quick-title">生活结构</span><svg class="icon quick-arrow icon-arrow-right" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11"></path><path d="m11 6 4 4-4 4"></path></svg></a>
       </aside>
     </div></section>
-    <section class="section anchor-offset" id="about"><div class="container"><div class="section-head reveal"><div><div class="kicker">关于</div><h2>认识与方向</h2></div><p class="section-intro">保留必要结构，等待真实内容。</p></div><div class="about-grid"><article class="panel glass reveal"><div class="kicker">个人简介</div><h3>我是谁</h3><p class="content-placeholder">内容待补充</p></article><article class="panel glass reveal"><div class="kicker">关注方向</div><h3>我在做什么</h3><p class="content-placeholder">内容待补充</p></article></div></div></section>
-    <section class="section anchor-offset" id="projects"><div class="container"><div class="section-head reveal"><div><div class="kicker">项目</div><h2>问题与实践</h2></div><p class="section-intro">项目位置已预留，内容将在确认后加入。</p></div><div class="project-grid"><a class="project-card featured reveal" href="projects.html#project-1"><div class="project-cover" style="background-image:url('/images/project.webp')"></div><div class="project-content"><div class="kicker">项目一</div><h3>项目标题待补充</h3><p class="content-placeholder">内容待补充</p></div></a><a class="project-card reveal" href="projects.html#project-2"><div class="project-cover" style="background-image:url('/images/hero.webp')"></div><div class="project-content"><div class="kicker">项目二</div><h3>项目标题待补充</h3><p class="content-placeholder">内容待补充</p></div></a><a class="project-card reveal" href="projects.html#project-3"><div class="project-cover" style="background-image:url('/images/course.webp')"></div><div class="project-content"><div class="kicker">项目三</div><h3>项目标题待补充</h3><p class="content-placeholder">内容待补充</p></div></a></div></div></section>
-    <section class="section anchor-offset" id="path"><div class="container"><div class="section-head reveal"><div><div class="kicker">历程</div><h2>过去与未来</h2></div><p class="section-intro">时间线保留为空白框架。</p></div><div class="timeline"><div class="timeline-item reveal"><div class="timeline-time">阶段一</div><div><h3>经历标题</h3><p class="content-placeholder">内容待补充</p></div></div><div class="timeline-item reveal"><div class="timeline-time">阶段二</div><div><h3>经历标题</h3><p class="content-placeholder">内容待补充</p></div></div><div class="timeline-item reveal"><div class="timeline-time">阶段三</div><div><h3>经历标题</h3><p class="content-placeholder">内容待补充</p></div></div></div></div></section>
-    <section class="section anchor-offset" id="weather"><div class="container"><article class="panel glass weather-panel reveal"><div><div class="kicker">天气</div><h3>当前位置</h3><p>授权后显示当前天气；位置信息仅用于本次查询。</p><button class="button" id="weather-button" type="button">使用当前位置</button></div><div class="weather-reading" aria-live="polite"><strong class="weather-value" id="weather-value">—</strong><div class="weather-meta" id="weather-meta">等待授权</div></div></article></div></section>
-    <section class="section anchor-offset" id="contact"><div class="container"><article class="panel glass contact-card reveal"><div><div class="kicker">联系</div><h3>交流与反馈</h3><p>欢迎通过留言板留下公开消息。</p></div><div class="contact-actions"><a class="button-link" href="guestbook.html">打开留言板</a><a class="button-link" href="https://github.com/yjj195679" target="_blank" rel="noopener noreferrer">GitHub</a><a class="button-link" href="#home">回到顶部</a></div></article></div></section>
+
+    <section class="section anchor-offset" id="principles"><div class="container">
+      <div class="section-head reveal"><div><div class="kicker">设计目标</div><h2>先把网站本身做好</h2></div><p class="section-intro">内容可以逐步补充，基础体验必须从一开始就清晰、统一并且可靠。</p></div>
+      <div class="about-grid">
+        <article class="panel glass reveal"><div class="kicker">低依赖</div><h3>静态核心</h3><p>主要页面不依赖构建工具即可运行，结构、样式与交互边界清楚，便于维护和迁移。</p></article>
+        <article class="panel glass reveal"><div class="kicker">可扩展</div><h3>内容与界面分层</h3><p>项目、学习、成果与生活均使用统一内容框架，后续补充资料时无需重新设计页面。</p></article>
+      </div>
+    </div></section>
+
+    <section class="section anchor-offset" id="capabilities"><div class="container">
+      <div class="section-head reveal"><div><div class="kicker">核心功能</div><h2>围绕阅读与访问设计</h2></div><p class="section-intro">功能不是装饰，而是帮助访问者更快定位页面、调整阅读方式并完成互动。</p></div>
+      <div class="project-grid">
+        <a class="project-card featured reveal" href="projects.html"><div class="project-cover" style="background-image:url('/images/project.webp')"></div><div class="project-content"><div class="kicker">导航系统</div><h3>多页面、双语与快捷检索</h3><p>主导航、页内导航、当前位置高亮和键盘检索共同覆盖不同访问路径。</p></div></a>
+        <a class="project-card reveal" href="#implementation"><div class="project-cover" style="background-image:url('/images/hero.webp')"></div><div class="project-content"><div class="kicker">阅读体验</div><h3>主题、响应式与阅读工具</h3><p>支持跟随系统的明暗模式，并适配桌面、平板、手机以及打印输出。</p></div></a>
+        <a class="project-card reveal" href="guestbook.html"><div class="project-cover" style="background-image:url('/images/course.webp')"></div><div class="project-content"><div class="kicker">互动服务</div><h3>天气与公开留言</h3><p>天气按需请求定位；留言板提供发布、展示与受保护的管理流程。</p></div></a>
+      </div>
+    </div></section>
+
+    <section class="section anchor-offset" id="implementation"><div class="container">
+      <div class="section-head reveal"><div><div class="kicker">实现方式</div><h2>从结构到发布</h2></div><p class="section-intro">各层职责独立：HTML 负责语义，CSS 管理视觉系统，JavaScript 提供渐进增强，外部服务只承担必要的数据能力。</p></div>
+      <div class="timeline">
+        <div class="timeline-item reveal"><div class="timeline-time">HTML</div><div><h3>语义化多页面结构</h3><p>中英文页面一一对应，保留清楚的标题层级、锚点、替代入口与搜索引擎元数据。</p></div></div>
+        <div class="timeline-item reveal"><div class="timeline-time">CSS</div><div><h3>统一设计变量与断点</h3><p>颜色、字体、间距、圆角和栅格由同一套变量控制，明暗主题和各尺寸布局共享规则。</p></div></div>
+        <div class="timeline-item reveal"><div class="timeline-time">JavaScript</div><div><h3>渐进式交互增强</h3><p>菜单、搜索、章节定位、阅读模式和动效建立在可直接阅读的页面之上，并兼顾键盘与减少动态效果设置。</p></div></div>
+        <div class="timeline-item reveal"><div class="timeline-time">Services</div><div><h3>GitHub Pages 与 Supabase</h3><p>静态资源由 GitHub Pages 发布；留言数据与管理员验证由 Supabase 提供，避免把敏感凭据放入前端。</p></div></div>
+      </div>
+    </div></section>
+
+    <section class="section anchor-offset" id="weather"><div class="container"><article class="panel glass weather-panel reveal">
+      <div><div class="kicker">功能演示 · 天气</div><h3>按需使用当前位置</h3><p>浏览器获得授权后请求当前天气；位置只用于本次查询，结果在当前会话中短时缓存。</p><button class="button" id="weather-button" type="button">使用当前位置</button></div>
+      <div class="weather-reading" aria-live="polite"><strong class="weather-value" id="weather-value">—</strong><div class="weather-meta" id="weather-meta">等待授权</div></div>
+    </article></div></section>
+
+    <section class="section anchor-offset" id="contact"><div class="container"><article class="panel glass contact-card reveal"><div><div class="kicker">继续了解</div><h3>查看功能或实现细节</h3><p>可以体验公开留言，也可以前往代码仓库查看网站文件。</p></div><div class="contact-actions"><a class="button-link" href="guestbook.html">打开留言板</a><a class="button-link" href="https://github.com/yjj195679" target="_blank" rel="noopener noreferrer">查看 GitHub</a><a class="button-link" href="#home">回到顶部</a></div></article></div></section>
   </main>
-  <footer class="footer"><div class="container footer-inner"><div>© <span id="year">2026</span> True Path M · Personal Website</div><div class="footer-links"><a href="projects.html">项目</a><a href="life.html">生活</a><a href="guestbook.html">留言板</a></div></div></footer><script src="js/main.js?v=20260909-15" defer></script>
-</body></html>
+  <footer class="footer"><div class="container footer-inner"><div>© <span id="year">2026</span> True Path M · Personal Website</div><div class="footer-links"><a href="#capabilities">功能</a><a href="#implementation">实现</a><a href="guestbook.html">留言板</a></div></div></footer>
+  <script src="js/main.js?v=20260909-16" defer></script>
+</body>
+</html>

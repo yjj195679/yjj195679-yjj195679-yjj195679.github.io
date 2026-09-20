@@ -1,9 +1,6 @@
 (() => {
   document.body.classList.add("js-ready");
 
-  const year = document.getElementById("year");
-  if (year) year.textContent = String(new Date().getFullYear());
-
   const clock = document.getElementById("clock");
   const updateClock = () => {
     if (!clock) return;
@@ -41,6 +38,46 @@
     document.addEventListener("keydown", event => {
       if (event.key === "Escape") closeMenu();
     });
+  }
+
+  const toolbar = document.querySelector(".reader-toolbar");
+  if (toolbar) {
+    let lastY = window.scrollY;
+    let direction = 0;
+    let travel = 0;
+    let framePending = false;
+    const setToolbarHidden = hidden => {
+      if (hidden && toolbar.contains(document.activeElement)) return;
+      toolbar.classList.toggle("is-hidden", hidden);
+      toolbar.toggleAttribute("inert", hidden);
+      toolbar.setAttribute("aria-hidden", String(hidden));
+    };
+    const updateToolbar = () => {
+      const currentY = Math.max(0, window.scrollY);
+      const delta = currentY - lastY;
+      const nextDirection = Math.sign(delta);
+      if (currentY < 36) {
+        setToolbarHidden(false);
+        travel = 0;
+      } else if (nextDirection) {
+        if (nextDirection !== direction) travel = 0;
+        travel += Math.abs(delta);
+        if (travel >= 14) {
+          setToolbarHidden(nextDirection > 0);
+          travel = 0;
+        }
+        direction = nextDirection;
+      }
+      lastY = currentY;
+      framePending = false;
+    };
+    window.addEventListener("scroll", () => {
+      if (framePending) return;
+      framePending = true;
+      window.requestAnimationFrame(updateToolbar);
+    }, { passive: true });
+    toolbar.addEventListener("focusin", () => setToolbarHidden(false));
+    setToolbarHidden(false);
   }
 
   const sheet = document.querySelector(".reader-sheet");

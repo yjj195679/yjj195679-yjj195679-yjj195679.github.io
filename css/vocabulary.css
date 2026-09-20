@@ -38,6 +38,9 @@ html[data-theme="dark"] .vocab-definition { color: #e7e7e7; }
   .vocab-group { grid-template-columns: 42px minmax(0, 1fr); gap: 8px; padding: 15px 0; scroll-margin-top: 18px; contain-intrinsic-size: auto 124px; }
   .vocab-entry { line-height: 1.78; }
 }
+@media (hover: none) {
+  .reader-toolbar .theme-toggle:hover:not([aria-expanded="true"]) { border-color: var(--line); background: var(--surface-soft); transform: none; }
+}
 @media print {
   .reader-toolbar { display: none !important; }
   .vocabulary-reader { padding: 0; }

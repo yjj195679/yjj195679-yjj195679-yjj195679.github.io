@@ -39,7 +39,14 @@
       framePending = true;
       window.requestAnimationFrame(updateToolbar);
     }, { passive: true });
-    toolbar.addEventListener("focusin", () => setToolbarHidden(false));
+    toolbar.addEventListener("click", event => {
+      if (!event.target.closest("[data-theme-choice]") || event.detail === 0) return;
+      window.requestAnimationFrame(() => {
+        if (toolbar.contains(document.activeElement) && document.activeElement instanceof HTMLElement) {
+          document.activeElement.blur();
+        }
+      });
+    });
     setToolbarHidden(false);
   }
 

@@ -8,7 +8,9 @@
     let travel = 0;
     let framePending = false;
     const setToolbarHidden = hidden => {
-      if (hidden && toolbar.contains(document.activeElement)) return;
+      if (hidden && toolbar.contains(document.activeElement) && document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
       toolbar.classList.toggle("is-hidden", hidden);
       toolbar.toggleAttribute("inert", hidden);
       toolbar.setAttribute("aria-hidden", String(hidden));

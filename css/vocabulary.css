@@ -1,7 +1,5 @@
 .vocabulary-reader { padding-top: 24px; }
-.vocabulary-page .site-bg, .vocabulary-page .noise { display: none; }
-.vocabulary-page .topbar, .reader-toolbar { -webkit-backdrop-filter: none; backdrop-filter: none; }
-.reader-toolbar { position: sticky; top: 76px; z-index: 12; display: grid; grid-template-columns: minmax(200px, 1fr) auto auto; align-items: center; gap: 16px; padding: 13px 16px; margin-bottom: 18px; background: rgba(255, 255, 255, .96); transition: transform .22s ease, opacity .18s ease; }
+.reader-toolbar { position: sticky; top: 0; z-index: 12; display: grid; grid-template-columns: minmax(200px, 1fr) auto auto; align-items: center; gap: 16px; padding: 13px 16px; margin-bottom: 18px; background: rgba(255, 255, 255, .96); -webkit-backdrop-filter: none; backdrop-filter: none; transition: transform .22s ease, opacity .18s ease; }
 .reader-toolbar.is-hidden { opacity: 0; transform: translateY(calc(-100% - 18px)); pointer-events: none; }
 .reader-summary { display: grid; }
 .reader-summary span { color: var(--muted); font-size: .82rem; }
@@ -10,6 +8,7 @@
 .group-jump input { width: 86px; min-height: 40px; padding: 7px 9px; color: var(--text); background: var(--surface-strong); border: 1px solid var(--line); border-radius: 10px; font: inherit; }
 .group-jump .button, .reader-actions .button { min-height: 40px; padding: 8px 12px; }
 .reader-actions { display: flex; align-items: center; justify-content: flex-end; gap: 7px; }
+.reader-theme-slot { display: contents; }
 .font-button { min-width: 42px; justify-content: center; }
 .reader-sheet { --reader-scale: 1; padding: clamp(22px, 4vw, 48px); color: #101010; background: #fff; border: 1px solid var(--line-strong); border-radius: 18px; box-shadow: var(--shadow); font-family: "Times New Roman", SimSun, "Songti SC", STSong, serif; font-size: calc(1rem * var(--reader-scale)); line-height: 1.7; }
 .reader-sheet, .js-ready .reader-sheet { opacity: 1 !important; transform: none !important; transition: none !important; }
@@ -30,7 +29,7 @@ html[data-theme="dark"] .vocab-definition { color: #e7e7e7; }
 @media (max-width: 760px) {
   .vocabulary-reader { padding-top: 12px; }
   .vocabulary-reader .container { padding-inline: 12px; }
-  .reader-toolbar { position: sticky; top: 64px; grid-template-columns: 1fr; padding: 14px; border-radius: 14px; }
+  .reader-toolbar { position: sticky; top: 0; grid-template-columns: 1fr; padding: 14px; border-radius: 14px; }
   .reader-actions { justify-content: flex-start; flex-wrap: wrap; }
   .group-jump { grid-column: auto; grid-row: auto; flex-wrap: wrap; }
   .group-jump input { flex: 1 1 100px; width: auto; }
@@ -40,7 +39,7 @@ html[data-theme="dark"] .vocab-definition { color: #e7e7e7; }
   .vocab-entry { line-height: 1.78; }
 }
 @media print {
-  .topbar, .reader-toolbar { display: none !important; }
+  .reader-toolbar { display: none !important; }
   .vocabulary-reader { padding: 0; }
   .reader-sheet { padding: 0; color: #000; background: #fff; border: 0; border-radius: 0; box-shadow: none; font-size: 10pt; }
   .vocabulary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 14mm; }

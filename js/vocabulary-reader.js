@@ -1,45 +1,6 @@
 (() => {
   document.body.classList.add("js-ready");
 
-  const clock = document.getElementById("clock");
-  const updateClock = () => {
-    if (!clock) return;
-    clock.textContent = new Intl.DateTimeFormat("zh-CN", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-    }).format(new Date());
-  };
-  updateClock();
-  if (clock) window.setInterval(updateClock, 60000);
-
-  const menuButton = document.getElementById("menu-toggle");
-  const nav = document.getElementById("site-nav");
-  const closeMenu = () => {
-    if (!menuButton || !nav) return;
-    menuButton.setAttribute("aria-expanded", "false");
-    menuButton.setAttribute("aria-label", "打开导航");
-    nav.classList.remove("open");
-    document.body.classList.remove("menu-open");
-  };
-  if (menuButton && nav) {
-    menuButton.addEventListener("click", () => {
-      const open = menuButton.getAttribute("aria-expanded") !== "true";
-      closeMenu();
-      if (!open) return;
-      menuButton.setAttribute("aria-expanded", "true");
-      menuButton.setAttribute("aria-label", "关闭导航");
-      nav.classList.add("open");
-      document.body.classList.add("menu-open");
-    });
-    nav.addEventListener("click", event => {
-      if (event.target.closest("a")) closeMenu();
-    });
-    document.addEventListener("keydown", event => {
-      if (event.key === "Escape") closeMenu();
-    });
-  }
-
   const toolbar = document.querySelector(".reader-toolbar");
   if (toolbar) {
     let lastY = window.scrollY;

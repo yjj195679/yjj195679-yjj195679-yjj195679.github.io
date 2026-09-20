@@ -39,40 +39,21 @@
       framePending = true;
       window.requestAnimationFrame(updateToolbar);
     }, { passive: true });
-    toolbar.addEventListener("click", event => {
-      if (!event.target.closest("[data-theme-choice]")) return;
-      window.requestAnimationFrame(() => {
-        if (toolbar.contains(document.activeElement) && document.activeElement instanceof HTMLElement) {
-          document.activeElement.blur();
-        }
-      });
-    });
     setToolbarHidden(false);
   }
 
   const sheet = document.querySelector(".reader-sheet");
-  const readingStatus = document.getElementById("reading-status");
   const smaller = document.getElementById("font-smaller");
   const reset = document.getElementById("font-reset");
   const larger = document.getElementById("font-larger");
-  const jump = document.getElementById("group-jump");
-  const input = document.getElementById("group-number");
-  if (!sheet || !smaller || !reset || !larger || !jump || !input) return;
+  if (!sheet || !smaller || !reset || !larger) return;
 
   const positionKey = "vocabulary-reader-v1";
   const fallbackKey = "tpm-vocabulary-position";
-  const defaultStatus = "357 组 · 自动记录阅读位置";
   let databasePromise;
   let saveTimer = 0;
-  let statusTimer = 0;
   let restoringPosition = false;
 
-  const showReadingStatus = (message, duration = 2400) => {
-    if (!readingStatus) return;
-    window.clearTimeout(statusTimer);
-    readingStatus.textContent = message;
-    if (duration > 0) statusTimer = window.setTimeout(() => { readingStatus.textContent = defaultStatus; }, duration);
-  };
   const openPositionDatabase = () => {
     if (databasePromise) return databasePromise;
     databasePromise = new Promise((resolve, reject) => {
@@ -155,8 +136,6 @@
       toolbar?.classList.remove("is-hidden");
       toolbar?.removeAttribute("inert");
       toolbar?.setAttribute("aria-hidden", "false");
-      const number = target.id.slice(-3).replace(/^0+/, "") || "1";
-      showReadingStatus(`已恢复到第 ${number} 组`);
     }));
   };
   window.addEventListener("scroll", schedulePositionSave, { passive: true });
@@ -183,17 +162,4 @@
   smaller.addEventListener("click", () => applyScale(Number(getComputedStyle(sheet).getPropertyValue("--reader-scale")) - .1));
   larger.addEventListener("click", () => applyScale(Number(getComputedStyle(sheet).getPropertyValue("--reader-scale")) + .1));
   reset.addEventListener("click", () => applyScale(1));
-  jump.addEventListener("submit", event => {
-    event.preventDefault();
-    const value = Number(input.value);
-    if (!Number.isInteger(value) || value < 1 || value > 357) {
-      input.setCustomValidity("请输入 1 到 357 之间的编号");
-      input.reportValidity();
-      return;
-    }
-    input.setCustomValidity("");
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    document.getElementById(`group-${String(value).padStart(3, "0")}`)?.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
-  });
-  input.addEventListener("input", () => input.setCustomValidity(""));
 })();

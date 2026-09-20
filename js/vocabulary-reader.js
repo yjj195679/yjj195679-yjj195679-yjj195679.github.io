@@ -40,7 +40,7 @@
       window.requestAnimationFrame(updateToolbar);
     }, { passive: true });
     toolbar.addEventListener("click", event => {
-      if (!event.target.closest("[data-theme-choice]") || event.detail === 0) return;
+      if (!event.target.closest("[data-theme-choice]")) return;
       window.requestAnimationFrame(() => {
         if (toolbar.contains(document.activeElement) && document.activeElement instanceof HTMLElement) {
           document.activeElement.blur();

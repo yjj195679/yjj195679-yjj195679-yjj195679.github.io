@@ -14,6 +14,10 @@
 .vocab-term { margin-right: .5em; color: #050505; font-family: "Times New Roman", serif; font-size: 1.16em; font-weight: 700; overflow-wrap: anywhere; }
 .vocab-definition { color: #171717; font-family: SimSun, "Songti SC", STSong, "Times New Roman", serif; }
 html[data-theme="dark"] .reader-sheet { color: #f1f1f1; background: #111; border-color: rgba(255,255,255,.18); }
+html[data-theme="light"] .reader-toolbar { color: #101010; background: rgba(255, 255, 255, .96); border-color: rgba(16, 16, 16, .16); }
+html[data-theme="light"] .reader-toolbar .button { color: #101010; background: #fff; border-color: rgba(16, 16, 16, .18); }
+html[data-theme="dark"] .reader-toolbar { color: #f1f1f1; background: rgba(17, 18, 22, .96); border-color: rgba(255, 255, 255, .18); }
+html[data-theme="dark"] .reader-toolbar .button { color: #f1f1f1; background: #1d1f25; border-color: rgba(255, 255, 255, .22); }
 html[data-theme="dark"] .vocab-group { border-bottom-color: #383838; }
 html[data-theme="dark"] .vocab-number { color: #9d9d9d; }
 html[data-theme="dark"] .vocab-term { color: #fff; }

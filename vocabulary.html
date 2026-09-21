@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#080a0f">
   <script src="js/vocabulary-theme.js?v=20260921-1"></script>
-  <meta name="description" content="不背单词单词笔记高清在线文字版，357 组、854 个词条，支持字号调节与阅读位置记录。">
+  <meta name="description" content="不背单词单词笔记高清在线文字版，357 组、854 个词条，支持全文阅读、英文自测、字号调节与阅读位置记录。">
   <meta property="og:title" content="不背单词 · 高清在线版">
   <meta property="og:description" content="重新排版的不背单词合并纠错版，电脑双栏、手机单栏。">
   <meta property="og:type" content="website">
@@ -15,7 +15,7 @@
   <link rel="canonical" href="https://1956799.xyz/vocabulary.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css?v=20260909-15">
-  <link rel="stylesheet" href="css/vocabulary.css?v=20260921-1">
+  <link rel="stylesheet" href="css/vocabulary.css?v=20260921-2">
   <title>不背单词 · 高清在线版</title>
 </head>
 <body class="vocabulary-page" data-page="study">
@@ -23,7 +23,7 @@
   <main id="main">
     <section class="section vocabulary-reader"><div class="container">
       <div class="reader-toolbar glass">
-        <div class="reader-actions" aria-label="字号设置"><button class="button font-button" id="font-smaller" type="button" aria-label="减小字号">A−</button><button class="button font-button" id="font-reset" type="button">标准</button><button class="button font-button" id="font-larger" type="button" aria-label="增大字号">A+</button></div>
+        <div class="reader-actions" aria-label="背诵与字号设置"><button class="button review-launch" id="review-open" type="button">背诵</button><span class="reader-divider" aria-hidden="true"></span><button class="button font-button" id="font-smaller" type="button" aria-label="减小字号">A−</button><button class="button font-button" id="font-reset" type="button">标准</button><button class="button font-button" id="font-larger" type="button" aria-label="增大字号">A+</button></div>
       </div>
       <article class="reader-sheet" id="vocabulary-content" aria-label="不背单词全部内容">
         <div class="vocabulary-grid">
@@ -2670,6 +2670,30 @@
       </article>
     </div></section>
   </main>
+  <section class="review-overlay" id="review-overlay" aria-hidden="true" hidden>
+    <button class="review-backdrop" type="button" aria-label="退出背诵模式" data-review-close></button>
+    <div class="review-panel" role="dialog" aria-modal="true" aria-labelledby="review-title" aria-describedby="review-hint" tabindex="-1">
+      <header class="review-head">
+        <div><h2 id="review-title">背诵模式</h2><p><span id="review-progress">1 / 1</span><span aria-hidden="true"> · </span><span id="review-score">认识 0 · 不认识 0</span></p></div>
+        <button class="review-close" id="review-close" type="button" aria-label="关闭背诵模式">关闭</button>
+      </header>
+      <div class="review-card" id="review-card">
+        <span class="review-label">英文</span>
+        <strong class="review-term" id="review-term"></strong>
+        <div class="review-definition" id="review-reveal" hidden>
+          <span class="review-label" id="review-definition-label">中文</span>
+          <p id="review-definition"></p>
+        </div>
+      </div>
+      <div class="review-choices" id="review-choices">
+        <button class="review-answer known" type="button" data-review-answer="known">认识</button>
+        <button class="review-answer unknown" type="button" data-review-answer="unknown">不认识</button>
+      </div>
+      <button class="review-next" id="review-next" type="button" hidden>下一个</button>
+      <p class="review-hint" id="review-hint" aria-live="polite">选择后显示中文释义</p>
+    </div>
+  </section>
   <script src="js/vocabulary-reader.js?v=20260920-9" defer></script>
+  <script src="js/vocabulary-review.js?v=20260921-1" defer></script>
 </body>
 </html>

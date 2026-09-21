@@ -4,6 +4,8 @@
 .reader-actions { display: flex; align-items: center; gap: 4px; }
 .reader-actions .button { min-height: 34px; padding: 5px 10px; }
 .font-button { min-width: 38px; justify-content: center; }
+.reader-divider { width: 1px; height: 22px; margin: 0 2px; background: currentColor; opacity: .18; }
+.review-launch { font-weight: 700; }
 .reader-sheet { --reader-scale: 1; padding: clamp(22px, 4vw, 48px); color: #101010; background: #fff; border: 1px solid var(--line-strong); border-radius: 18px; box-shadow: var(--shadow); font-family: "Times New Roman", SimSun, "Songti SC", STSong, serif; font-size: calc(1rem * var(--reader-scale)); line-height: 1.7; }
 .reader-sheet, .js-ready .reader-sheet { opacity: 1 !important; transform: none !important; transition: none !important; }
 .vocabulary-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; column-gap: clamp(30px, 5vw, 62px); }
@@ -22,6 +24,39 @@ html[data-theme="dark"] .vocab-group { border-bottom-color: #383838; }
 html[data-theme="dark"] .vocab-number { color: #9d9d9d; }
 html[data-theme="dark"] .vocab-term { color: #fff; }
 html[data-theme="dark"] .vocab-definition { color: #e7e7e7; }
+body.review-open { overflow: hidden; }
+.review-overlay { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 16px; }
+.review-overlay[hidden] { display: none !important; }
+.review-backdrop { position: absolute; inset: 0; width: 100%; height: 100%; padding: 0; border: 0; background: rgba(0, 0, 0, .68); cursor: default; }
+.review-panel { position: relative; display: grid; width: min(560px, 100%); max-height: min(720px, calc(100dvh - 32px)); padding: 20px; gap: 18px; overflow: auto; color: #101010; background: #fff; border: 1px solid rgba(16, 16, 16, .18); border-radius: 18px; box-shadow: 0 24px 80px rgba(0, 0, 0, .32); outline: none; }
+.review-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.review-head h2 { margin: 0; font-size: 1.05rem; }
+.review-head p { margin: 4px 0 0; color: #555; font-size: .88rem; }
+.review-close { min-height: 36px; padding: 6px 12px; color: inherit; background: transparent; border: 1px solid rgba(16, 16, 16, .2); border-radius: 999px; font: inherit; }
+.review-card { display: grid; min-height: 270px; padding: clamp(24px, 6vw, 44px); align-content: center; gap: 14px; background: #f6f7f9; border: 1px solid rgba(16, 16, 16, .12); border-radius: 16px; text-align: center; }
+.review-label { color: #666; font-family: SimSun, "Songti SC", serif; font-size: .78rem; letter-spacing: .12em; }
+.review-term { color: #050505; font-family: "Times New Roman", serif; font-size: clamp(2rem, 8vw, 3.4rem); line-height: 1.12; overflow-wrap: anywhere; }
+.review-definition { display: grid; gap: 8px; padding-top: 16px; border-top: 1px solid rgba(16, 16, 16, .14); }
+.review-definition[hidden] { display: none; }
+.review-definition p { margin: 0; color: #171717; font-family: SimSun, "Songti SC", STSong, serif; font-size: clamp(1rem, 3vw, 1.18rem); line-height: 1.75; }
+.review-choices { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.review-choices[hidden] { display: none; }
+.review-answer, .review-next { min-height: 48px; padding: 10px 16px; border: 1px solid transparent; border-radius: 12px; font: 700 1rem/1.2 SimSun, "Songti SC", serif; }
+.review-answer.known { color: #124c2e; background: #dff4e7; border-color: #add9bd; }
+.review-answer.unknown { color: #722322; background: #fbe3e1; border-color: #e7b6b2; }
+.review-next { color: #fff; background: #1c2735; border-color: #1c2735; }
+.review-next[hidden] { display: none; }
+.review-hint { min-height: 1.3em; margin: -8px 0 0; color: #666; font-size: .86rem; text-align: center; }
+html[data-theme="dark"] .review-panel { color: #f1f1f1; background: #111216; border-color: rgba(255, 255, 255, .18); }
+html[data-theme="dark"] .review-head p, html[data-theme="dark"] .review-label, html[data-theme="dark"] .review-hint { color: #aeb3bd; }
+html[data-theme="dark"] .review-close { border-color: rgba(255, 255, 255, .22); }
+html[data-theme="dark"] .review-card { background: #191b21; border-color: rgba(255, 255, 255, .14); }
+html[data-theme="dark"] .review-term { color: #fff; }
+html[data-theme="dark"] .review-definition { border-top-color: rgba(255, 255, 255, .16); }
+html[data-theme="dark"] .review-definition p { color: #ececec; }
+html[data-theme="dark"] .review-answer.known { color: #d7f8e4; background: #183d29; border-color: #2f6a47; }
+html[data-theme="dark"] .review-answer.unknown { color: #ffe0dd; background: #49201f; border-color: #7e3935; }
+html[data-theme="dark"] .review-next { color: #101216; background: #f1f4f8; border-color: #f1f4f8; }
 @media (max-width: 760px) {
   .vocabulary-reader { padding-top: 6px; }
   .vocabulary-reader .container { padding-inline: 12px; }
@@ -31,9 +66,12 @@ html[data-theme="dark"] .vocab-definition { color: #e7e7e7; }
   .vocabulary-grid { grid-template-columns: 1fr; }
   .vocab-group { grid-template-columns: 42px minmax(0, 1fr); gap: 8px; padding: 15px 0; scroll-margin-top: 18px; contain-intrinsic-size: auto 124px; }
   .vocab-entry { line-height: 1.78; }
+  .review-overlay { padding: 0; }
+  .review-panel { width: 100%; max-height: 100vh; min-height: 100vh; max-height: 100dvh; min-height: 100dvh; padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); gap: 14px; border: 0; border-radius: 0; }
+  .review-card { min-height: min(48dvh, 360px); padding: 24px 18px; }
 }
 @media print {
-  .reader-toolbar { display: none !important; }
+  .reader-toolbar, .review-overlay { display: none !important; }
   .vocabulary-reader { padding: 0; }
   .reader-sheet { padding: 0; color: #000; background: #fff; border: 0; border-radius: 0; box-shadow: none; font-size: 10pt; }
   .vocabulary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 14mm; }

@@ -41,11 +41,15 @@ body.review-open { overflow: hidden; }
 .review-definition p { margin: 0; color: #171717; font-family: SimSun, "Songti SC", STSong, serif; font-size: clamp(1rem, 3vw, 1.18rem); line-height: 1.75; }
 .review-choices { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .review-choices[hidden] { display: none; }
-.review-answer, .review-next { min-height: 48px; padding: 10px 16px; border: 1px solid transparent; border-radius: 12px; font: 700 1rem/1.2 SimSun, "Songti SC", serif; }
+.review-answer, .review-mistake, .review-next { min-height: 48px; padding: 10px 16px; border: 1px solid transparent; border-radius: 12px; font: 700 1rem/1.2 SimSun, "Songti SC", serif; }
 .review-answer.known { color: #124c2e; background: #dff4e7; border-color: #add9bd; }
 .review-answer.unknown { color: #722322; background: #fbe3e1; border-color: #e7b6b2; }
+.review-after { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.review-after[hidden] { display: none; }
+.review-after.is-single { grid-template-columns: 1fr; }
+.review-mistake { color: #6b4312; background: #fff0cc; border-color: #e5c47b; }
+.review-mistake:disabled { opacity: .72; }
 .review-next { color: #fff; background: #1c2735; border-color: #1c2735; }
-.review-next[hidden] { display: none; }
 .review-hint { min-height: 1.3em; margin: -8px 0 0; color: #666; font-size: .86rem; text-align: center; }
 html[data-theme="dark"] .review-panel { color: #f1f1f1; background: #111216; border-color: rgba(255, 255, 255, .18); }
 html[data-theme="dark"] .review-head p, html[data-theme="dark"] .review-label, html[data-theme="dark"] .review-hint { color: #aeb3bd; }
@@ -56,6 +60,7 @@ html[data-theme="dark"] .review-definition { border-top-color: rgba(255, 255, 25
 html[data-theme="dark"] .review-definition p { color: #ececec; }
 html[data-theme="dark"] .review-answer.known { color: #d7f8e4; background: #183d29; border-color: #2f6a47; }
 html[data-theme="dark"] .review-answer.unknown { color: #ffe0dd; background: #49201f; border-color: #7e3935; }
+html[data-theme="dark"] .review-mistake { color: #ffeac0; background: #4b3517; border-color: #80602a; }
 html[data-theme="dark"] .review-next { color: #101216; background: #f1f4f8; border-color: #f1f4f8; }
 @media (max-width: 760px) {
   .vocabulary-reader { padding-top: 6px; }

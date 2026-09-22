@@ -10,10 +10,12 @@
   const definitionLabel = document.getElementById("review-definition-label");
   const definition = document.getElementById("review-definition");
   const choices = document.getElementById("review-choices");
+  const afterActions = document.getElementById("review-after");
+  const mistakeButton = document.getElementById("review-mistake");
   const nextButton = document.getElementById("review-next");
   const hint = document.getElementById("review-hint");
   const main = document.getElementById("main");
-  if (!openButton || !overlay || !panel || !closeButton || !progress || !score || !term || !reveal || !definitionLabel || !definition || !choices || !nextButton || !hint) return;
+  if (!openButton || !overlay || !panel || !closeButton || !progress || !score || !term || !reveal || !definitionLabel || !definition || !choices || !afterActions || !mistakeButton || !nextButton || !hint) return;
 
   const words = [...document.querySelectorAll(".vocab-entry")].map((entry, index) => ({
     id: index,
@@ -21,7 +23,7 @@
     definition: entry.querySelector(".vocab-definition")?.textContent.trim() || "",
   })).filter(word => word.term && word.definition);
   const storageKey = "tpm-vocabulary-review-v1";
-  const emptyState = () => ({ total: words.length, index: 0, known: 0, unknown: 0, revealed: false, answer: "" });
+  const emptyState = () => ({ total: words.length, index: 0, known: 0, unknown: 0, mistake: 0, revealed: false, answer: "" });
   let state = emptyState();
   let lastFocus = null;
 
@@ -35,8 +37,9 @@
         index,
         known: Math.max(0, Number(saved.known) || 0),
         unknown: Math.max(0, Number(saved.unknown) || 0),
+        mistake: Math.max(0, Number(saved.mistake) || 0),
         revealed: index < words.length && Boolean(saved.revealed),
-        answer: saved.answer === "known" || saved.answer === "unknown" ? saved.answer : "",
+        answer: ["known", "unknown", "mistake"].includes(saved.answer) ? saved.answer : "",
       };
     } catch {
       return emptyState();
@@ -50,17 +53,21 @@
 
   const render = () => {
     const finished = state.index >= words.length;
-    score.textContent = `认识 ${state.known} · 不认识 ${state.unknown}`;
+    score.textContent = `认识 ${state.known} · 不认识 ${state.unknown} · 记错 ${state.mistake}`;
     choices.hidden = finished || state.revealed;
     reveal.hidden = !state.revealed && !finished;
-    nextButton.hidden = !state.revealed && !finished;
+    afterActions.hidden = !state.revealed && !finished;
+    afterActions.classList.toggle("is-single", finished);
+    mistakeButton.hidden = finished;
+    mistakeButton.disabled = state.answer === "mistake";
+    mistakeButton.textContent = state.answer === "mistake" ? "已标记记错" : "记错了";
     nextButton.classList.remove("is-restart");
 
     if (finished) {
       progress.textContent = `${words.length} / ${words.length}`;
       term.textContent = "本轮完成";
       definitionLabel.textContent = "结果";
-      definition.textContent = `认识 ${state.known} 个，不认识 ${state.unknown} 个`;
+      definition.textContent = `认识 ${state.known} 个，不认识 ${state.unknown} 个，记错 ${state.mistake} 个`;
       reveal.hidden = false;
       nextButton.textContent = "重新开始";
       nextButton.classList.add("is-restart");
@@ -74,9 +81,9 @@
     term.textContent = word.term;
     definition.textContent = word.definition;
     nextButton.textContent = state.index === words.length - 1 ? "查看结果" : "下一个";
-    hint.textContent = state.revealed
-      ? (state.answer === "known" ? "已记录为认识" : "已记录为不认识")
-      : "选择后显示中文释义";
+    hint.textContent = !state.revealed
+      ? "选择后显示中文释义"
+      : (state.answer === "mistake" ? "已记录为记错了" : "释义已显示，可改记为“记错了”");
   };
 
   const openReview = () => {
@@ -108,6 +115,16 @@
     state[value] += 1;
     state.revealed = true;
     state.answer = value;
+    saveState();
+    render();
+    window.requestAnimationFrame(() => nextButton.focus({ preventScroll: true }));
+  };
+
+  const markMistake = () => {
+    if (!state.revealed || state.index >= words.length || state.answer === "mistake") return;
+    if ((state.answer === "known" || state.answer === "unknown") && state[state.answer] > 0) state[state.answer] -= 1;
+    state.mistake += 1;
+    state.answer = "mistake";
     saveState();
     render();
     window.requestAnimationFrame(() => nextButton.focus({ preventScroll: true }));
@@ -154,6 +171,7 @@
     const button = event.target.closest("[data-review-answer]");
     if (button) answer(button.dataset.reviewAnswer);
   });
+  mistakeButton.addEventListener("click", markMistake);
   nextButton.addEventListener("click", next);
   panel.addEventListener("keydown", event => {
     if (event.key === "Escape") {
@@ -166,7 +184,12 @@
       answer(event.key === "1" ? "known" : "unknown");
       return;
     }
-    if (state.revealed && event.key === "Enter") {
+    if (state.revealed && state.answer !== "mistake" && event.key === "3") {
+      event.preventDefault();
+      markMistake();
+      return;
+    }
+    if (state.revealed && event.key === "Enter" && document.activeElement === nextButton) {
       event.preventDefault();
       next();
       return;

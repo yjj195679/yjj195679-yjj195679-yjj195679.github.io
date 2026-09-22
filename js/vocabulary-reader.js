@@ -2,12 +2,15 @@
   document.body.classList.add("js-ready");
 
   const toolbar = document.querySelector(".reader-toolbar");
+  let manuallyHidden = false;
   if (toolbar) {
+    const hideToolbar = document.getElementById("toolbar-hide");
     let lastY = window.scrollY;
     let direction = 0;
     let travel = 0;
     let framePending = false;
     const setToolbarHidden = hidden => {
+      if (!hidden && manuallyHidden) return;
       if (hidden && toolbar.contains(document.activeElement) && document.activeElement instanceof HTMLElement) {
         document.activeElement.blur();
       }
@@ -15,6 +18,10 @@
       toolbar.toggleAttribute("inert", hidden);
       toolbar.setAttribute("aria-hidden", String(hidden));
     };
+    hideToolbar?.addEventListener("click", () => {
+      manuallyHidden = true;
+      setToolbarHidden(true);
+    });
     const updateToolbar = () => {
       const currentY = Math.max(0, window.scrollY);
       const delta = currentY - lastY;
@@ -133,9 +140,11 @@
       const offset = bounds.top + bounds.height * Math.max(0, Math.min(1, Number(position.progress) || 0)) - readingLine;
       window.scrollBy({ top: offset, behavior: "auto" });
       restoringPosition = false;
-      toolbar?.classList.remove("is-hidden");
-      toolbar?.removeAttribute("inert");
-      toolbar?.setAttribute("aria-hidden", "false");
+      if (!manuallyHidden) {
+        toolbar?.classList.remove("is-hidden");
+        toolbar?.removeAttribute("inert");
+        toolbar?.setAttribute("aria-hidden", "false");
+      }
     }));
   };
   window.addEventListener("scroll", schedulePositionSave, { passive: true });

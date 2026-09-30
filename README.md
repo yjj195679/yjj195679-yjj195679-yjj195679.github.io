@@ -2,7 +2,7 @@
 
 [中文网站](https://1956799.xyz/) · [English](https://1956799.xyz/en/) · [GitHub](https://github.com/yjj195679)
 
-这是一个使用原生 HTML、CSS 和 JavaScript 构建的双语个人网站，直接托管于 GitHub Pages。当前版本保留完整的网站结构和交互，只提供内容框架，具体经历、项目、笔记和成果将在确认后逐步填写。
+这是一个使用原生 HTML、CSS 和 JavaScript 构建的双语个人网站，直接托管于 GitHub Pages。网站集中展示个人简介、项目实践、学习方向、方法总结、竞赛成果与生活记录，并提供公开留言板。
 
 ## 页面结构
 

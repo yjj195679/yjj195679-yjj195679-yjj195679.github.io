@@ -24,7 +24,7 @@
     <div class="container admin-container">
       <section class="admin-auth-card glass" id="login-panel" aria-labelledby="login-title">
         <div class="kicker">管理员验证</div><h1 id="login-title">留言管理</h1>
-        <p>先使用管理员邮箱和密码登录，再输入验证器生成的六位动态密码。</p>
+        <p>使用管理员账号登录后，完成六位动态密码验证。</p>
         <form class="guestbook-form" id="login-form">
           <div class="field"><label for="admin-email">管理员邮箱</label><input id="admin-email" name="email" type="email" autocomplete="username" required></div>
           <div class="field"><label for="admin-password">密码</label><input id="admin-password" name="password" type="password" autocomplete="current-password" minlength="8" required></div>
@@ -34,7 +34,7 @@
 
       <section class="admin-auth-card glass" id="mfa-panel" aria-labelledby="mfa-title" hidden>
         <div class="kicker">第二步</div><h1 id="mfa-title">输入动态密码</h1>
-        <p>打开验证器，输入当前显示的六位 TOTP 动态密码。</p>
+        <p>输入验证器当前显示的六位动态密码。</p>
         <form class="guestbook-form" id="mfa-form">
           <div class="field"><label for="admin-totp">动态密码</label><input id="admin-totp" name="totp" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" minlength="6" maxlength="6" required></div>
           <button class="button primary" type="submit">进入管理页面</button>
@@ -44,7 +44,7 @@
 
       <section class="admin-auth-card glass" id="enroll-panel" aria-labelledby="enroll-title" hidden>
         <div class="kicker">首次设置</div><h1 id="enroll-title">绑定 TOTP 验证器</h1>
-        <p>当前账户尚未绑定验证器。扫描二维码后输入六位动态密码，完成绑定才能进入后台。</p>
+        <p>扫描二维码并输入六位动态密码，完成首次绑定。</p>
         <button class="button primary" id="start-enrollment" type="button">生成绑定二维码</button>
         <div class="enrollment-details" id="enrollment-details" hidden>
           <img id="totp-qr" alt="TOTP 验证器绑定二维码">

@@ -1,6 +1,19 @@
 (() => {
   document.body.classList.add("js-ready");
 
+  const partOfSpeechPattern = /\s+((?:(?:n|v|vt|vi|adj|adv|prep|pron|conj|det|interj|phr|phrv|idm)\.(?:\s*,?\s*)?)+)$/i;
+  document.querySelectorAll(".vocab-term").forEach(term => {
+    if (term.querySelector(".vocab-pos")) return;
+    const value = term.textContent.trim();
+    const match = value.match(partOfSpeechPattern);
+    if (!match) return;
+    const headword = value.slice(0, match.index).trimEnd();
+    const label = document.createElement("span");
+    label.className = "vocab-pos";
+    label.textContent = match[1].trim();
+    term.replaceChildren(document.createTextNode(headword), document.createTextNode(" "), label);
+  });
+
   const toolbar = document.querySelector(".reader-toolbar");
   let manuallyHidden = false;
   if (toolbar) {

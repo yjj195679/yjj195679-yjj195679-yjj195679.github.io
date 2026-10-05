@@ -153,17 +153,27 @@
     });
     return nearestGroup ? positionFromGroup(nearestGroup, readingLine) : null;
   };
+  const capturePosition = () => {
+    if (restoringPosition) return null;
+    const position = currentReadingPosition();
+    if (position) latestPosition = position;
+    return position;
+  };
   const savePosition = () => {
-    if (restoringPosition) return;
-    const position = currentReadingPosition() || latestPosition;
-    if (!position) return;
-    latestPosition = position;
+    const position = capturePosition() || latestPosition;
+    if (!position || restoringPosition) return;
     void writePosition(position);
+  };
+  const flushPosition = () => {
+    if (restoringPosition || !latestPosition) return;
+    window.clearTimeout(saveTimer);
+    void writePosition(latestPosition);
   };
   const schedulePositionSave = () => {
     if (restoringPosition) return;
+    capturePosition();
     window.clearTimeout(saveTimer);
-    saveTimer = window.setTimeout(savePosition, 240);
+    saveTimer = window.setTimeout(flushPosition, 240);
   };
   const restorePosition = async () => {
     window.clearTimeout(saveTimer);
@@ -208,9 +218,9 @@
     }, 650);
   };
   window.addEventListener("scroll", schedulePositionSave, { passive: true });
-  window.addEventListener("pagehide", savePosition);
+  window.addEventListener("pagehide", flushPosition);
   document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "hidden") savePosition();
+    if (document.visibilityState === "hidden") flushPosition();
   });
   void restorePosition();
 

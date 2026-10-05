@@ -72,11 +72,16 @@
   const fallbackKey = "tpm-vocabulary-position";
   let databasePromise;
   let saveTimer = 0;
-  let restoreTimer = 0;
+  let restoreTimers = [];
   let restoringPosition = true;
   let latestPosition = null;
 
   if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+
+  const clearRestoreTimers = () => {
+    restoreTimers.forEach(timer => window.clearTimeout(timer));
+    restoreTimers = [];
+  };
 
   const openPositionDatabase = () => {
     if (databasePromise) return databasePromise;
@@ -177,11 +182,11 @@
   };
   const restorePosition = async () => {
     window.clearTimeout(saveTimer);
-    window.clearTimeout(restoreTimer);
+    clearRestoreTimers();
 
     if (/^#group-\d{3}$/.test(window.location.hash)) {
       restoringPosition = false;
-      restoreTimer = window.setTimeout(savePosition, 500);
+      restoreTimers.push(window.setTimeout(savePosition, 500));
       return;
     }
 
@@ -201,13 +206,9 @@
       window.scrollBy({ top: bounds.top + bounds.height * progress - readingLine, behavior: "auto" });
     };
 
-    try { await document.fonts?.ready; }
-    catch (_) {}
-    correctPosition();
-    window.requestAnimationFrame(() => window.requestAnimationFrame(correctPosition));
-    window.setTimeout(correctPosition, 180);
-    restoreTimer = window.setTimeout(() => {
-      correctPosition();
+    const finishRestore = () => {
+      if (!restoringPosition) return;
+      clearRestoreTimers();
       restoringPosition = false;
       latestPosition = currentReadingPosition() || position;
       if (!manuallyHidden) {
@@ -215,7 +216,22 @@
         toolbar?.removeAttribute("inert");
         toolbar?.setAttribute("aria-hidden", "false");
       }
-    }, 650);
+    };
+    const interruptRestore = () => finishRestore();
+    ["wheel", "touchstart", "pointerdown", "keydown"].forEach(eventName => {
+      window.addEventListener(eventName, interruptRestore, { passive: true, once: true });
+    });
+
+    try { await document.fonts?.ready; }
+    catch (_) {}
+    correctPosition();
+    window.requestAnimationFrame(() => window.requestAnimationFrame(correctPosition));
+    [180, 650, 1500, 2800].forEach(delay => {
+      restoreTimers.push(window.setTimeout(() => {
+        if (restoringPosition) correctPosition();
+      }, delay));
+    });
+    restoreTimers.push(window.setTimeout(finishRestore, 3000));
   };
   window.addEventListener("scroll", schedulePositionSave, { passive: true });
   window.addEventListener("pagehide", flushPosition);

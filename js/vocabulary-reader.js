@@ -72,7 +72,11 @@
   const fallbackKey = "tpm-vocabulary-position";
   let databasePromise;
   let saveTimer = 0;
-  let restoringPosition = false;
+  let restoreTimer = 0;
+  let restoringPosition = true;
+  let latestPosition = null;
+
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
 
   const openPositionDatabase = () => {
     if (databasePromise) return databasePromise;
@@ -114,6 +118,14 @@
       catch (_) {}
     }
   };
+  const positionFromGroup = (group, readingLine) => {
+    const bounds = group.getBoundingClientRect();
+    return {
+      groupId: group.id,
+      progress: Math.max(0, Math.min(1, (readingLine - bounds.top) / Math.max(bounds.height, 1))),
+      updatedAt: Date.now(),
+    };
+  };
   const currentReadingPosition = () => {
     const sheetBounds = sheet.getBoundingClientRect();
     const readingLine = Math.min(window.innerHeight - 1, Math.max(1, window.innerHeight * .38));
@@ -121,44 +133,79 @@
     for (const ratio of samplePoints) {
       const x = Math.min(window.innerWidth - 1, Math.max(1, sheetBounds.left + sheetBounds.width * ratio));
       const group = document.elementsFromPoint(x, readingLine).map(element => element.closest?.(".vocab-group")).find(Boolean);
-      if (!group) continue;
-      const bounds = group.getBoundingClientRect();
-      return {
-        groupId: group.id,
-        progress: Math.max(0, Math.min(1, (readingLine - bounds.top) / Math.max(bounds.height, 1))),
-        updatedAt: Date.now(),
-      };
+      if (group) return positionFromGroup(group, readingLine);
     }
-    return null;
+
+    let nearestGroup = null;
+    let nearestDistance = Number.POSITIVE_INFINITY;
+    document.querySelectorAll(".vocab-group").forEach(group => {
+      const bounds = group.getBoundingClientRect();
+      if (bounds.bottom < 0 || bounds.top > window.innerHeight) return;
+      const distance = readingLine < bounds.top
+        ? bounds.top - readingLine
+        : readingLine > bounds.bottom
+          ? readingLine - bounds.bottom
+          : 0;
+      if (distance < nearestDistance) {
+        nearestGroup = group;
+        nearestDistance = distance;
+      }
+    });
+    return nearestGroup ? positionFromGroup(nearestGroup, readingLine) : null;
   };
   const savePosition = () => {
     if (restoringPosition) return;
-    const position = currentReadingPosition();
-    if (position) void writePosition(position);
+    const position = currentReadingPosition() || latestPosition;
+    if (!position) return;
+    latestPosition = position;
+    void writePosition(position);
   };
   const schedulePositionSave = () => {
+    if (restoringPosition) return;
     window.clearTimeout(saveTimer);
-    saveTimer = window.setTimeout(savePosition, 360);
+    saveTimer = window.setTimeout(savePosition, 240);
   };
   const restorePosition = async () => {
-    if (/^#group-\d{3}$/.test(window.location.hash)) return;
+    window.clearTimeout(saveTimer);
+    window.clearTimeout(restoreTimer);
+
+    if (/^#group-\d{3}$/.test(window.location.hash)) {
+      restoringPosition = false;
+      restoreTimer = window.setTimeout(savePosition, 500);
+      return;
+    }
+
     const position = await readPosition();
     const target = position?.groupId ? document.getElementById(position.groupId) : null;
-    if (!target) return;
-    restoringPosition = true;
-    target.scrollIntoView({ behavior: "auto", block: "start" });
-    window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
+    if (!target) {
+      restoringPosition = false;
+      return;
+    }
+    latestPosition = position;
+
+    const correctPosition = () => {
+      target.scrollIntoView({ behavior: "auto", block: "start" });
       const bounds = target.getBoundingClientRect();
       const readingLine = window.innerHeight * .38;
-      const offset = bounds.top + bounds.height * Math.max(0, Math.min(1, Number(position.progress) || 0)) - readingLine;
-      window.scrollBy({ top: offset, behavior: "auto" });
+      const progress = Math.max(0, Math.min(1, Number(position.progress) || 0));
+      window.scrollBy({ top: bounds.top + bounds.height * progress - readingLine, behavior: "auto" });
+    };
+
+    try { await document.fonts?.ready; }
+    catch (_) {}
+    correctPosition();
+    window.requestAnimationFrame(() => window.requestAnimationFrame(correctPosition));
+    window.setTimeout(correctPosition, 180);
+    restoreTimer = window.setTimeout(() => {
+      correctPosition();
       restoringPosition = false;
+      latestPosition = currentReadingPosition() || position;
       if (!manuallyHidden) {
         toolbar?.classList.remove("is-hidden");
         toolbar?.removeAttribute("inert");
         toolbar?.setAttribute("aria-hidden", "false");
       }
-    }));
+    }, 650);
   };
   window.addEventListener("scroll", schedulePositionSave, { passive: true });
   window.addEventListener("pagehide", savePosition);

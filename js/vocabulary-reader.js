@@ -206,11 +206,13 @@
       window.scrollBy({ top: bounds.top + bounds.height * progress - readingLine, behavior: "auto" });
     };
 
+    const inputEvents = ["wheel", "touchstart", "pointerdown", "keydown"];
     const finishRestore = () => {
       if (!restoringPosition) return;
       clearRestoreTimers();
       restoringPosition = false;
       latestPosition = currentReadingPosition() || position;
+      inputEvents.forEach(eventName => window.removeEventListener(eventName, interruptRestore));
       if (!manuallyHidden) {
         toolbar?.classList.remove("is-hidden");
         toolbar?.removeAttribute("inert");
@@ -218,20 +220,24 @@
       }
     };
     const interruptRestore = () => finishRestore();
-    ["wheel", "touchstart", "pointerdown", "keydown"].forEach(eventName => {
+    inputEvents.forEach(eventName => {
       window.addEventListener(eventName, interruptRestore, { passive: true, once: true });
     });
 
-    try { await document.fonts?.ready; }
-    catch (_) {}
     correctPosition();
     window.requestAnimationFrame(() => window.requestAnimationFrame(correctPosition));
+    Promise.resolve(document.fonts?.ready).then(() => {
+      if (restoringPosition) correctPosition();
+    }).catch(() => {});
     [180, 650, 1500, 2800].forEach(delay => {
       restoreTimers.push(window.setTimeout(() => {
         if (restoringPosition) correctPosition();
       }, delay));
     });
-    restoreTimers.push(window.setTimeout(finishRestore, 3000));
+    restoreTimers.push(window.setTimeout(() => {
+      if (restoringPosition) correctPosition();
+      finishRestore();
+    }, 4200));
   };
   window.addEventListener("scroll", schedulePositionSave, { passive: true });
   window.addEventListener("pagehide", flushPosition);

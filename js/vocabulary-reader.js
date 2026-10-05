@@ -178,7 +178,7 @@
     if (restoringPosition) return;
     capturePosition();
     window.clearTimeout(saveTimer);
-    saveTimer = window.setTimeout(flushPosition, 240);
+    saveTimer = window.setTimeout(savePosition, 800);
   };
   const restorePosition = async () => {
     window.clearTimeout(saveTimer);

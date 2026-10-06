@@ -14,6 +14,40 @@
     term.replaceChildren(document.createTextNode(headword), document.createTextNode(" "), label);
   });
 
+  document.querySelectorAll(".vocab-entry").forEach(entry => {
+    const definition = entry.querySelector(".vocab-definition");
+    if (!definition) return;
+    const term = entry.querySelector(".vocab-term")?.textContent.trim() || "该单词";
+    entry.classList.add("is-definition-hidden");
+    entry.tabIndex = 0;
+    entry.setAttribute("role", "button");
+    entry.setAttribute("aria-label", `${term}，点击显示中文释义`);
+    entry.setAttribute("aria-expanded", "false");
+    entry.title = "点击显示中文释义";
+    definition.setAttribute("aria-hidden", "true");
+
+    const revealDefinition = () => {
+      if (!entry.classList.contains("is-definition-hidden")) return;
+      entry.classList.remove("is-definition-hidden");
+      entry.classList.add("is-definition-visible");
+      entry.removeAttribute("tabindex");
+      entry.removeAttribute("role");
+      entry.removeAttribute("aria-label");
+      entry.removeAttribute("aria-expanded");
+      entry.removeAttribute("title");
+      definition.removeAttribute("aria-hidden");
+      entry.removeEventListener("click", revealDefinition);
+      entry.removeEventListener("keydown", handleDefinitionKey);
+    };
+    const handleDefinitionKey = event => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      revealDefinition();
+    };
+    entry.addEventListener("click", revealDefinition);
+    entry.addEventListener("keydown", handleDefinitionKey);
+  });
+
   const toolbar = document.querySelector(".reader-toolbar");
   let manuallyHidden = false;
   if (toolbar) {

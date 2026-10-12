@@ -4375,6 +4375,78 @@
       "check": "目的 TCP 端口在 IPv4 基本首部里吗？",
       "answer": "不在，端口属于传输层首部。",
       "origin": "408 章节补全"
+    },
+    {
+      "id": "k209",
+      "subject": "计算机网络",
+      "chapter": "网络层",
+      "title": "ARP 缓存老化：地址映射不是永久不变",
+      "tags": [
+        "记忆概念",
+        "冷门",
+        "易混"
+      ],
+      "wrong": "ARP 解析一次就可永远不再验证，所有 OS 老化时间固定相同。",
+      "right": "ARP 缓存需淘汰或验证失效的 IP→MAC 映射；若用老化定时，超时值应允许按实现或配置调整。",
+      "why": "换网卡、主机移动等可能使旧映射失效。缓存老化、等待 ARP 回答和 TCP 重传是不同机制；交换机 MAC 表老化也不是同一个表。不要背成所有设备固定若干分钟。",
+      "example": "同一 IP 后来对应新网卡时，旧 MAC 映射不能永久沿用。",
+      "check": "ARP 表老化等同于交换机 MAC 表老化吗？",
+      "answer": "不同，前者映 IP→MAC，后者常映 MAC→端口。",
+      "origin": "408 路由与地址解析的冷门辨析",
+      "sources": [
+        {
+          "title": "RFC 1122：ARP 缓存验证",
+          "url": "https://www.rfc-editor.org/rfc/rfc1122.html#section-2.3.2.1"
+        }
+      ]
+    },
+    {
+      "id": "k210",
+      "subject": "计算机网络",
+      "chapter": "网络层",
+      "title": "OSPF Hello/Dead：邻居存活与 LSA 老化",
+      "tags": [
+        "记忆概念",
+        "冷门",
+        "易混"
+      ],
+      "wrong": "OSPF 不收到一个 Hello 就必立刻宣告邻居失效；Dead 与 LSA Age 是同一个时间字段。",
+      "right": "Hello 周期发送以发现/维护邻居；Dead 等待过期表示一段时间未获邻居 Hello；LSA Age 管理链路状态通告的年龄，职责不同。",
+      "why": "相邻接口的相关参数需匹配以正常形成邻居关系。10 s/40 s 是常见广播网配置例子，不是所有网络类型的固定值；具体题目给值时按题设。",
+      "example": "接口 Hello 为 10 s、Dead 为 40 s 时，不能只因漏掉一次 Hello 就立即按 Dead 超时处理。",
+      "check": "OSPF 的邻居存活超时能否直接套成 RIP 的 180 s？",
+      "answer": "不能，它们属于不同协议和参数体系。",
+      "origin": "408 路由与地址解析的冷门辨析",
+      "sources": [
+        {
+          "title": "RFC 2328：OSPF 邻居与协议计时",
+          "url": "https://www.rfc-editor.org/rfc/rfc2328.html"
+        }
+      ]
+    },
+    {
+      "id": "k211",
+      "subject": "计算机网络",
+      "chapter": "网络层",
+      "title": "BGP Keepalive/Hold：和 TCP 保活不是同一层",
+      "tags": [
+        "记忆概念",
+        "冷门",
+        "易混"
+      ],
+      "wrong": "BGP 使用 TCP，所以不需要自己的 KEEPALIVE；所有保持时间固定 180 s。",
+      "right": "BGP 有自己的 KEEPALIVE 消息和 Hold 机制，用于维护 BGP 会话；它们不同于 TCP 层可选保活。",
+      "why": "Hold Time 按本端配置与对端 OPEN 声明取较小值；接收有效的 KEEPALIVE/UPDATE 可维护保持计时，期满会处理会话失效。协商为 0 时不启动 Hold Timer，也不定期发送 KEEPALIVE；不能硬套厂商默认值。",
+      "example": "即使 TCP 底层尚未给出断连错误，BGP 的保持时间也可能先超时。",
+      "check": "TCP 保活开启是否就与 BGP KEEPALIVE 完全等价？",
+      "answer": "不等价，协议层、报文和维护对象均不同。",
+      "origin": "408 路由与地址解析的冷门辨析",
+      "sources": [
+        {
+          "title": "RFC 4271：BGP KEEPALIVE 与 Hold Timer",
+          "url": "https://www.rfc-editor.org/rfc/rfc4271.html"
+        }
+      ]
     }
   ],
   "calculations": [

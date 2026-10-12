@@ -76,3 +76,12 @@
 ## 留言板
 
 留言板连接 Supabase 项目，前端只包含可公开的 publishable key。管理员登录、TOTP 验证、公开/隐藏与回复逻辑位于 `admin.html` 和 `js/admin.js`；数据库策略脚本位于 `supabase/`。不要把 secret key、service role key、管理员密码或恢复码写入仓库。
+
+## 408 复习专题
+
+- `408.html`：四科分章节的 80 条概念辨析，个人错题、易错、易混、冷门与近年考查标签。
+- `408-calculations.html`：8 道独立计算变式与步骤。
+- `data/408-knowledge.json` 为内容源，`python tools/build-408.py` 重建两页。
+- 内容以静态 HTML 提供，不依赖网络 API；关闭脚本仍可展开解析。
+- 复习标记位于浏览器本地存储，两页共用并相互保留，未使用账户或数据库。
+- 近年考查标注的是已核对题目，不代表下一年命题概率。

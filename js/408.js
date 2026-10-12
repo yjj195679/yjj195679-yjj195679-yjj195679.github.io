@@ -11,8 +11,9 @@
       && (!filter.state || filter.state === state)
       && words.every(word => normalize(card.search).includes(word));
   }
+  const MARK_LIMITS = { k: 208, c: 8 };
   function validId(id) {
-    return /^(k|c)\d{3}$/.test(id) && +id.slice(1) > 0 && +id.slice(1) <= (id[0] === 'k' ? 80 : 8);
+    return /^(k|c)\d{3}$/.test(id) && +id.slice(1) > 0 && +id.slice(1) <= MARK_LIMITS[id[0]];
   }
   function parseMarks(raw) {
     const clean = Object.create(null);
@@ -49,7 +50,7 @@
   // Missing v2 entries fall back to legacy marks; an explicit 'unmarked' overrides legacy.
   function readStoredMarks() {
     const result = parseMarks(localStorage.getItem(storageKey));
-    for (const [prefix, count] of [['k', 80], ['c', 8]]) {
+    for (const [prefix, count] of Object.entries(MARK_LIMITS)) {
       for (let n = 1; n <= count; ++n) {
         const id = prefix + String(n).padStart(3, '0');
         const value = localStorage.getItem(entryPrefix + id);
@@ -132,8 +133,8 @@
     let id;
     try { id = decodeURIComponent(location.hash.slice(1)); } catch (_) { return; }
     const target = byId(id);
-    if (!target || !(target.classList.contains('study-card') || target.classList.contains('study-subject'))) return;
-    if (target.hidden) reset();
+    if (!target || !(target.classList.contains('study-card') || target.classList.contains('study-subject') || target.classList.contains('study-chapter'))) return;
+    if (target.hidden || target.closest('.study-subject')?.hidden) reset();
     if (target.classList.contains('study-card')) target.open = true;
     requestAnimationFrame(() => target.scrollIntoView({block: 'start'}));
   }

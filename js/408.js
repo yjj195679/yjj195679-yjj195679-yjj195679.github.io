@@ -44,11 +44,27 @@
   const sections = [...document.querySelectorAll('.study-subject')];
   const chapters = [...document.querySelectorAll('.study-chapter')];
   const storageKey = 'true-path-408-marks-v1';
+  const entryPrefix = 'true-path-408-mark-v2-';
+  // Separate keys prevent independent tab edits from replacing a whole stale snapshot.
+  // Missing v2 entries fall back to legacy marks; an explicit 'unmarked' overrides legacy.
+  function readStoredMarks() {
+    const result = parseMarks(localStorage.getItem(storageKey));
+    for (const [prefix, count] of [['k', 80], ['c', 8]]) {
+      for (let n = 1; n <= count; ++n) {
+        const id = prefix + String(n).padStart(3, '0');
+        const value = localStorage.getItem(entryPrefix + id);
+        if (value === null) continue;
+        if (value === 'review' || value === 'mastered') result[id] = value;
+        else delete result[id];
+      }
+    }
+    return result;
+  }
   let marks = Object.create(null);
-  try { marks = parseMarks(localStorage.getItem(storageKey)); }
+  try { marks = readStoredMarks(); }
   catch (_) { byId('study-storage').textContent = '当前浏览器不允许保存：标记在本次打开期间有效。'; }
-  function save() {
-    try { localStorage.setItem(storageKey, JSON.stringify(marks)); }
+  function save(id) {
+    try { localStorage.setItem(entryPrefix + id, marks[id] || 'unmarked'); }
     catch (_) { byId('study-storage').textContent = '无法保存到浏览器：标记在本次打开期间有效。'; }
   }
   function readFilter() {
@@ -98,7 +114,7 @@
     record.el.querySelectorAll('[data-mark]').forEach(button => {
       button.addEventListener('click', () => {
         toggleMark(marks, record.id, button.dataset.mark);
-        syncMarks(record); save(); apply();
+        syncMarks(record); save(record.id); apply();
         // If a selected-state filter hides this card, move focus to a stable visible control.
         if (record.el.hidden) state.focus();
       });
@@ -136,8 +152,10 @@
   });
   window.addEventListener('afterprint', () => { printSnapshot.forEach(([el, open]) => { el.open = open; }); });
   window.addEventListener('storage', event => {
-    if (event.key !== storageKey && event.key !== null) return;
-    marks = parseMarks(event.key === null ? null : event.newValue);
+    if (event.key !== null && event.key !== storageKey && !event.key.startsWith(entryPrefix)) return;
+    // Read current values: an event may arrive after a newer change in another tab.
+    try { marks = readStoredMarks(); }
+    catch (_) { return; }
     records.forEach(syncMarks); apply();
   });
   apply(); revealHash();

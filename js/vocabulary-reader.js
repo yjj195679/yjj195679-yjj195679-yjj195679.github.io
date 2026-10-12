@@ -120,30 +120,53 @@
   const openPositionDatabase = () => {
     if (databasePromise) return databasePromise;
     databasePromise = new Promise((resolve, reject) => {
-      const request = indexedDB.open("tpm-reading-progress", 1);
+      const timeout = window.setTimeout(() => reject(new Error("Reading progress database timed out")), 1200);
+      const fail = error => { window.clearTimeout(timeout); reject(error); };
+      let request;
+      try { request = indexedDB.open("tpm-reading-progress", 1); }
+      catch (error) { fail(error); return; }
       request.onupgradeneeded = () => {
         const database = request.result;
         if (!database.objectStoreNames.contains("positions")) database.createObjectStore("positions", { keyPath: "key" });
       };
-      request.onsuccess = () => resolve(request.result);
-      request.onerror = () => reject(request.error);
+      request.onsuccess = () => {
+        window.clearTimeout(timeout);
+        request.result.onversionchange = () => request.result.close();
+        resolve(request.result);
+      };
+      request.onerror = () => fail(request.error);
+      request.onblocked = () => fail(new Error("Reading progress database blocked"));
     });
     return databasePromise;
   };
+  const validPosition = position => position && typeof position.groupId === "string"
+    && document.getElementById(position.groupId)?.classList.contains("vocab-group")
+    && Number.isFinite(Number(position.progress)) ? position : null;
+  const readLocalPosition = () => {
+    try { return validPosition(JSON.parse(localStorage.getItem(fallbackKey))); }
+    catch (_) { return null; }
+  };
+  const writeLocalPosition = position => {
+    try { localStorage.setItem(fallbackKey, JSON.stringify(position)); }
+    catch (_) {}
+  };
   const readPosition = async () => {
+    const local = readLocalPosition();
     try {
       const database = await openPositionDatabase();
-      return await new Promise((resolve, reject) => {
+      const stored = await new Promise((resolve, reject) => {
+        const timeout = window.setTimeout(() => reject(new Error("Reading progress read timed out")), 1200);
         const request = database.transaction("positions", "readonly").objectStore("positions").get(positionKey);
-        request.onsuccess = () => resolve(request.result || null);
-        request.onerror = () => reject(request.error);
+        request.onsuccess = () => { window.clearTimeout(timeout); resolve(validPosition(request.result)); };
+        request.onerror = () => { window.clearTimeout(timeout); reject(request.error); };
       });
+      return local && (!stored || Number(local.updatedAt || 0) >= Number(stored.updatedAt || 0)) ? local : stored;
     } catch (_) {
-      try { return JSON.parse(localStorage.getItem(fallbackKey)) || null; }
-      catch (_) { return null; }
+      return local;
     }
   };
   const writePosition = async position => {
+    writeLocalPosition(position);
     try {
       const database = await openPositionDatabase();
       await new Promise((resolve, reject) => {
@@ -153,8 +176,7 @@
         transaction.onerror = () => reject(transaction.error);
       });
     } catch (_) {
-      try { localStorage.setItem(fallbackKey, JSON.stringify(position)); }
-      catch (_) {}
+      // The synchronous copy was already saved before attempting IndexedDB.
     }
   };
   const positionFromGroup = (group, readingLine) => {
@@ -195,7 +217,10 @@
   const capturePosition = () => {
     if (restoringPosition) return null;
     const position = currentReadingPosition();
-    if (position) latestPosition = position;
+    if (position) {
+      latestPosition = position;
+      writeLocalPosition(position);
+    }
     return position;
   };
   const savePosition = () => {
@@ -206,6 +231,7 @@
   const flushPosition = () => {
     if (restoringPosition || !latestPosition) return;
     window.clearTimeout(saveTimer);
+    writeLocalPosition(latestPosition);
     void writePosition(latestPosition);
   };
   const schedulePositionSave = () => {
@@ -218,45 +244,50 @@
     window.clearTimeout(saveTimer);
     clearRestoreTimers();
 
-    if (/^#group-\d{3}$/.test(window.location.hash)) {
+    // Consume explicit group navigation so the URL cannot keep overriding later progress.
+    const linkedGroup = /^#group-\d+$/.test(window.location.hash)
+      ? document.getElementById(window.location.hash.slice(1)) : null;
+    if (linkedGroup) {
+      linkedGroup.scrollIntoView({ behavior: "auto", block: "start" });
+      try { history.replaceState(history.state, "", window.location.pathname + window.location.search); }
+      catch (_) {}
       restoringPosition = false;
-      restoreTimers.push(window.setTimeout(savePosition, 500));
+      schedulePositionSave();
       return;
     }
-
-    const position = await readPosition();
-    const target = position?.groupId ? document.getElementById(position.groupId) : null;
-    if (!target) {
-      restoringPosition = false;
-      return;
-    }
-    latestPosition = position;
-
-    const correctPosition = () => {
-      target.scrollIntoView({ behavior: "auto", block: "start" });
-      const bounds = target.getBoundingClientRect();
-      const readingLine = window.innerHeight * .38;
-      const progress = Math.max(0, Math.min(1, Number(position.progress) || 0));
-      window.scrollBy({ top: bounds.top + bounds.height * progress - readingLine, behavior: "auto" });
-    };
 
     const inputEvents = ["wheel", "touchstart", "pointerdown", "keydown"];
     const finishRestore = () => {
       if (!restoringPosition) return;
       clearRestoreTimers();
       restoringPosition = false;
-      latestPosition = currentReadingPosition() || position;
-      inputEvents.forEach(eventName => window.removeEventListener(eventName, interruptRestore));
+      capturePosition();
+      inputEvents.forEach(eventName => window.removeEventListener(eventName, finishRestore));
       if (!manuallyHidden) {
         toolbar?.classList.remove("is-hidden");
         toolbar?.removeAttribute("inert");
         toolbar?.setAttribute("aria-hidden", "false");
       }
     };
-    const interruptRestore = () => finishRestore();
-    inputEvents.forEach(eventName => {
-      window.addEventListener(eventName, interruptRestore, { passive: true, once: true });
-    });
+    // Listen before the storage read, which may be delayed on mobile browsers.
+    inputEvents.forEach(eventName => window.addEventListener(eventName, finishRestore, { passive: true, once: true }));
+    const position = await readPosition();
+    if (!restoringPosition) return;
+    const target = position?.groupId ? document.getElementById(position.groupId) : null;
+    if (!target) {
+      finishRestore();
+      return;
+    }
+    latestPosition = position;
+
+    const correctPosition = () => {
+      if (!restoringPosition) return;
+      target.scrollIntoView({ behavior: "auto", block: "start" });
+      const bounds = target.getBoundingClientRect();
+      const readingLine = window.innerHeight * .38;
+      const progress = Math.max(0, Math.min(1, Number(position.progress) || 0));
+      window.scrollBy({ top: bounds.top + bounds.height * progress - readingLine, behavior: "auto" });
+    };
 
     correctPosition();
     window.requestAnimationFrame(() => window.requestAnimationFrame(correctPosition));
@@ -275,6 +306,17 @@
   };
   window.addEventListener("scroll", schedulePositionSave, { passive: true });
   window.addEventListener("pagehide", flushPosition);
+  window.addEventListener("pageshow", event => {
+    if (event.persisted) {
+      clearRestoreTimers();
+      restoringPosition = false;
+    }
+  });
+  window.addEventListener("hashchange", () => {
+    if (!/^#group-\d+$/.test(window.location.hash)) return;
+    restoringPosition = true;
+    void restorePosition();
+  });
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "hidden") flushPosition();
   });
@@ -298,3 +340,4 @@
   larger.addEventListener("click", () => applyScale(Number(getComputedStyle(sheet).getPropertyValue("--reader-scale")) + .1));
   reset.addEventListener("click", () => applyScale(1));
 })();
+

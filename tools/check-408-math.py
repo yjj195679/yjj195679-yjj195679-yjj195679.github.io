@@ -75,6 +75,8 @@ for p in (ROOT/'images/408').glob('*.svg'):
  assert root.find('{http://www.w3.org/2000/svg}title') is not None
 x=json.loads((ROOT/'data/408-knowledge.json').read_text())['items']
 for row in x:
+ for value in row.values():
+  if isinstance(value,str): assert not any(ord(c)<32 and c not in '\n\t' for c in value)
  assert all(isinstance(row[k],str) and row[k].strip() for k in ['wrong','right','why','example','check','answer'])
  if 'table' in row:assert all(len(r)==len(row['table']['headers']) for r in row['table']['rows'])
  if 'diagram' in row:assert ((ROOT/'images/408')/(row['diagram']+'.svg')).exists()

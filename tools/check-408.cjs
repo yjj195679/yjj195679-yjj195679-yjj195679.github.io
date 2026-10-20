@@ -2,10 +2,10 @@ const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict');
 const {parseHTML}=require('linkedom');
 const root=require('node:path').resolve(__dirname,'..')+'/';const core=require(root+'js/408.js');
 const all=JSON.parse(fs.readFileSync(root+'data/408-knowledge.json','utf8'));
-assert.equal(all.items.length,211); assert.equal(all.calculations.length,8);
+assert.equal(all.items.length,229); assert.equal(all.calculations.length,8);
 const values=all.items.map(x=>({...x,search:Object.values(x).join(' ')}));
-assert.equal(values.filter(x=>core.matches(x,{},{}   )).length,211);
-assert.equal(values.filter(x=>core.matches(x,{subject:'操作系统'},{} )).length,52);
+assert.equal(values.filter(x=>core.matches(x,{},{}   )).length,229);
+assert.equal(values.filter(x=>core.matches(x,{subject:'操作系统'},{} )).length,56);
 assert.equal(values.filter(x=>core.matches(x,{tag:'个人错题'},{})).length,21);
 assert.equal(values.filter(x=>core.matches(x,{tag:'近年考查'},{})).length,46);
 assert.equal(values.filter(x=>core.matches(x,{query:'不存在的关键词'},{})).length,0);
@@ -13,7 +13,7 @@ assert(values.some(x=>core.matches(x,{query:'cache 组号'},{})));
 assert(core.matches(values.find(x=>x.title.startsWith('Cache：')),{query:'ＣＡＣＨＥ'},{}));
 assert.equal(Object.keys(core.parseMarks('{bad')).length,0);
 assert.equal(Object.keys(core.parseMarks('[]')).length,0);
-const loaded=core.parseMarks('{"k001":"review","c001":"mastered","k080":"review","k212":"review","__proto__":"review","k002":"broken"}');
+const loaded=core.parseMarks('{"k001":"review","c001":"mastered","k080":"review","k230":"review","__proto__":"review","k002":"broken"}');
 assert.deepEqual(Object.keys(loaded),['k001','c001','k080']);
 core.toggleMark(loaded,'k001','mastered');assert.equal(loaded.k001,'mastered');
 core.toggleMark(loaded,'k001','mastered');assert(!loaded.k001);
@@ -48,8 +48,8 @@ function runPage(name,blocked=false,hash='') {
  const click=(sel)=>document.querySelector(sel).dispatchEvent(new window.Event('click',{bubbles:true}));
  return {window,document,get,visible,set,click};
 }
-let p=runPage('408.html'); assert(!p.get('study-filters').hidden);assert.equal(p.visible().length,211);
-p.set('study-subject','计算机组成原理');assert.equal(p.visible().length,52);
+let p=runPage('408.html'); assert(!p.get('study-filters').hidden);assert.equal(p.visible().length,229);
+p.set('study-subject','计算机组成原理');assert.equal(p.visible().length,56);
 assert(![...p.get('study-chapter').children].some(x=>x.value==='文件系统'));
 p.set('study-chapter','存储系统');assert(p.visible().length>0);assert(p.visible().every(x=>x.dataset.chapter==='存储系统'));
 p.set('study-tag','个人错题');assert.equal(p.visible().length,1);assert.equal(p.visible()[0].id,'k027');
@@ -57,7 +57,7 @@ p.set('study-search','Cache 组号');assert.equal(p.visible().length,1);
 p.click('#k027 [data-mark="review"]');assert.equal(persisted().k027,'review');
 p.set('study-state','review');assert.equal(p.visible().length,1);
 p.click('#k027 [data-mark="mastered"]');assert.equal(p.visible().length,0);assert.equal(p.document.lastFocused.id,'study-state');
-p.click('#study-reset');assert.equal(p.visible().length,211);assert.equal(persisted().k027,'mastered');
+p.click('#study-reset');assert.equal(p.visible().length,229);assert.equal(persisted().k027,'mastered');
 p.set('study-subject','数据结构');p.set('study-chapter','存储系统'); // An impossible selection is harmless and produces no cards.
 assert.equal(p.visible().length,0);p.click('#study-reset');
 p.set('study-search','zzzzzz');assert(!p.get('study-empty').hidden);
@@ -102,3 +102,6 @@ store.clear();const added=runPage('408.html');added.set('study-tag','图解');as
 added.click('#study-reset');added.set('study-search','B 树高度公式');assert.equal(added.visible().length,1);
 added.click('#study-reset');added.click('#k208 [data-mark="review"]');const addedReload=runPage('408.html');assert.equal(addedReload.get('k208').querySelector('[data-mark="review"]').getAttribute('aria-pressed'),'true');
 console.log('PASS: six diagram cards, memory-topic search and persistence for new knowledge IDs.');
+
+// Added state-name content must support search, deep links and persisted marks.
+store.clear(); const states=runPage("408.html"); states.set("study-search","SYN-RCVD"); assert(states.visible().some(x=>x.id==="k212")); states.click("#study-reset"); states.click("#k229 [data-mark=\"review\"]"); const again=runPage("408.html",false,"#k229"); assert(again.get("k229").open); assert.equal(again.get("k229").querySelector("[data-mark=\"review\"]").getAttribute("aria-pressed"),"true"); console.log("PASS: new state terminology searchable, last added card deep-linked and persisted.");

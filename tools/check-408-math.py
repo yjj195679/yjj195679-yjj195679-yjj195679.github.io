@@ -80,4 +80,4 @@ for row in x:
  assert all(isinstance(row[k],str) and row[k].strip() for k in ['wrong','right','why','example','check','answer'])
  if 'table' in row:assert all(len(r)==len(row['table']['headers']) for r in row['table']['rows'])
  if 'diagram' in row:assert ((ROOT/'images/408')/(row['diagram']+'.svg')).exists()
-print('PASS: multiplication, restoring division and signed Booth including minimum negative inputs (n=1..6); B-tree occupancy/height bounds (orders 3..7, heights 1..3); six accessible safe SVGs; all 211 entries have complete explanation fields.')
+print(f'PASS: multiplication, restoring division and signed Booth including minimum negative inputs (n=1..6); B-tree occupancy/height bounds (orders 3..7, heights 1..3); six accessible safe SVGs; all {len(x)} entries have complete explanation fields.')

@@ -70,3 +70,14 @@
 .study-badge[data-tag="图解"] { color: var(--text); border-style: dashed; }
 @media(max-width:640px) { .study-directory { grid-template-columns: 1fr; } .study-directory ul { columns: 1; } }
 @media print { .study-directory { display: none; } .study-diagram-scroll svg { min-width: 0; --diagram-bg: #fff; --diagram-fill: #f1f4f8; --diagram-line: #58677a; --diagram-text: #17212f; --diagram-muted: #46566b; } .study-diagram-scroll { overflow: visible; } .study-table td { min-width: 0; } .study-figure { break-inside: avoid; } }
+
+/* Review hierarchy: conclusion first, explanation on demand. */
+.study-key { margin-top: 18px; padding: 16px 18px; border-left: 3px solid var(--accent); border-radius: 0 10px 10px 0; background: var(--surface-soft); }
+.study-card-body .study-key h4 { margin: 0 0 6px; font-size: .9rem; color: var(--muted); font-weight: 400; }
+.study-card-body .study-key p { margin: 0; font-size: 1.08rem; font-weight: 600; line-height: 1.8; }
+.study-card-body .study-caution { margin: 14px 0; line-height: 1.75; }
+.study-explanation > summary { font-weight: 600; }
+.study-explanation[open] { padding-bottom: 4px; }
+.study-explanation ol { padding-left: 24px; line-height: 1.9; }
+@media (max-width: 640px) { .study-key { padding: 12px 14px; } .study-card-body .study-key p { font-size: 1rem; } }
+@media print { .study-key { background: transparent; border-left-color: #000; } }

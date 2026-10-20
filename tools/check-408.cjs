@@ -107,3 +107,25 @@ console.log('PASS: 25 diagram cards, memory-topic search and persistence for new
 store.clear(); const states=runPage("408.html"); states.set("study-search","SYN-RCVD"); assert(states.visible().some(x=>x.id==="k212")); states.click("#study-reset"); states.click("#k229 [data-mark=\"review\"]"); const again=runPage("408.html",false,"#k229"); assert(again.get("k229").open); assert.equal(again.get("k229").querySelector("[data-mark=\"review\"]").getAttribute("aria-pressed"),"true"); console.log("PASS: new state terminology searchable, last added card deep-linked and persisted.");
 
 store.clear(); const files=runPage("408.html"); files.set("study-search","打开文件表 读写指针"); assert(files.visible().some(x=>x.id==="k230")); files.click("#study-reset"); files.click("#k230 [data-mark=\"review\"]"); const fileReload=runPage("408.html",false,"#k230"); assert(fileReload.get("k230").open); assert.equal(fileReload.get("k230").querySelector("[data-mark=\"review\"]").getAttribute("aria-pressed"),"true"); console.log("PASS: open-file table search, deep link and saved review mark.");
+
+// All concept cards expose a positive conclusion and one reviewed reminder;
+// explanations, examples and calculation solutions remain available on demand.
+store.clear(); const overview=runPage('408.html');
+for (const item of all.items) {
+ const card=overview.get(item.id), explanation=card.querySelector('.study-explanation');
+ assert(item.review_tip && item.review_tip.length<=100,item.id+' needs a concise reviewed reminder');
+ assert.equal(card.querySelector('.study-key p').textContent,item.right);
+ assert(card.querySelector('.study-caution').textContent.includes(item.review_tip));
+ assert(explanation && !explanation.open,item.id+' explanation should initially be collapsed');
+ assert(explanation.textContent.includes(item.why),item.id+' full conditions must survive');
+ assert(explanation.textContent.includes(item.example),item.id+' example must survive');
+ if(item.code)assert(explanation.querySelector('code').textContent===item.code);
+ if(item.diagram)assert(card.querySelector('svg[role="img"]'));
+}
+overview.window.dispatchEvent(new overview.window.Event('beforeprint'));
+assert([...overview.document.querySelectorAll('.study-recall')].every(x=>x.open));
+overview.window.dispatchEvent(new overview.window.Event('afterprint'));
+assert([...overview.document.querySelectorAll('.study-explanation')].every(x=>!x.open));
+const solutions=runPage('408-calculations.html');
+for(const item of all.calculations){const card=solutions.get(item.id),explanation=card.querySelector('.study-explanation');assert(!explanation.open);assert(explanation.textContent.includes(item.answer));assert(card.querySelector('.study-question').textContent===item.q);}
+console.log('PASS: all 230 conclusions/reminders, preserved conditions/examples/code/diagrams, collapsed solutions, full print and state restoration.');

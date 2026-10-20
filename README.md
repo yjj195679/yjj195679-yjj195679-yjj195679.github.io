@@ -103,3 +103,5 @@
 阶段/状态图解：运行 `python tools/build-408-state-diagrams.py` 生成并关联 18 张 SVG，再运行 `python tools/build-408.py` 重建页面。目前共 25 条图解卡；图解支持明暗主题、横向滚动、单独查看与文字说明。
 
 2026-10-20：新增打开文件表关系卡 k230（文件系统），区分教材二表模型与 UNIX/Linux 三层实现，列明位置指针、打开方式、文件保护权限及引用计数，配原创图 `open-file-tables.svg`。运行 `python tools/build-408-open-files-diagram.py` 可重新生成该图。
+
+打开文件表卡已精简为速记、两行字段对照和教材关系图；UNIX/Linux 实现差异与参考折叠展示。

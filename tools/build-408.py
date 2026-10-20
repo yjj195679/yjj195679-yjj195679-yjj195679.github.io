@@ -12,7 +12,7 @@ header=base[base.index('<header'):base.index('<main')]
 header=re.sub(r'<div class="language-switch">.*?</div>','',header)
 footer=base[base.index('<footer'):base.index('<script src="js/main.js')]
 def page(filename,title,description,body):
-    return f'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080a0f"><title>{e(title)} · True Path M</title><meta name="description" content="{e(description)}"><link rel="canonical" href="https://1956799.xyz/{filename}"><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="preload" href="/fonts/tpm-serif.woff2" as="font" type="font/woff2" crossorigin><script src="js/theme.js?v=20260909-15"></script><link rel="stylesheet" href="css/style.css?v=20260909-15"><link rel="stylesheet" href="css/408.css?v=20261012-3"></head><body data-page="study" class="study408"><a class="skip-link" href="#main">跳到主要内容</a><div class="site-bg" aria-hidden="true"></div><div class="noise" aria-hidden="true"></div>{header}<main id="main">{body}</main>{footer}<script src="js/main.js?v=20261012-408" defer></script><script src="js/408.js?v=20261020-3" defer></script></body></html>'''
+    return f'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080a0f"><title>{e(title)} · True Path M</title><meta name="description" content="{e(description)}"><link rel="canonical" href="https://1956799.xyz/{filename}"><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="preload" href="/fonts/tpm-serif.woff2" as="font" type="font/woff2" crossorigin><script src="js/theme.js?v=20260909-15"></script><link rel="stylesheet" href="css/style.css?v=20260909-15"><link rel="stylesheet" href="css/408.css?v=20261012-3"></head><body data-page="study" class="study408"><a class="skip-link" href="#main">跳到主要内容</a><div class="site-bg" aria-hidden="true"></div><div class="noise" aria-hidden="true"></div>{header}<main id="main">{body}</main>{footer}<script src="js/main.js?v=20261012-408" defer></script><script src="js/408.js?v=20261020-4" defer></script></body></html>'''
 def hero(title,lead,calc=False):
     return f'''<section class="subhero"><div class="container"><article class="subhero-card glass"><a class="back-link" href="courses.html">← 返回学习</a><div class="kicker">408 · {'计算训练' if calc else '概念复习'}</div><h1>{title}</h1><p>{lead}</p><nav class="hero-actions" aria-label="408 板块"><a class="button {'primary' if not calc else ''}" href="408.html" {'aria-current="page"' if not calc else ''}>易错易混与冷门考点</a><a class="button {'primary' if calc else ''}" href="408-calculations.html" {'aria-current="page"' if calc else ''}>计算专项</a></nav></article></div></section>'''
 def controls(calc=False):
@@ -28,6 +28,8 @@ def card(x,calc=False):
         content=f'''<p class="study-question">{e(x['q'])}</p><h4>分步解析</h4><ol>{''.join('<li>'+e(s)+'</li>' for s in x['steps'])}</ol><p class="study-conclusion"><strong>答案：</strong>{e(x['answer'])}</p><p><strong>易错提醒：</strong>{e(x['pitfalls'])}</p><p class="study-note">自编变式 · 用于过程训练，不标注为原真题。</p>'''
     else:
         content=f'''<p class="study-origin">{e(x['origin'])}</p><div class="study-comparison"><div><h4>错误认识</h4><p>{e(x['wrong'])}</p></div><div><h4>定义与正确结论</h4><p>{e(x['right'])}</p></div></div><h4>原理、适用条件与辨析</h4><p>{e(x['why'])}</p><h4>简短例子</h4><p>{e(x['example'])}</p>'''
+        if x.get('compact'):
+            content='<p class="study-conclusion"><strong>速记：</strong>'+e(x['right'])+'</p><p><strong>易混提醒：</strong>'+e(x['why'])+'</p>'
         if x.get('exams'):
             examlinks=[]
             urls={2022:'https://www.xit.edu.cn/_upload/article/files/c1/ce/26986f79493495bbaacba9738587/aea64e47-90e0-4cb1-8e12-10eed1a3c5f7.pdf',2024:'https://www.xit.edu.cn/_upload/article/files/c1/ce/26986f79493495bbaacba9738587/6b611f5c-55d9-4612-8ff9-30b028731314.pdf',2025:'https://www.xit.edu.cn/_upload/article/files/c1/ce/26986f79493495bbaacba9738587/d9fce855-72bd-4e00-9a48-5d4ec5ef6f72.pdf'}
@@ -43,7 +45,11 @@ def card(x,calc=False):
             caption=x.get("diagram_caption", "概念结构示意图 · 已写明模型约定；具体电路和参数以题设为准。")
             content+='<figure class="study-figure"><div class="study-diagram-scroll" tabindex="0" aria-label="示意图，可横向滚动">'+svg+'</div><figcaption>'+e(caption)+' <a href="images/408/'+e(name)+'.svg" target="_blank" rel="noopener noreferrer">单独查看图片</a></figcaption></figure>'
         if x.get('sources'):
-            content+='<p class="study-note">参考：'+'；'.join('<a href="'+e(r['url'],quote=True)+'" target="_blank" rel="noopener noreferrer">'+e(r['title'])+'</a>' for r in x['sources'])+'</p>'
+            refs='；'.join('<a href="'+e(r['url'],quote=True)+'" target="_blank" rel="noopener noreferrer">'+e(r['title'])+'</a>' for r in x['sources'])
+            if x.get('compact'):
+                content+='<details class="study-recall"><summary>补充：UNIX/Linux 实现差异与参考</summary><p>'+e(x.get('supplement',''))+'</p><p class="study-note">参考：'+refs+'</p></details>'
+            else:
+                content+='<p class="study-note">参考：'+refs+'</p>'
         if x.get('code'): content+=f'<h4>代码对照</h4><pre><code>{e(x["code"])}</code></pre>'
         content+=f'''<details class="study-recall"><summary>自检：{e(x['check'])}</summary><p>{e(x['answer'])}</p></details>'''
     return f'''<details class="study-card glass" id="{x['id']}" data-subject="{e(x['subject'])}" data-chapter="{e(x['chapter'])}" data-tags="{e(' '.join(tags))}" data-search="{e(search,quote=True)}"><summary><span class="study-card-title">{e(x['title'])}</span><span class="study-badges">{badges}</span><span class="study-expand-hint" aria-hidden="true">解析</span></summary><div class="study-card-body">{content}{state_controls(x['id'])}</div></details>'''

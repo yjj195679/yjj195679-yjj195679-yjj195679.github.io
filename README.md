@@ -99,3 +99,5 @@
 公式和图文检查可运行 `python tools/check-408-math.py`（Python 标准库），覆盖位宽边界、B 树高度和 SVG 语义/结构。
 
 2026-10-20：补充 18 条阶段与状态名称对照（TCP 建立/释放/特殊转换、拥塞控制、DHCP、PPP、介质访问、指令周期/流水线、中断/DMA、进程状态/挂起、资源安全、临界区、DFS、内外排序）。原有 ID 和复习记录保留。
+
+阶段/状态图解：运行 `python tools/build-408-state-diagrams.py` 生成并关联 18 张 SVG，再运行 `python tools/build-408.py` 重建页面。目前共 24 条图解卡；图解支持明暗主题、横向滚动、单独查看与文字说明。

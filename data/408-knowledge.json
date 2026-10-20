@@ -4455,7 +4455,8 @@
       "title": "TCP 建立状态：CLOSED、LISTEN、SYN-SENT、SYN-RCVD、ESTABLISHED",
       "tags": [
         "记忆概念",
-        "易混"
+        "易混",
+        "图解"
       ],
       "wrong": "第二次握手发出后，双方都已处于 ESTABLISHED。",
       "right": "典型主动打开方：CLOSED→SYN-SENT→ESTABLISHED；被动打开方：CLOSED→LISTEN→SYN-RCVD→ESTABLISHED。SYN-RCVD 是教材常用缩写，RFC 写作 SYN-RECEIVED。",
@@ -4503,7 +4504,9 @@
           "title": "RFC 9293 §3.3.2、§3.5：TCP 状态与关闭",
           "url": "https://www.rfc-editor.org/rfc/rfc9293.html"
         }
-      ]
+      ],
+      "diagram": "tcp-open-states",
+      "diagram_caption": "典型主动/被动打开，时间向下。A 发送 SYN 后为 SYN-SENT；B 收到后为 SYN-RCVD。A 处理 SYN+ACK 并发送 ACK 时为 ESTABLISHED；B 收到该 ACK 后才为 ESTABLISHED。"
     },
     {
       "id": "k213",
@@ -4512,7 +4515,8 @@
       "title": "TCP 释放状态：FIN-WAIT-1/2、CLOSE-WAIT、LAST-ACK、TIME-WAIT",
       "tags": [
         "记忆概念",
-        "易混"
+        "易混",
+        "图解"
       ],
       "wrong": "FIN-WAIT-2 是等待自己 FIN 的 ACK；CLOSE-WAIT 是等待 2MSL。",
       "right": "典型主动关闭方：ESTABLISHED→FIN-WAIT-1→FIN-WAIT-2→TIME-WAIT→CLOSED；被动关闭方：ESTABLISHED→CLOSE-WAIT→LAST-ACK→CLOSED。",
@@ -4565,7 +4569,9 @@
           "title": "RFC 9293 §3.3.2、§3.5：TCP 状态与关闭",
           "url": "https://www.rfc-editor.org/rfc/rfc9293.html"
         }
-      ]
+      ],
+      "diagram": "tcp-close-states",
+      "diagram_caption": "A 先发 FIN 进入 FIN-WAIT-1，收到其确认后进入 FIN-WAIT-2。B 收到 FIN 进入 CLOSE-WAIT，本地关闭后发送 FIN 进入 LAST-ACK。A 收到 B 的 FIN 并确认，进入 TIME-WAIT，等待 2MSL 后关闭；B 收到最后 ACK 即关闭。"
     },
     {
       "id": "k214",
@@ -4574,7 +4580,8 @@
       "title": "TCP 特殊转换：CLOSING、同时打开与 ACK/FIN 合并",
       "tags": [
         "记忆概念",
-        "易混"
+        "易混",
+        "图解"
       ],
       "wrong": "所有连接释放都必经过 FIN-WAIT-2；同时关闭只有一端 TIME-WAIT。",
       "right": "先收到对端 FIN、但本端 FIN 尚未被确认时可进入 CLOSING；本端 FIN 再获确认后进入 TIME-WAIT。",
@@ -4617,7 +4624,9 @@
           "title": "RFC 9293 §3.3.2、§3.5：TCP 状态与关闭",
           "url": "https://www.rfc-editor.org/rfc/rfc9293.html"
         }
-      ]
+      ],
+      "diagram": "tcp-special-states",
+      "diagram_caption": "FIN-WAIT-1 收到未确认本端 FIN 的对端 FIN，进入 CLOSING；随后本端 FIN 获确认进入 TIME-WAIT。若 FIN 与本端 FIN 的确认一起到达，可直接进入 TIME-WAIT。同时打开可从 SYN-SENT 到 SYN-RECEIVED。"
     },
     {
       "id": "k215",
@@ -4626,7 +4635,8 @@
       "title": "拥塞控制名称：慢开始、拥塞避免、快重传、快恢复",
       "tags": [
         "记忆概念",
-        "易混"
+        "易混",
+        "图解"
       ],
       "wrong": "快恢复是 TCP 连接释放阶段；慢开始按每个 ACK 翻倍。",
       "right": "四个名称描述拥塞控制算法，不是 TCP 连接状态。经典教材模型：慢开始约每 RTT 翻倍，拥塞避免约每 RTT 加 1 MSS；三次重复 ACK 可触发快重传。",
@@ -4669,7 +4679,9 @@
           "title": "RFC 5681：TCP 拥塞控制",
           "url": "https://www.rfc-editor.org/rfc/rfc5681.html"
         }
-      ]
+      ],
+      "diagram": "tcp-congestion-stages",
+      "diagram_caption": "慢开始通常呈每 RTT 指数增长，接近门限转拥塞避免的线性增长。三次重复 ACK 触发快重传，经典 Reno 配合快恢复后恢复拥塞避免；重传超时通常重新慢开始。"
     },
     {
       "id": "k216",
@@ -4678,7 +4690,8 @@
       "title": "DHCP 报文与租约状态：DORA、BOUND、RENEWING、REBINDING",
       "tags": [
         "记忆概念",
-        "易混"
+        "易混",
+        "图解"
       ],
       "wrong": "Discover、Offer 是 TCP 的连接状态；续租必须重新执行完整 DORA。",
       "right": "初次典型分配为 DHCPDISCOVER→DHCPOFFER→DHCPREQUEST→DHCPACK；客户端状态与报文名称是两组概念。",
@@ -4726,7 +4739,9 @@
           "title": "RFC 2131：DHCP",
           "url": "https://www.rfc-editor.org/rfc/rfc2131.html"
         }
-      ]
+      ],
+      "diagram": "dhcp-states",
+      "diagram_caption": "主路径 INIT、SELECTING、REQUESTING、BOUND；报文为 Discover、Offer、Request、Ack。租期达到 T1 通常单播续租，达到 T2 通常广播重绑定。成功续租回到 BOUND。"
     },
     {
       "id": "k217",
@@ -4735,7 +4750,8 @@
       "title": "PPP 工作阶段：静止、建立、认证、网络层协议、终止",
       "tags": [
         "记忆概念",
-        "易混"
+        "易混",
+        "图解"
       ],
       "wrong": "PPP 的认证每次必需；LCP 与 NCP 是同一个协议。",
       "right": "PPP 主阶段为 Dead→Establish→可选 Authenticate→Network→Terminate→Dead；教材可把 Network 中的网络层配置与链路打开单独画出。",
@@ -4783,7 +4799,9 @@
           "title": "RFC 1661 §3：PPP 工作阶段",
           "url": "https://www.rfc-editor.org/rfc/rfc1661.html"
         }
-      ]
+      ],
+      "diagram": "ppp-phases",
+      "diagram_caption": "PPP 主流程为静止、建立、可选认证、网络层协议、终止。无需认证可从建立直接到网络层协议阶段。网络层协议阶段先由 NCP 配置，成功后交换相应数据。"
     },
     {
       "id": "k218",
@@ -4792,7 +4810,8 @@
       "title": "介质访问阶段：CSMA/CD 退避与 CSMA/CA 等待",
       "tags": [
         "记忆概念",
-        "易混"
+        "易混",
+        "图解"
       ],
       "wrong": "CSMA/CA 发送时也靠检测碰撞中止；DIFS、SIFS 是 TCP 状态。",
       "right": "CSMA/CD：监听→发送并检测→碰撞后强化信号、停止→退避重试；CSMA/CA 使用帧间间隔、随机退避及确认等降低碰撞概率。",
@@ -4834,7 +4853,9 @@
             "无线信道忙时冻结计数"
           ]
         ]
-      }
+      },
+      "diagram": "csma-stages",
+      "diagram_caption": "左边为 CSMA/CD 监听、发送并检测、碰撞后停止、退避重试；右边为常见无线 DCF 的 DIFS、退避、发送、SIFS 后 ACK。无线退避在忙时冻结。"
     },
     {
       "id": "k219",
@@ -4843,7 +4864,8 @@
       "title": "指令阶段名称：取指、间址、执行、中断",
       "tags": [
         "记忆概念",
-        "易混"
+        "易混",
+        "图解"
       ],
       "wrong": "每条指令都依次且必定经历四个周期。",
       "right": "教材指令周期模型常分取指周期、间址周期、执行周期、中断周期；是否出现间址与中断由寻址方式和中断条件决定。",
@@ -4880,7 +4902,9 @@
             "保存断点、转向服务入口等"
           ]
         ]
-      }
+      },
+      "diagram": "instruction-phases",
+      "diagram_caption": "取指后可选间址，再执行。执行完成后若有满足响应条件的中断进入中断周期，否则取下一条指令。中断响应转入服务程序，服务程序也正常逐条执行。"
     },
     {
       "id": "k220",
@@ -4889,7 +4913,8 @@
       "title": "五级流水阶段：IF、ID、EX、MEM、WB",
       "tags": [
         "记忆概念",
-        "易混"
+        "易混",
+        "图解"
       ],
       "wrong": "MEM 阶段一定读数据存储器；每种流水线都固定五级。",
       "right": "经典五级模型：IF 取指、ID 译码/读寄存器、EX 运算/地址计算、MEM 数据访存、WB 写回。",
@@ -4931,7 +4956,9 @@
             "按需要写回寄存器"
           ]
         ]
-      }
+      },
+      "diagram": "pipeline-stages",
+      "diagram_caption": "上方列出 IF 取指、ID 译码读寄存器、EX 运算算地址、MEM 数据访存、WB 写回。下方以三条无停顿指令展示各阶段逐拍重叠；实际数据相关和资源冲突可能引入停顿。"
     },
     {
       "id": "k221",
@@ -4940,7 +4967,8 @@
       "title": "中断过程名称：请求、判优、响应、服务、返回",
       "tags": [
         "记忆概念",
-        "易混"
+        "易混",
+        "图解"
       ],
       "wrong": "中断响应就是运行完整中断服务程序；关中断等于 CPU 停止运行。",
       "right": "中断请求→判优及满足响应条件→硬件响应→中断服务程序→中断返回；各步骤的硬件/软件分工以体系结构和题设为准。",
@@ -4982,7 +5010,9 @@
             "常用专用返回指令"
           ]
         ]
-      }
+      },
+      "diagram": "interrupt-stages",
+      "diagram_caption": "设备请求后经判优并满足响应条件才进入硬件响应。硬件响应转向入口；服务程序处理事务及现场，最后中断返回。"
     },
     {
       "id": "k222",
@@ -4991,7 +5021,8 @@
       "title": "DMA 阶段名称：预处理、数据传送、后处理",
       "tags": [
         "记忆概念",
-        "易混"
+        "易混",
+        "图解"
       ],
       "wrong": "DMA 全过程不需要 CPU；每搬一个字都要 CPU 执行访存指令。",
       "right": "典型 DMA 过程分预处理、数据传送、后处理；CPU 负责启动配置及完成后的处理，DMA 控制器承担数据块传送。",
@@ -5023,7 +5054,9 @@
             "处理完成/异常通知并安排后续"
           ]
         ]
-      }
+      },
+      "diagram": "dma-stages",
+      "diagram_caption": "CPU 先配置并启动 DMA，DMA 控制器按总线授权搬运数据，完成或异常时通常中断 CPU 进行后处理。"
     },
     {
       "id": "k223",
@@ -5032,7 +5065,8 @@
       "title": "进程五状态：新建、就绪、运行、阻塞、终止",
       "tags": [
         "记忆概念",
-        "易混"
+        "易混",
+        "图解"
       ],
       "wrong": "创建了 PCB 就必然已运行；阻塞进程仅缺 CPU。",
       "right": "五状态教学模型为 New、Ready、Running、Blocked/Waiting、Terminated；就绪仅缺处理机，阻塞还在等待事件。",
@@ -5080,7 +5114,9 @@
           "title": "OSTEP：进程",
           "url": "https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-intro.pdf"
         }
-      ]
+      ],
+      "diagram": "process-five-states",
+      "diagram_caption": "新建被接纳后就绪，就绪由调度分派进入运行。运行被抢占回就绪，等待事件进入阻塞，结束进入终止。阻塞事件完成后先回就绪。"
     },
     {
       "id": "k224",
@@ -5089,7 +5125,8 @@
       "title": "挂起模型：静止就绪、静止阻塞与激活",
       "tags": [
         "记忆概念",
-        "易混"
+        "易混",
+        "图解"
       ],
       "wrong": "挂起就是阻塞；换回内存后一定立即运行。",
       "right": "常见七状态模型增加就绪挂起与阻塞挂起，教材也称静止就绪、静止阻塞；挂起描述调出内存等管理因素，阻塞描述等待事件。",
@@ -5131,7 +5168,9 @@
             "继续等事件"
           ]
         ]
-      }
+      },
+      "diagram": "process-suspend-states",
+      "diagram_caption": "活动与静止区分是否在内存等管理因素；就绪与阻塞区分是否等待事件。挂起及激活横向切换，事件完成从阻塞向就绪切换。静止阻塞事件完成后是静止就绪。"
     },
     {
       "id": "k225",
@@ -5140,7 +5179,8 @@
       "title": "安全、不安全、死锁：三者不是进程状态",
       "tags": [
         "记忆概念",
-        "易混"
+        "易混",
+        "图解"
       ],
       "wrong": "不安全状态就是已经死锁；没有死锁就必定安全。",
       "right": "安全状态存在安全序列；不安全状态不存在这样的安全完成保证；死锁状态已有相互等待且无法自行推进的进程集合。",
@@ -5172,7 +5212,9 @@
             "是已发生的僵局"
           ]
         ]
-      }
+      },
+      "diagram": "resource-safety-states",
+      "diagram_caption": "所有状态划分为安全与不安全。安全存在安全序列；死锁属于不安全，但不安全并不一定已经死锁。此处是系统资源分配状态，不是进程五状态。"
     },
     {
       "id": "k226",
@@ -5181,7 +5223,8 @@
       "title": "临界区四段：进入区、临界区、退出区、剩余区",
       "tags": [
         "记忆概念",
-        "易混"
+        "易混",
+        "图解"
       ],
       "wrong": "进入区就是访问共享数据的临界区；退出区就是进程退出。",
       "right": "互斥访问的程序结构常分 entry section、critical section、exit section、remainder section。",
@@ -5218,7 +5261,9 @@
             "其余代码"
           ]
         ]
-      }
+      },
+      "diagram": "critical-section-stages",
+      "diagram_caption": "程序每次访问临界资源先进入进入区申请权限，在临界区访问，退出区释放权限，再执行剩余区。可再次循环访问，退出区不是进程终止。"
     },
     {
       "id": "k227",
@@ -5227,7 +5272,8 @@
       "title": "DFS 三色状态：未发现、已发现未完成、已完成",
       "tags": [
         "记忆概念",
-        "易混"
+        "易混",
+        "图解"
       ],
       "wrong": "灰色顶点就是已经完成搜索；有向图见到任意已访问顶点都是环。",
       "right": "常用 DFS 三色标记：白色未发现，灰色已发现但搜索未完成，黑色搜索完成；这是常用算法约定，并非所有实现都必须使用颜色。",
@@ -5259,7 +5305,9 @@
             "处理完全部相邻边并退出时"
           ]
         ]
-      }
+      },
+      "diagram": "dfs-color-states",
+      "diagram_caption": "白色被发现后变灰，完成所有相邻边的搜索后变黑。有向图中，从当前顶点指回灰色祖先形成回边，可证明有环；指向黑色顶点并不必然有环。"
     },
     {
       "id": "k228",
@@ -5268,7 +5316,8 @@
       "title": "快排阶段与边界：划分、递归、终止",
       "tags": [
         "记忆概念",
-        "易混"
+        "易混",
+        "图解"
       ],
       "wrong": "一趟快排结束后两边子区间内部已经排好序。",
       "right": "经典快排包含划分 Partition、递归处理子区间、规模足够小时终止；划分通常只建立左右分区的大小关系。",
@@ -5306,7 +5355,9 @@
           "title": "Princeton Algorithms：Quicksort",
           "url": "https://algs4.cs.princeton.edu/23quicksort/"
         }
-      ]
+      ],
+      "diagram": "quicksort-stages",
+      "diagram_caption": "区间至少两个元素时先划分，再递归处理两侧子区间。图中边界仅用于返回枢轴最终位置 p 的划分方案；空区间和单元素直接返回。"
     },
     {
       "id": "k229",
@@ -5315,7 +5366,8 @@
       "title": "外部排序两阶段：初始归并段生成与多趟归并",
       "tags": [
         "记忆概念",
-        "易混"
+        "易混",
+        "图解"
       ],
       "wrong": "生成一个初始归并段就是完成一趟多路归并；败者树生成初始段。",
       "right": "外部归并排序主要分初始归并段生成、对归并段进行多趟多路归并。置换选择用于生成较长初始段；败者树常用于归并时选出最小输出记录。",
@@ -5352,7 +5404,9 @@
             "维护候选记录的选择过程"
           ]
         ]
-      }
+      },
+      "diagram": "external-sort-stages",
+      "diagram_caption": "以九个初始有序段做三路归并为例，第一趟合并为三个段，第二趟合并为一个最终有序文件。初始归并段生成与后续两趟归并分开计数。"
     }
   ],
   "calculations": [

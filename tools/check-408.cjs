@@ -98,10 +98,10 @@ assert.equal(fresh.get('k001').querySelector('[data-mark="mastered"]').getAttrib
 console.log('PASS: legacy migration, clearing legacy marks without resurrection, preserved calculation marks, and stale storage events use current data.');
 
 // New content must be searchable and its new IDs must persist.
-store.clear();const added=runPage('408.html');added.set('study-tag','图解');assert.equal(added.visible().length,6);
+store.clear();const added=runPage('408.html');added.set('study-tag','图解');assert.equal(added.visible().length,24);
 added.click('#study-reset');added.set('study-search','B 树高度公式');assert.equal(added.visible().length,1);
 added.click('#study-reset');added.click('#k208 [data-mark="review"]');const addedReload=runPage('408.html');assert.equal(addedReload.get('k208').querySelector('[data-mark="review"]').getAttribute('aria-pressed'),'true');
-console.log('PASS: six diagram cards, memory-topic search and persistence for new knowledge IDs.');
+console.log('PASS: 24 diagram cards, memory-topic search and persistence for new knowledge IDs.');
 
 // Added state-name content must support search, deep links and persisted marks.
 store.clear(); const states=runPage("408.html"); states.set("study-search","SYN-RCVD"); assert(states.visible().some(x=>x.id==="k212")); states.click("#study-reset"); states.click("#k229 [data-mark=\"review\"]"); const again=runPage("408.html",false,"#k229"); assert(again.get("k229").open); assert.equal(again.get("k229").querySelector("[data-mark=\"review\"]").getAttribute("aria-pressed"),"true"); console.log("PASS: new state terminology searchable, last added card deep-linked and persisted.");

@@ -40,7 +40,8 @@ def card(x,calc=False):
         if x.get('diagram'):
             name=x['diagram']
             svg=(ROOT/'images/408'/f'{name}.svg').read_text()
-            content+='<figure class="study-figure"><div class="study-diagram-scroll" tabindex="0" aria-label="示意图，可横向滚动">'+svg+'</div><figcaption>概念结构示意图 · 已写明模型约定；具体电路和参数以题设为准。<a href="images/408/'+e(name)+'.svg" target="_blank" rel="noopener noreferrer">单独查看图片</a></figcaption></figure>'
+            caption=x.get("diagram_caption", "概念结构示意图 · 已写明模型约定；具体电路和参数以题设为准。")
+            content+='<figure class="study-figure"><div class="study-diagram-scroll" tabindex="0" aria-label="示意图，可横向滚动">'+svg+'</div><figcaption>'+e(caption)+' <a href="images/408/'+e(name)+'.svg" target="_blank" rel="noopener noreferrer">单独查看图片</a></figcaption></figure>'
         if x.get('sources'):
             content+='<p class="study-note">参考：'+'；'.join('<a href="'+e(r['url'],quote=True)+'" target="_blank" rel="noopener noreferrer">'+e(r['title'])+'</a>' for r in x['sources'])+'</p>'
         if x.get('code'): content+=f'<h4>代码对照</h4><pre><code>{e(x["code"])}</code></pre>'

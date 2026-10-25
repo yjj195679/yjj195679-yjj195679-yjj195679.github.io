@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#080a0f">
+  <title>数学一 · 公式库 · True Path M</title>
+  <meta name="description" content="依据2027考研数学一考纲整理的高等数学、线性代数、概率论与数理统计公式库，附适用条件与易错提醒。">
+  <link rel="canonical" href="https://1956799.xyz/math-formulas.html">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/fonts/tpm-serif.woff2" as="font" type="font/woff2" crossorigin>
+  <script src="js/theme.js?v=20260909-15"></script>
+  <link rel="stylesheet" href="css/style.css?v=20260909-15">
+  <link rel="stylesheet" href="css/math-formulas.css?v=20261025-1">
+</head>
+<body data-page="study" class="math-handbook">
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <div class="site-bg" aria-hidden="true"></div><div class="noise" aria-hidden="true"></div>
+  <header class="topbar"><div class="container topbar-inner">
+    <a class="brand" href="index.html" aria-label="True Path M 首页"><span class="brand-dot" aria-hidden="true"></span><span>TRUE PATH M</span></a>
+    <nav class="nav" id="site-nav" aria-label="主导航"><a href="index.html">首页</a><a href="projects.html">项目</a><a href="education.html">方法</a><a href="courses.html" aria-current="page">学习</a><a href="achievements.html">成果</a><a href="life.html">生活</a><a href="guestbook.html">留言板</a><a href="https://github.com/yjj195679" target="_blank" rel="noopener noreferrer">GitHub</a></nav>
+    <div class="topbar-tools"><span class="clock" id="clock" aria-label="本地时间"></span><button class="menu-toggle" id="menu-toggle" type="button" aria-label="打开导航" aria-controls="site-nav" aria-expanded="false"><span></span></button></div>
+  </div></header>
+
+  <main id="main">
+    <section class="subhero formula-hero"><div class="container"><article class="subhero-card glass">
+      <a class="back-link" href="courses.html">← 返回学习</a>
+      <div class="kicker">2027 考研 · 数学一</div>
+      <h1>公式不是清单，<br>是条件与方法的索引</h1>
+      <p>覆盖高等数学、线性代数、概率论与数理统计。每条公式同时写明适用条件和常见误区，避免“背对了公式，用错了条件”。</p>
+      <div class="formula-stat-row" aria-label="公式库统计">
+        <span><strong id="formula-total">—</strong> 条公式</span><span><strong id="chapter-total">—</strong> 个章节</span><span><strong>3</strong> 大科目</span>
+      </div>
+    </article></div></section>
+
+    <section class="section formula-controls" aria-labelledby="formula-filter-title"><div class="container"><article class="panel glass">
+      <div class="formula-controls-head"><div><div class="kicker">快速定位</div><h2 id="formula-filter-title">搜索与筛选</h2></div><p id="formula-count" role="status" aria-live="polite">正在载入公式……</p></div>
+      <div class="formula-filter-grid">
+        <label class="formula-search"><span>关键词</span><input id="formula-search" type="search" placeholder="如：泰勒、二重积分、特征值、正态分布" autocomplete="off"></label>
+        <label><span>科目</span><select id="formula-subject"><option value="">全部科目</option><option value="高等数学">高等数学</option><option value="线性代数">线性代数</option><option value="概率论与数理统计">概率论与数理统计</option></select></label>
+        <label><span>章节</span><select id="formula-chapter"><option value="">全部章节</option></select></label>
+        <label><span>掌握状态</span><select id="formula-state"><option value="">全部状态</option><option value="review">待复习</option><option value="mastered">已掌握</option><option value="unmarked">未标记</option></select></label>
+      </div>
+      <div class="formula-toolbar" aria-label="公式库操作">
+        <button class="button primary" id="formula-random" type="button">随机抽查一条</button>
+        <button class="button" id="formula-reset" type="button">重置筛选</button>
+        <button class="button" id="formula-collapse" type="button">收起全部</button>
+        <button class="button" id="formula-print" type="button">打印 / 导出 PDF</button>
+      </div>
+      <p class="formula-storage-note">掌握标记只保存在当前浏览器，不会上传。公式较长时可在公式框内横向滑动。</p>
+    </article></div></section>
+
+    <section class="section formula-layout"><div class="container formula-layout-grid">
+      <aside class="formula-index panel glass" aria-label="章节目录"><div class="formula-index-sticky"><div class="kicker">章节目录</div><nav id="formula-index"></nav></div></aside>
+      <div class="formula-content"><p id="formula-empty" class="panel glass" hidden>没有匹配的公式。请减少关键词或重置筛选。</p><div id="formula-groups"></div></div>
+    </div></section>
+
+    <section class="section"><div class="container"><article class="panel glass formula-reference">
+      <div class="section-head"><div><div class="kicker">使用说明</div><h2>范围与边界</h2></div><p class="section-intro">2026-10-25 更新</p></div>
+      <ul>
+        <li>按教育部教育考试院组织编写的数学考试大纲范围整理；数学一由高等数学、线性代数、概率论与数理统计组成。</li>
+        <li>“公式”包含直接计算式、常用定理结论和判定条件；定义与定理只有在做题中可直接调用时才收入。</li>
+        <li>同一结论若有多个等价形式，优先保留考场最常用形式；特殊技巧与超纲结论不冒充考纲要求。</li>
+        <li>公式库用于复习与查漏，证明题仍需写清定理条件；统计推断公式要先判断总体、样本和方差是否已知。</li>
+      </ul>
+      <p class="formula-source"><a href="https://yankao.neea.edu.cn/xhtml1/report/21115/5103-1.htm" target="_blank" rel="noopener noreferrer">中国教育考试网：全国硕士研究生招生考试数学考试大纲</a></p>
+    </article></div></section>
+  </main>
+
+  <footer class="footer"><div class="container footer-inner"><div>© <span id="year">2026</span> True Path M · Personal Website</div><div class="footer-links"><a href="courses.html">学习</a><a href="408.html">408</a><a href="guestbook.html">留言板</a></div></div></footer>
+  <script src="js/main.js?v=20261012-408" defer></script>
+  <script src="js/math-formulas.js?v=20261025-1" defer></script>
+</body>
+</html>

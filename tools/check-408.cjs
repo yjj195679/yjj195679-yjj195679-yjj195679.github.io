@@ -2,9 +2,9 @@ const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict');
 const {parseHTML}=require('linkedom');
 const root=require('node:path').resolve(__dirname,'..')+'/';const core=require(root+'js/408.js');
 const all=JSON.parse(fs.readFileSync(root+'data/408-knowledge.json','utf8'));
-assert.equal(all.items.length,230); assert.equal(all.calculations.length,8);
+assert.equal(all.items.length,239); assert.equal(all.calculations.length,8);
 const values=all.items.map(x=>({...x,search:Object.values(x).join(' ')}));
-assert.equal(values.filter(x=>core.matches(x,{},{}   )).length,230);
+assert.equal(values.filter(x=>core.matches(x,{},{}   )).length,239);
 assert.equal(values.filter(x=>core.matches(x,{subject:'操作系统'},{} )).length,57);
 assert.equal(values.filter(x=>core.matches(x,{tag:'个人错题'},{})).length,21);
 assert.equal(values.filter(x=>core.matches(x,{tag:'近年考查'},{})).length,46);
@@ -13,7 +13,7 @@ assert(values.some(x=>core.matches(x,{query:'cache 组号'},{})));
 assert(core.matches(values.find(x=>x.title.startsWith('Cache：')),{query:'ＣＡＣＨＥ'},{}));
 assert.equal(Object.keys(core.parseMarks('{bad')).length,0);
 assert.equal(Object.keys(core.parseMarks('[]')).length,0);
-const loaded=core.parseMarks('{"k001":"review","c001":"mastered","k080":"review","k231":"review","__proto__":"review","k002":"broken"}');
+const loaded=core.parseMarks('{"k001":"review","c001":"mastered","k080":"review","k240":"review","__proto__":"review","k002":"broken"}');
 assert.deepEqual(Object.keys(loaded),['k001','c001','k080']);
 core.toggleMark(loaded,'k001','mastered');assert.equal(loaded.k001,'mastered');
 core.toggleMark(loaded,'k001','mastered');assert(!loaded.k001);
@@ -48,7 +48,7 @@ function runPage(name,blocked=false,hash='') {
  const click=(sel)=>document.querySelector(sel).dispatchEvent(new window.Event('click',{bubbles:true}));
  return {window,document,get,visible,set,click};
 }
-let p=runPage('408.html'); assert(!p.get('study-filters').hidden);assert.equal(p.visible().length,230);
+let p=runPage('408.html'); assert(!p.get('study-filters').hidden);assert.equal(p.visible().length,239);
 p.set('study-subject','计算机组成原理');assert.equal(p.visible().length,56);
 assert(![...p.get('study-chapter').children].some(x=>x.value==='文件系统'));
 p.set('study-chapter','存储系统');assert(p.visible().length>0);assert(p.visible().every(x=>x.dataset.chapter==='存储系统'));
@@ -57,7 +57,7 @@ p.set('study-search','Cache 组号');assert.equal(p.visible().length,1);
 p.click('#k027 [data-mark="review"]');assert.equal(persisted().k027,'review');
 p.set('study-state','review');assert.equal(p.visible().length,1);
 p.click('#k027 [data-mark="mastered"]');assert.equal(p.visible().length,0);assert.equal(p.document.lastFocused.id,'study-state');
-p.click('#study-reset');assert.equal(p.visible().length,230);assert.equal(persisted().k027,'mastered');
+p.click('#study-reset');assert.equal(p.visible().length,239);assert.equal(persisted().k027,'mastered');
 p.set('study-subject','数据结构');p.set('study-chapter','存储系统'); // An impossible selection is harmless and produces no cards.
 assert.equal(p.visible().length,0);p.click('#study-reset');
 p.set('study-search','zzzzzz');assert(!p.get('study-empty').hidden);
@@ -128,4 +128,4 @@ overview.window.dispatchEvent(new overview.window.Event('afterprint'));
 assert([...overview.document.querySelectorAll('.study-explanation')].every(x=>!x.open));
 const solutions=runPage('408-calculations.html');
 for(const item of all.calculations){const card=solutions.get(item.id),explanation=card.querySelector('.study-explanation');assert(!explanation.open);assert(explanation.textContent.includes(item.answer));assert(card.querySelector('.study-question').textContent===item.q);}
-console.log('PASS: all 230 conclusions/reminders, preserved conditions/examples/code/diagrams, collapsed solutions, full print and state restoration.');
+console.log('PASS: all 239 conclusions/reminders, preserved conditions/examples/code/diagrams, collapsed solutions, full print and state restoration.');

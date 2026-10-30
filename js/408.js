@@ -100,6 +100,16 @@
     const visible = records.filter(record => !record.el.hidden);
     const review = visible.filter(record => marks[record.id] === 'review').length;
     const mastered = visible.filter(record => marks[record.id] === 'mastered').length;
+    document.querySelectorAll('[data-subject-filter]').forEach(button => {
+      button.setAttribute('aria-pressed', String(button.dataset.subjectFilter === subject.value));
+    });
+    const progress = byId('study-progress');
+    if (progress) {
+      progress.hidden = false;
+      byId('study-mastery').max = visible.length || 1;
+      byId('study-mastery').value = mastered;
+      byId('study-progress-text').textContent = visible.length ? `${mastered} / ${visible.length} 已掌握` : '暂无匹配考点';
+    }
     byId('study-count').textContent = `显示 ${visible.length} / ${records.length} 条 · 待复习 ${review} · 已掌握 ${mastered}`;
     byId('study-empty').hidden = visible.length !== 0;
   }
@@ -123,6 +133,13 @@
   });
   query.addEventListener('input', apply);
   subject.addEventListener('change', () => { updateChapters(); apply(); });
+  document.querySelectorAll('[data-subject-filter]').forEach(button => {
+    button.addEventListener('click', () => {
+      subject.value = button.dataset.subjectFilter;
+      chapter.value = '';
+      updateChapters(); apply();
+    });
+  });
   [chapter, tag, state].filter(Boolean).forEach(el => el.addEventListener('change', apply));
   byId('study-reset').addEventListener('click', reset);
   byId('study-expand').addEventListener('click', () => cards.filter(el => !el.hidden).forEach(el => { el.open = true; }));

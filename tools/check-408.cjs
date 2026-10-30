@@ -114,11 +114,11 @@ store.clear(); const overview=runPage('408.html');
 for (const item of all.items) {
  const card=overview.get(item.id), explanation=card.querySelector('.study-explanation');
  assert(item.review_tip && item.review_tip.length<=100,item.id+' needs a concise reviewed reminder');
- assert.equal(card.querySelector('.study-key p').textContent,item.right);
- assert(card.querySelector('.study-caution').textContent.includes(item.review_tip));
+ assert.equal(card.querySelector('.study-key p .study-text').dataset.plainText,item.right);
+ assert.equal(card.querySelector('.study-caution .study-text').dataset.plainText,item.review_tip);
  assert(explanation && !explanation.open,item.id+' explanation should initially be collapsed');
- assert(explanation.textContent.includes(item.why),item.id+' full conditions must survive');
- assert(explanation.textContent.includes(item.example),item.id+' example must survive');
+ assert([...explanation.querySelectorAll('.study-text')].some(el=>el.dataset.plainText===item.why),item.id+' full conditions must survive');
+ assert([...explanation.querySelectorAll('.study-text')].some(el=>el.dataset.plainText===item.example),item.id+' example must survive');
  if(item.code)assert(explanation.querySelector('code').textContent===item.code);
  if(item.diagram)assert(card.querySelector('svg[role="img"]'));
 }
@@ -127,5 +127,22 @@ assert([...overview.document.querySelectorAll('.study-recall')].every(x=>x.open)
 overview.window.dispatchEvent(new overview.window.Event('afterprint'));
 assert([...overview.document.querySelectorAll('.study-explanation')].every(x=>!x.open));
 const solutions=runPage('408-calculations.html');
-for(const item of all.calculations){const card=solutions.get(item.id),explanation=card.querySelector('.study-explanation');assert(!explanation.open);assert(explanation.textContent.includes(item.answer));assert(card.querySelector('.study-question').textContent===item.q);}
+for(const item of all.calculations){const card=solutions.get(item.id),explanation=card.querySelector('.study-explanation');assert(!explanation.open);assert([...explanation.querySelectorAll('.study-text')].some(el=>el.dataset.plainText===item.answer));assert(card.querySelector('.study-question .study-text').dataset.plainText===item.q);}
 console.log('PASS: all 239 conclusions/reminders, preserved conditions/examples/code/diagrams, collapsed solutions, full print and state restoration.');
+
+// Structured, targeted explanations and progressive disclosure are preserved.
+const revised=runPage('408.html');
+for(const item of all.items){
+ const card=revised.get(item.id), detail=card.querySelector('.study-explanation');
+ assert(!detail.open);
+ assert.equal(detail.querySelector('h4').textContent,'01 这类题怎么判断');
+ assert.equal(card.querySelectorAll('.study-card-body > .study-table-wrap, .study-card-body > .study-figure').length,0);
+ if(item.reason_steps) assert.equal(detail.querySelectorAll('.study-reason-steps > li').length,item.reason_steps.length);
+ if(item.formulas) {assert(detail.querySelector('.katex-mathml math'));assert(!detail.querySelector('.katex-error'));}
+ if(item.extension){const variant=detail.querySelector('.study-variant-answer');assert(variant&&!variant.open);assert(variant.textContent.includes('关键区别'));}
+}
+revised.click('[data-subject-filter="操作系统"]');assert.equal(revised.visible().length,57);
+assert.equal(revised.get('study-mastery').max,57);assert.equal(revised.get('study-mastery').value,0);
+revised.click('#k043 [data-mark="mastered"]');assert.equal(revised.get('study-mastery').value,1);
+assert.equal(revised.document.querySelector('[data-subject-filter="操作系统"]').getAttribute('aria-pressed'),'true');
+console.log('PASS: structured details, diagrams behind explanation, targeted reasoning, static MathML, collapsed original variants, subject shortcuts, progress update.');

@@ -64,6 +64,20 @@
     "2^(l−k)": "2^{l-k}",
     "log2 M": "\\log_2M",
     "10^(dB/10)": "10^{\\mathrm{dB}/10}",
-    "1+N(h−1)+N(h−2)": "1+N(h-1)+N(h-2)"
+    "1+N(h−1)+N(h−2)": "1+N(h-1)+N(h-2)",
+    "floor(A/B) mod S": "\\left\\lfloor\\frac AB\\right\\rfloor\\bmod S",
+    "floor(A/(B×S))": "\\left\\lfloor\\frac{A}{BS}\\right\\rfloor",
+    "floor(A/B)": "\\left\\lfloor\\frac AB\\right\\rfloor",
+    "floor((MTU−该片首部长度)/8)×8": "8\\left\\lfloor\\frac{\\mathrm{MTU}-H}{8}\\right\\rfloor",
+    "floor(0x1234/16)": "\\left\\lfloor\\frac{\\mathtt{0x1234}}{16}\\right\\rfloor",
+    "floor(291/128)": "\\left\\lfloor\\frac{291}{128}\\right\\rfloor",
+    "floor(2050/1024)": "\\left\\lfloor\\frac{2050}{1024}\\right\\rfloor",
+    "floor((1500−20)/8)×8": "8\\left\\lfloor\\frac{1500-20}{8}\\right\\rfloor",
+    "4096/(16×2)": "\\frac{4096}{16\\times2}",
+    "500000/100000000": "\\frac{500000}{100000000}",
+    "291 mod 128": "291\\bmod128",
+    "0x1234 mod 16": "\\mathtt{0x1234}\\bmod16",
+    "2050 mod 1024": "2050\\bmod1024",
+    "A mod B": "A\\bmod B"
   }
 }

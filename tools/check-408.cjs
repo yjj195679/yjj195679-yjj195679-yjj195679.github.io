@@ -135,7 +135,7 @@ const revised=runPage('408.html');
 for(const item of all.items){
  const card=revised.get(item.id), detail=card.querySelector('.study-explanation');
  assert(!detail.open);
- assert.equal(detail.querySelector('h4').textContent,'01 这类题怎么判断');
+ assert.equal(detail.querySelector('h4').textContent,'01 解析');
  assert.equal(card.querySelectorAll('.study-card-body > .study-table-wrap, .study-card-body > .study-figure').length,0);
  if(item.reason_steps) assert.equal(detail.querySelectorAll('.study-reason-steps > li').length,item.reason_steps.length);
  if(item.formulas) {assert(detail.querySelector('.katex-mathml math'));assert(!detail.querySelector('.katex-error'));}

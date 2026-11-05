@@ -1,0 +1,33 @@
+.politics-handbook [hidden]{display:none!important}
+.politics-handbook .formula-hero .subhero-card::after{content:"知 · 行";font-family:var(--font-cjk);bottom:-.18em;opacity:.7}
+.politics-handbook .formula-card-number{grid-column:1;grid-row:2}
+.politics-handbook .formula-card-summary{grid-row:3}
+.politics-handbook .formula-card summary::after{grid-row:1/4}
+.politics-handbook .formula-card-body{grid-template-columns:1fr;padding-top:1rem;gap:.8rem}
+.politics-conclusion h4{margin:0 0 .65rem;color:var(--text);font-size:.84rem}
+.politics-conclusion ul{padding-left:1.3rem;margin:0;line-height:1.9;color:var(--text)}
+.politics-conclusion li+li{margin-top:.45rem}
+.politics-handbook .formula-meta p{line-height:1.85;color:var(--text)}
+.politics-handbook .formula-chapter-head{flex-wrap:wrap}
+.politics-handbook .formula-chapter-head h2{font-size:1.18rem;margin:0}
+.politics-handbook .formula-chapter{margin-bottom:1.8rem;scroll-margin-top:100px}
+.politics-handbook .formula-index{position:sticky;top:90px;max-height:calc(100dvh - 110px);overflow:auto;scrollbar-width:thin}
+.politics-directory>summary{cursor:pointer;font-size:.9rem;font-weight:700;padding:.3rem}
+.politics-handbook .formula-index nav{margin-top:.5rem}
+.politics-handbook .formula-index a{align-items:start;line-height:1.55}
+.politics-handbook .formula-index a[aria-current]{color:var(--text);background:var(--surface-soft)}
+.politics-card[data-state="mastered"] .formula-card-number::after{content:" · 已掌握"}
+.politics-card[data-state="review"] .formula-card-number::after{content:" · 待复习"}
+.politics-handbook .formula-card summary:focus-visible{outline:2px solid var(--accent);outline-offset:-4px;border-radius:var(--radius-md)}
+.politics-handbook .formula-actions .button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.politics-handbook .formula-card,.politics-handbook .formula-filter-grid label{overflow-wrap:anywhere}
+.politics-handbook .formula-actions a{text-decoration:none}
+@media(max-width:900px){.politics-handbook .formula-index{position:static;max-height:none}.politics-handbook .formula-index nav{max-height:45vh;overflow:auto}.politics-handbook .formula-card-list{grid-template-columns:1fr}}
+@media(max-width:620px){.politics-handbook .formula-index nav{grid-template-columns:1fr}.politics-handbook .formula-stat-row{gap:.5rem}.politics-handbook .formula-card summary{padding:.85rem}.politics-handbook .formula-card-body{padding:1rem .85rem}.politics-handbook .formula-stat-row span{font-size:.78rem}}
+@media print{.politics-handbook .formula-controls,.politics-handbook .formula-index,.politics-handbook .formula-reference,.politics-handbook .page-tools,.politics-handbook .section-nav{display:none!important}.politics-handbook .formula-card:not([hidden]){break-inside:avoid;box-shadow:none;backdrop-filter:none}.politics-handbook .formula-card-body{display:block!important}.politics-handbook .formula-meta{margin-top:.6rem}.politics-handbook .formula-meta p,.politics-conclusion ul,.politics-conclusion h4{color:#111}.politics-handbook .formula-chapter-head{color:#111}.politics-handbook .formula-hero .subhero-card::after{display:none}.politics-handbook .formula-actions{display:none!important}}
+
+.politics-handbook .formula-hero .subhero-card h1{max-width:100%;text-wrap:balance}
+@media(max-width:620px){.politics-handbook .formula-reference .section-head{flex-direction:column;align-items:flex-start;gap:.7rem}.politics-handbook .formula-reference .section-intro{margin:0;text-align:left}}
+
+html.politics-root{min-width:0}
+.politics-handbook .formula-filter-grid>label,.politics-handbook .formula-filter-grid input,.politics-handbook .formula-filter-grid select{min-width:0}

@@ -461,6 +461,7 @@
           ["Project 03", "Reserved project space", "projects.html#project-3", "project"],
           ["Method", "Define, develop, and verify", "education.html", "reason test review"],
           ["Study", "Understand, connect, and apply", "courses.html", "learning notes"],
+          ["Politics handbook", "Concepts, history and review · Chinese", "../politics.html", "politics history philosophy"],
           ["408 review", "Concepts and explanations · Chinese", "../408.html", "408 data structures computer organization operating systems networks"],
           ["408 calculations", "Separate calculation practice · Chinese", "../408-calculations.html", "408 cache TCP paging"],
           ["Results", "Completion, evidence, and reflection", "achievements.html", "outcomes"],
@@ -476,6 +477,7 @@
           ["项目三", "预留项目位置", "projects.html#project-3", "项目"],
           ["方法", "定义、推演与验证", "education.html", "思路 检验 复盘"],
           ["学习", "理解、联结与应用", "courses.html", "学习 笔记"],
+          ["政治知识点", "五大模块、会议时间线与易混辨析", "politics.html", "政治 马原 史纲 毛中特 思法 习思想 会议 知识点"],
           ["408 知识复习", "个人错题、易错易混与冷门考点", "408.html", "408 数据结构 计组 操作系统 网络 知识点 解析"],
           ["408 计算专项", "独立计算训练与分步解析", "408-calculations.html", "408 Cache FAT 分页 流水线 TCP 计算"],
           ["成果", "完成、证据与反思", "achievements.html", "结果"],
@@ -759,3 +761,4 @@
   if (document.readyState === "complete") stabilizeInitialHash();
   else window.addEventListener("load", stabilizeInitialHash, { once: true });
 })();
+

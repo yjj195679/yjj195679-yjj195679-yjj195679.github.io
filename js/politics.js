@@ -14,6 +14,8 @@
   if (readingMeta) readingMeta.textContent = `${chapters.length} 个章节 · ${cards.length} 条知识点`;
   const storageKey = 'true-path-politics-progress-v1';
   const ids = new Set(cards.map((card) => card.id));
+  const legacyIds = new Map();
+  cards.forEach((card) => (card.dataset.legacyIds || '').split(/\s+/).filter(Boolean).forEach((id) => legacyIds.set(id, card.id)));
   const searchable = new Map(cards.map((card) => [card, card.textContent.toLocaleLowerCase('zh-CN')]));
   let marks = Object.create(null);
   let visible = cards;
@@ -25,7 +27,8 @@
       const stored = JSON.parse(localStorage.getItem(storageKey) || '{}');
       if (stored && typeof stored === 'object' && !Array.isArray(stored)) {
         Object.entries(stored).forEach(([id, value]) => {
-          if (ids.has(id) && (value === 'review' || value === 'mastered')) next[id] = value;
+          const currentId = ids.has(id) ? id : legacyIds.get(id);
+          if (currentId && (value === 'review' || value === 'mastered')) next[currentId] = value;
         });
       }
     } catch { /* Malformed or unavailable storage must not block reading. */ }
@@ -97,7 +100,7 @@
       if (focus.tagName !== 'SUMMARY') focus.tabIndex = -1;
       focus.focus({ preventScroll: true });
     }
-    target.scrollIntoView({ block: 'start', behavior: 'auto' });
+    window.scrollTo({ top: Math.max(0, target.getBoundingClientRect().top + window.scrollY - 96), behavior: 'instant' });
     links.forEach((link) => {
       if (link.dataset.chapterLink === (target.dataset.chapter || target.id)) link.setAttribute('aria-current', 'location');
       else link.removeAttribute('aria-current');
@@ -106,7 +109,7 @@
   function followHash() {
     let id;
     try { id = decodeURIComponent(location.hash.slice(1)); } catch { return; }
-    const el = byId(id);
+    const el = byId(id) || byId(legacyIds.get(id));
     if (el && (el.matches('.politics-card') || chapters.includes(el))) jump(el);
   }
   buildChapters();

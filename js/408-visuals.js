@@ -11,7 +11,7 @@
   let index=0,timer=null,ready=false,playing=false,wasOpen=false;
   const transcript=root.querySelector('.sim-transcript');
   let svg,note,heading,explain,count,prev,next,play,seek,speed;
-  const nodes=new Map(),paths=new Map();
+  const nodes=new Map(),paths=new Map(),wires=new Map();
   function stop(){clearTimeout(timer);timer=null;playing=false;if(play){play.textContent='自动演示';play.setAttribute('aria-pressed','false');}}
   function init(){
    if(ready)return;ready=true;host.hidden=false;
@@ -19,8 +19,9 @@
    svg=svgEl('svg',{viewBox:'0 0 900 '+data.height,role:'img','aria-label':data.title});svg.classList.add('board-svg');
    const defs=svgEl('defs'),marker=svgEl('marker',{id:'board-arrow-'+uid,viewBox:'0 0 10 10',refX:9,refY:5,markerWidth:6,markerHeight:6,orient:'auto'});
    marker.append(svgEl('path',{d:'M0 0 L10 5 L0 10z',fill:'var(--hand-concept)'}));defs.append(marker);svg.append(defs);
-   const edgeLayer=svgEl('g'),nodeLayer=svgEl('g');svg.append(edgeLayer,nodeLayer);
+   const wireLayer=svgEl('g'),edgeLayer=svgEl('g'),nodeLayer=svgEl('g');svg.append(wireLayer,edgeLayer,nodeLayer);
    for(const step of data.steps){
+    for(const wire of step.wires||[]){if(wires.has(wire.id))continue;const p=svgEl('path');p.classList.add('board-wire');wireLayer.append(p);wires.set(wire.id,p);}
     for(const n of step.nodes){if(nodes.has(n.id))continue;const g=svgEl('g');g.classList.add('board-node');const rect=svgEl('rect',{rx:10});g.append(rect);nodeLayer.append(g);nodes.set(n.id,{g,rect});}
     for(const ed of step.edges){const key=ed.a+'|'+ed.b+'|'+ed.label;if(paths.has(key))continue;const path=svgEl('path',{'marker-end':'url(#board-arrow-'+uid+')'}),label=svgEl('text',{'text-anchor':'middle'});path.classList.add('board-edge');label.classList.add('board-edge-label');edgeLayer.append(path,label);paths.set(key,{path,label});}
    }
@@ -37,12 +38,15 @@
    render();
   }
   function render(){
-   const s=data.steps[index];const here=new Map(s.nodes.map(n=>[n.id,n]));
+   const s=data.steps[index];
+   wires.forEach((p,id)=>{const wire=(s.wires||[]).find(w=>w.id===id);p.style.opacity=wire?'1':'0';if(wire)p.setAttribute('d',wire.points.map(([x,y],i)=>(i?'L':'M')+x+','+y).join(' '));});
+   const here=new Map(s.nodes.map(n=>[n.id,n]));
    nodes.forEach(({g,rect},id)=>{const n=here.get(id);g.style.opacity=n&&n.w>4?'1':'0';if(!n)return;g.setAttribute('class','board-node '+n.tone);g.style.transform=`translate(${n.x}px,${n.y}px)`;rect.setAttribute('width',n.w);rect.setAttribute('height',n.h);
     g.querySelectorAll('text').forEach(t=>t.remove());const lines=n.label.split('\n');const units=Math.max(...lines.map(l=>[...l].reduce((a,c)=>a+(c.charCodeAt(0)>255?1:.58),0)));const font=Math.min(19,(n.w-14)/Math.max(1,units),(n.h-12)/lines.length/1.3);
     lines.forEach((line,k)=>{const t=svgEl('text',{x:n.w/2,y:n.h/2+(k-(lines.length-1)/2)*26+7,'text-anchor':'middle','font-size':font});t.textContent=line;g.append(t);});
    });
-   const edges=new Set(s.edges.map(ed=>ed.a+'|'+ed.b+'|'+ed.label));paths.forEach(({path,label},key)=>{const show=edges.has(key);path.style.opacity=label.style.opacity=show?'1':'0';if(!show)return;const ed=s.edges.find(e=>e.a+'|'+e.b+'|'+e.label===key);const a=here.get(ed.a),b=here.get(ed.b);const ax=a.x+a.w/2,ay=a.y+a.h/2,bx=b.x+b.w/2,by=b.y+b.h/2,dx=bx-ax,dy=by-ay;
+   const edges=new Set(s.edges.map(ed=>ed.a+'|'+ed.b+'|'+ed.label));paths.forEach(({path,label},key)=>{const show=edges.has(key);path.style.opacity=label.style.opacity=show?'1':'0';if(!show)return;const ed=s.edges.find(e=>e.a+'|'+e.b+'|'+e.label===key);if(ed.directed===false)path.removeAttribute('marker-end');
+    const a=here.get(ed.a),b=here.get(ed.b);const ax=a.x+a.w/2,ay=a.y+a.h/2,bx=b.x+b.w/2,by=b.y+b.h/2,dx=bx-ax,dy=by-ay;
     let start=Math.min(dx?(a.w/2+4)/Math.abs(dx):1e6,dy?(a.h/2+4)/Math.abs(dy):1e6),end=Math.min(dx?(b.w/2+8)/Math.abs(dx):1e6,dy?(b.h/2+8)/Math.abs(dy):1e6);if(a.w<5){start=0;end=0;}
     path.setAttribute('d',`M${ax+dx*start},${ay+dy*start} L${bx-dx*end},${by-dy*end}`);label.setAttribute('x',(ax+bx)/2);label.setAttribute('y',(ay+by)/2-12);label.style.fontSize=Math.min(18,(Math.abs(dx)>100?Math.abs(dx)-18:180)/Math.max(1,[...ed.label].reduce((a,c)=>a+(c.charCodeAt(0)>255?1:.58),0)))+'px';label.textContent=ed.label;
    });

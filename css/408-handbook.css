@@ -88,3 +88,7 @@ html.handbook408-root{scroll-behavior:auto}
 .visual-filter-row{display:flex;flex-wrap:wrap;gap:10px;margin:.9rem 0}.visual-filter-row .button{min-height:44px}.visual-filter-row [aria-pressed=true]{border-color:var(--hand-example);color:var(--hand-example);background:var(--surface-soft)}.visual-badges{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.5rem}.visual-badges span{font-size:.75rem;line-height:1.6;color:var(--hand-example);border:1px solid var(--line);padding:.15rem .5rem;border-radius:6px}
 @media(prefers-reduced-motion:reduce){.board-node,.board-node rect,.board-edge,.board-edge-label{transition:none}}
 @media print{.board-stage{display:none}.visual-filter-row{display:none!important}}
+
+.board-wire{fill:none;stroke:var(--hand-concept);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;transition:opacity .35s}@media(prefers-reduced-motion:reduce){.board-wire{transition:none}}
+
+.board-node.rb-red rect{stroke:var(--hand-key)}.board-node.rb-red text{fill:var(--hand-key)}.board-node.rb-black rect{stroke:var(--text);stroke-width:3}

@@ -32,6 +32,29 @@
    packet=el('div','fragment-packet','原数据报：20B首部 + 3980B数据');track.append(packet);
    pieces=[['片1','数据1480B','偏移0 / MF=1'],['片2','数据1480B','偏移185 / MF=1'],['片3','数据1020B','偏移370 / MF=0']].map(lines=>{const n=el('div','fragment-piece');lines.forEach(v=>n.append(el('span','',v)));track.append(n);return n;});
   }
+  let ringSlots,ringPointers,lruTiles,visualCaption,bfsNodes,gbnPacket,gbnReceive,gbnAck;
+  const ringXY=[[300,10],[405,75],[365,170],[235,170],[195,75]];
+  if(['ring','bfs','lru','gbn'].includes(data.scene)){
+   nodes.forEach(n=>n.hidden=true);cursor.hidden=true;visualCaption=el('div','visual-caption');track.append(visualCaption);
+  }
+  if(data.scene==='ring'){
+   ringSlots=ringXY.map(([x,y])=>{const n=el('div','ring-slot');n.style.left=x+'px';n.style.top=y+'px';track.append(n);return n;});
+   ringPointers=ringXY.map(([x,y])=>{const n=el('div','ring-pointer');n.style.left=(x-15)+'px';n.style.top=(y+64)+'px';track.append(n);return n;});
+   visualCaption.textContent='5个槽位 / 最多4项';visualCaption.classList.add('ring-center');
+  }
+  if(data.scene==='lru'){
+   track.append(el('div','visual-label','最久未用 ← 页面次序 → 最近使用（非物理页框号）'));
+   lruTiles=[1,2,3,4].map(page=>{const n=el('div','lru-tile','页面 '+page);track.append(n);return n;});
+  }
+  if(data.scene==='bfs'){
+   const xy=[[300,10],[180,90],[420,90],[180,170],[420,170]],names=['A','B','C','D','E'];
+   const g=document.createElementNS('http://www.w3.org/2000/svg','svg');g.setAttribute('viewBox','0 0 660 260');g.classList.add('sim-edges');
+   const line=document.createElementNS(g.namespaceURI,'path');line.setAttribute('d',[[0,1],[0,2],[1,3],[2,4],[3,4]].map(([a,b])=>`M${xy[a][0]+30} ${xy[a][1]+25} L${xy[b][0]+30} ${xy[b][1]+25}`).join(' '));g.append(line);track.prepend(g);
+   bfsNodes=names.map((v,i)=>{const n=el('div','bfs-node',v);n.style.left=xy[i][0]+'px';n.style.top=xy[i][1]+'px';track.append(n);return n;});
+  }
+  if(data.scene==='gbn'){
+   const sender=el('div','gbn-end gbn-sender','发送方：保留未确认副本');gbnReceive=el('div','gbn-end gbn-receiver');gbnPacket=el('div','gbn-packet');gbnAck=el('div','gbn-ack');track.append(sender,gbnReceive,gbnPacket,gbnAck);
+  }
   const count=el('p','sim-count'),heading=el('h5','sim-heading'),explain=el('p','sim-explain');
   const status=el('div','sim-status');status.setAttribute('aria-live','polite');status.setAttribute('aria-atomic','true');status.append(count,heading,explain);host.append(status);
   const buttons=el('div','sim-buttons');
@@ -48,6 +71,10 @@
    if(addressToken){addressToken.style.left=(step.positions[step.active][0]/6.6)+'%';addressToken.textContent=index<3?'页号 →':'物理地址 →';}
    if(mainCells){patternRow.style.transform='translateX('+(step.shift*48)+'px)';mainCells.forEach((n,i)=>{n.classList.toggle('kmp-current',i===step.i);n.classList.toggle('kmp-matched',index===5&&i>=2);});patternCells.forEach((n,i)=>{n.classList.toggle('kmp-current',i===step.j);n.classList.toggle('kmp-matched',i<step.j);});}
    if(pieces){packet.style.opacity=index<2?'1':'.35';pieces.forEach((n,i)=>{const show=index>=i+2;n.style.opacity=show?'1':'0';n.style.transform='translate('+(20+i*210)+'px,'+(show?135:30)+'px)';n.classList.toggle('fragment-active',index===i+2);});}
+   if(ringSlots){ringSlots.forEach((n,i)=>{n.textContent=i+'：'+(step.slots[i]||'空');n.classList.toggle('ring-filled',!!step.slots[i]);ringPointers[i].textContent=[i===step.front?'front':'',i===step.rear?'rear':''].filter(Boolean).join(' / ');});}
+   if(lruTiles){lruTiles.forEach((n,i)=>{const at=step.order.indexOf(i+1);n.style.opacity=at<0?'0':'1';n.style.transform='translate('+(at<0?525:45+at*180)+'px,85px)';n.classList.toggle('visual-current',step.page===i+1);});visualCaption.textContent='本次访问：'+(step.page||'无')+'；累计缺页：'+step.faults+'次';}
+   if(bfsNodes){bfsNodes.forEach(n=>{n.classList.toggle('bfs-visited',step.visited.includes(n.textContent));n.classList.toggle('visual-current',step.current===n.textContent);});visualCaption.textContent='FIFO队列（左端出队）：['+step.queue.join(', ')+']';}
+   if(gbnPacket){gbnPacket.textContent=step.packet;gbnPacket.style.left=(step.lost?225:425)+'px';gbnPacket.classList.toggle('gbn-lost',step.lost);gbnReceive.textContent='接收方：期待帧'+step.expected;gbnAck.textContent='← '+step.ack;visualCaption.textContent='已按序交付：['+step.delivered.join(', ')+']';}
    if(path){const pairs=data.graph?[[0,1],[0,2],[1,2]]:index===0?[]:index<4?(index===1?[[0,1]]:[[0,1],[1,2]]):[[1,0],[1,2]];path.setAttribute('d',pairs.map(([a,b])=>`M${step.positions[a][0]+75} ${step.positions[a][1]+25} L${step.positions[b][0]+75} ${step.positions[b][1]+25}`).join(' '));}
   }
   function tick(){if(index<data.steps.length-1){index++;render();}if(index===data.steps.length-1)stop();else timer=setTimeout(tick,2600);}

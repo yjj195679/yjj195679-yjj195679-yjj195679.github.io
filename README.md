@@ -69,6 +69,14 @@
 
 这是纯静态网站，可以直接打开 `index.html`，也可以在仓库根目录启动任意静态文件服务器。天气定位与部分浏览器 API 在 `http://localhost` 或 HTTPS 环境下工作更稳定。
 
+## 阅读与 PDF
+
+阅读模式隐藏背景与装饰、限制正文宽度并显示单列内容；右下角可退出。文档工具提供完整 PDF 的直接预览和下载，浏览器打印保留当前筛选结果。iPhone/iPad 可打开 PDF 后使用“分享 → 存储到文件”。
+
+`documents/exports/` 保存中英文页面及学习专题的完整 PDF，`data/pdf-exports.json` 记录来源。修改这些页面内容后，使用安装了 WeasyPrint 和 lxml 的 Python 运行 `python tools/build-pdfs.py --font <完整中文宋体风格字体的绝对路径>`，同步提交 PDF。数学数据直接从 `js/math-formulas.js` 提取；保留原公式、图解和完整步骤。
+
+`node tools/check-document-tools.cjs`（需要 linkedom）检查所有文档入口、阅读模式和缺少原生打印时的 PDF 路径；408 回归检查另见下文。
+
 ## 部署
 
 仓库使用 GitHub Pages。发布时应确保 `index.html`、`CNAME`、`css/`、`js/`、`images/`、`en/` 等文件位于发布根目录，并保留 `.nojekyll` 处理逻辑。自定义域名为 `1956799.xyz`。

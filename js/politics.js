@@ -155,7 +155,10 @@
     printState.forEach((open, card) => { card.open = open; });
     printState = null;
   }
-  byId('politics-print').addEventListener('click', () => { beforePrint(); window.print(); afterPrint(); });
+  byId('politics-print').addEventListener('click', () => {
+    if (window.TruePathDocumentTools) window.TruePathDocumentTools.openExport();
+    else if (typeof window.print === 'function') window.print();
+  });
   window.addEventListener('beforeprint', beforePrint);
   window.addEventListener('afterprint', afterPrint);
   window.addEventListener('hashchange', followHash);

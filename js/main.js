@@ -34,7 +34,7 @@
         copyLink: "Copy link",
         linkCopied: "Link copied",
         copyFailed: "Copy failed",
-        printPage: "Print / save PDF",
+        printPage: "PDF / print",
         readingMeta: (sections, minutes) => `${sections} sections · about ${minutes} min read`,
         sectionLink: "Link to this section",
         weatherDetails: (current) =>
@@ -68,7 +68,7 @@
         copyLink: "复制链接",
         linkCopied: "链接已复制",
         copyFailed: "复制失败",
-        printPage: "打印 / 保存 PDF",
+        printPage: "PDF / 打印",
         readingMeta: (sections, minutes) => `${sections} 个章节 · 约 ${minutes} 分钟阅读`,
         sectionLink: "链接到本章节",
         weatherDetails: (current) =>
@@ -294,10 +294,17 @@
     };
 
     const readingStorageKey = "true-path-reading-mode";
+    const readingExit = document.createElement("button");
+    readingExit.type = "button";
+    readingExit.className = "reading-exit button";
+    readingExit.textContent = copy.exitReadingMode;
+    readingExit.hidden = true;
+    document.body.append(readingExit);
     const setReadingMode = (enabled) => {
       document.body.classList.toggle("reading-mode", enabled);
       readingButton.setAttribute("aria-pressed", String(enabled));
       select("span", readingButton).textContent = enabled ? copy.exitReadingMode : copy.readingMode;
+      readingExit.hidden = !enabled;
     };
     try {
       setReadingMode(window.localStorage.getItem(readingStorageKey) === "true");
@@ -305,7 +312,7 @@
       setReadingMode(false);
     }
 
-    readingButton.addEventListener("click", () => {
+    const toggleReadingMode = () => {
       const enabled = !document.body.classList.contains("reading-mode");
       setReadingMode(enabled);
       try {
@@ -313,6 +320,12 @@
       } catch {
         // Reading mode still works when storage is unavailable.
       }
+      showToolStatus(isEnglish ? (enabled ? "Reading mode on" : "Reading mode off") : (enabled ? "已开启阅读模式" : "已退出阅读模式"));
+    };
+    readingButton.addEventListener("click", toggleReadingMode);
+    readingExit.addEventListener("click", () => {
+      toggleReadingMode();
+      readingButton.focus({ preventScroll: true });
     });
 
     copyButton.addEventListener("click", async () => {
@@ -333,7 +346,55 @@
       }
     });
 
-    printButton.addEventListener("click", () => window.print());
+    const scriptTag = document.currentScript || select('script[src*="js/main.js"]');
+    const scriptUrl = new URL(scriptTag?.getAttribute("src") || (isEnglish ? "../js/main.js" : "js/main.js"), document.baseURI).href;
+    const siteRoot = new URL("../", scriptUrl);
+    const documentName = location.pathname.split("/").pop().replace(/\.html$/, "");
+    const pdfUrl = new URL(`documents/exports/${isEnglish ? "en-" : ""}${documentName}.pdf`, siteRoot).href;
+    const exportDialog = document.createElement("dialog");
+    exportDialog.className = "pdf-dialog";
+    exportDialog.setAttribute("aria-labelledby", "pdf-dialog-title");
+    exportDialog.innerHTML = `
+      <div class="pdf-dialog-heading"><h2 id="pdf-dialog-title">${isEnglish ? "PDF and printing" : "PDF 与打印"}</h2><button class="page-tool" type="button" data-export-close>${isEnglish ? "Close" : "关闭"}</button></div>
+      <p>${isEnglish ? "Open the complete PDF to read offline or save it to Files. It includes all entries, independently of your current filters." : "完整 PDF 可直接打开、下载或保存到文件，包含全部条目，不受当前筛选条件影响。"}</p>
+      <div class="pdf-dialog-actions"><a class="button primary" data-export-open target="_blank" rel="noopener">${isEnglish ? "Open complete PDF" : "打开完整 PDF"}</a><a class="button" data-export-download download>${isEnglish ? "Download PDF" : "下载 PDF"}</a><button class="button" type="button" data-export-print>${isEnglish ? "Print current results" : "打印当前结果"}</button></div>
+      <p class="pdf-dialog-help">${isEnglish ? "On iPhone/iPad, open the PDF and use Share → Save to Files. If browser printing does not open in an app, use the PDF links above or open this page in Safari." : "iPhone / iPad：打开 PDF 后，可通过“分享 → 存储到文件”保存。若应用内没有弹出打印窗口，可使用上方 PDF，或在 Safari 中打开本页。"}</p>
+      <p class="pdf-dialog-status" role="status" aria-live="polite"></p>`;
+    document.body.append(exportDialog);
+    select("[data-export-open]", exportDialog).href = pdfUrl;
+    const downloadLink = select("[data-export-download]", exportDialog);
+    downloadLink.href = pdfUrl;
+    downloadLink.download = documentName + ".pdf";
+    const exportStatus = select(".pdf-dialog-status", exportDialog);
+    let exportFocus = null;
+    const closeExport = () => {
+      if (typeof exportDialog.close === "function") exportDialog.close();
+      else exportDialog.removeAttribute("open");
+      exportFocus?.focus({ preventScroll: true });
+    };
+    const openExport = () => {
+      exportFocus = document.activeElement;
+      exportStatus.textContent = "";
+      if (!exportDialog.open) {
+        if (typeof exportDialog.showModal === "function") exportDialog.showModal();
+        else exportDialog.setAttribute("open", "");
+      }
+      select("[data-export-open]", exportDialog).focus();
+    };
+    select("[data-export-close]", exportDialog).addEventListener("click", closeExport);
+    exportDialog.addEventListener("cancel", event => { event.preventDefault(); closeExport(); });
+    exportDialog.addEventListener("click", event => { if (event.target === exportDialog) closeExport(); });
+    select("[data-export-print]", exportDialog).addEventListener("click", () => {
+      exportStatus.textContent = isEnglish ? "If no print window appears, open or download the PDF above." : "若未弹出打印窗口，请打开或下载上方的完整 PDF。";
+      try {
+        if (typeof window.print !== "function") return;
+        window.print();
+      } catch {
+        exportStatus.textContent = isEnglish ? "This browser cannot print. Please use the PDF links above." : "当前浏览器未提供打印功能，请使用上方 PDF 入口。";
+      }
+    });
+    window.TruePathDocumentTools = Object.freeze({ openExport });
+    printButton.addEventListener("click", openExport);
   }
 
   if (page !== "home" && pageSections.length >= 2) {

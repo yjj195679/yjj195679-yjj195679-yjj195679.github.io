@@ -153,7 +153,10 @@
     target.querySelector('summary').focus({preventScroll:true});
     window.scrollTo({top:Math.max(0,target.getBoundingClientRect().top+window.scrollY-110),behavior:'instant'});
   });
-  byId('study-print')?.addEventListener('click', () => window.print());
+  byId('study-print')?.addEventListener('click', () => {
+    if (window.TruePathDocumentTools) window.TruePathDocumentTools.openExport();
+    else if (typeof window.print === 'function') window.print();
+  });
   byId('study-collapse').addEventListener('click', () => cards.filter(el => !el.hidden).forEach(el => {
     el.open = false; el.querySelectorAll('details').forEach(nested => { nested.open = false; });
   }));
@@ -172,14 +175,15 @@
     const link = event.target.closest && event.target.closest('a');
     if (link && link.hash && link.origin === location.origin && link.pathname === location.pathname && link.hash === location.hash) revealHash();
   });
-  let printSnapshot = [];
+  let printSnapshot = null;
   window.addEventListener('beforeprint', () => {
+    if (printSnapshot) return;
     printSnapshot = [...document.querySelectorAll('.study-card, .study-recall')].map(el => [el, el.open]);
     cards.filter(el => !el.hidden).forEach(el => {
       el.open = true; el.querySelectorAll('.study-recall').forEach(recall => { recall.open = true; });
     });
   });
-  window.addEventListener('afterprint', () => { printSnapshot.forEach(([el, open]) => { el.open = open; }); });
+  window.addEventListener('afterprint', () => { printSnapshot?.forEach(([el, open]) => { el.open = open; }); printSnapshot = null; });
   window.addEventListener('storage', event => {
     if (event.key !== null && event.key !== storageKey && !event.key.startsWith(entryPrefix)) return;
     // Read current values: an event may arrive after a newer change in another tab.

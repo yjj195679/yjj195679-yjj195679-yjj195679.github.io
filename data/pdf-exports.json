@@ -1,0 +1,95 @@
+{
+  "updated": "2026-11-06",
+  "documents": [
+    {
+      "page": "projects.html",
+      "pdf": "documents/exports/projects.pdf",
+      "title": "从问题到证据",
+      "source_sha256": "cb09e11c2dc9219060b7ce1a9da4b07421f41896993568118670a58afa2f985c"
+    },
+    {
+      "page": "education.html",
+      "pdf": "documents/exports/education.pdf",
+      "title": "定义、推演、验证",
+      "source_sha256": "35e7c15dab870610a2dfc874de9a921a00ddbb57874d1ce340df0cec33dbadb5"
+    },
+    {
+      "page": "courses.html",
+      "pdf": "documents/exports/courses.pdf",
+      "title": "理解、联结、应用",
+      "source_sha256": "be88d0bc464d5605a8e23ee405efb75166f12c00e84d3a5d614e1502e5e580a7"
+    },
+    {
+      "page": "achievements.html",
+      "pdf": "documents/exports/achievements.pdf",
+      "title": "完成、证据、反思",
+      "source_sha256": "40ede52096634a15b50569efb501cd29df9fc9f3f41135b86a2f55becb3283a7"
+    },
+    {
+      "page": "life.html",
+      "pdf": "documents/exports/life.pdf",
+      "title": "日常、兴趣、片段",
+      "source_sha256": "d7680563a9e0e0624acd6d867ab430e398a44485a221acafe7eac60906957aad"
+    },
+    {
+      "page": "en/projects.html",
+      "pdf": "documents/exports/en-projects.pdf",
+      "title": "From questions to evidence",
+      "source_sha256": "520352e51b6c38c65861aa2ffeec85129ec50134ee689656522391a8884f473b"
+    },
+    {
+      "page": "en/education.html",
+      "pdf": "documents/exports/en-education.pdf",
+      "title": "Define, Develop, Verify",
+      "source_sha256": "e0e4edd6fa717d5ac6a1787ae189932b19a547c2ae186b0b4ffd74bd28f3fcd1"
+    },
+    {
+      "page": "en/courses.html",
+      "pdf": "documents/exports/en-courses.pdf",
+      "title": "Understand, Connect, Apply",
+      "source_sha256": "56ac7ff96f441413019332ecab8933be9ae9f14477a75632e4bb13ffc8d50d44"
+    },
+    {
+      "page": "en/achievements.html",
+      "pdf": "documents/exports/en-achievements.pdf",
+      "title": "Completion, Evidence, Reflection",
+      "source_sha256": "17aca6bb1d7560bd7b68cc73ccb413d90e6e7759d80faa9e9719f36cf3a9a3be"
+    },
+    {
+      "page": "en/life.html",
+      "pdf": "documents/exports/en-life.pdf",
+      "title": "Days, Interests, Moments",
+      "source_sha256": "0f3def4497ed704fd686c4bdc8e7637e8164cef980a6b54eb281ee384ec31487"
+    },
+    {
+      "page": "408.html",
+      "pdf": "documents/exports/408.pdf",
+      "title": "易错易混与冷门考点",
+      "source_sha256": "66708281002969ca1c233e6adf5b285b0af2466228a46ab98feed5bd9973063a"
+    },
+    {
+      "page": "408-calculations.html",
+      "pdf": "documents/exports/408-calculations.pdf",
+      "title": "计算专项",
+      "source_sha256": "2c3f65d703168a237d29ab043661676d9f55324132ee6220451514d645e6d508"
+    },
+    {
+      "page": "408-handbook.html",
+      "pdf": "documents/exports/408-handbook.pdf",
+      "title": "408 系统知识手册",
+      "source_sha256": "925e9eed4a723212d8ffda58a3835faf9250e5080c991c94eccaf5a4e86cf8ac"
+    },
+    {
+      "page": "politics.html",
+      "pdf": "documents/exports/politics.pdf",
+      "title": "政治知识点手册",
+      "source_sha256": "8f57085a92fc5a45267a5da94d8faa5568d1aefce029e591f8b13d6cb8553fd4"
+    },
+    {
+      "page": "math-formulas.html",
+      "pdf": "documents/exports/math-formulas.pdf",
+      "title": "公式不是清单，是条件与方法的索引",
+      "source_sha256": "c6deef8d5db67540d3f6efd2a58bd20ff86a664df675373137dd49d2c79e7b77"
+    }
+  ]
+}

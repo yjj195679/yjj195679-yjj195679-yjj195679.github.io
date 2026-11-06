@@ -1,0 +1,43 @@
+const fs = require('fs'), path = require('path'), vm = require('vm');
+const assert = require('node:assert/strict');
+const {parseHTML} = require('linkedom');
+const root = path.resolve(__dirname, '..');
+const manifest = JSON.parse(fs.readFileSync(path.join(root, 'data/pdf-exports.json')));
+const main = fs.readFileSync(path.join(root, 'js/main.js'), 'utf8');
+for (const item of manifest.documents) {
+  const source = fs.readFileSync(path.join(root, item.page), 'utf8');
+  assert(fs.readFileSync(path.join(root,item.pdf)).subarray(0,5).equals(Buffer.from('%PDF-')));
+  const {window,document} = parseHTML(source);
+  const store = new Map();
+  const location = {href:'https://1956799.xyz/'+item.page,pathname:'/'+item.page,hash:'',origin:'https://1956799.xyz'};
+  window.location=location;
+  window.localStorage={getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,v)};
+  window.sessionStorage=window.localStorage;
+  window.innerWidth=768;window.innerHeight=1024;window.scrollY=0;
+  window.requestAnimationFrame=f=>f();window.setInterval=()=>1;window.setTimeout=()=>1;window.clearTimeout=()=>{};
+  window.matchMedia=()=>({matches:false,addEventListener(){}});
+  window.HTMLElement.prototype.focus=function(){document.lastFocus=this};
+  const context = {document,window,location,URL,CustomEvent:window.CustomEvent,navigator:{platform:'iPad'},requestAnimationFrame:f=>f()};
+  vm.runInNewContext(main,context);
+  const click = selector => document.querySelector(selector).dispatchEvent(new window.Event('click',{bubbles:true}));
+  assert(window.TruePathDocumentTools,item.page);
+  click('[data-page-tool="reading"]');
+  assert(document.body.classList.contains('reading-mode'));
+  assert(!document.querySelector('.reading-exit').hidden);
+  click('.reading-exit');
+  assert(!document.body.classList.contains('reading-mode'));
+  click('[data-page-tool="print"]');
+  const dialog = document.querySelector('.pdf-dialog');
+  assert(dialog.hasAttribute('open'));
+  assert.equal(document.querySelector('[data-export-open]').href,'https://1956799.xyz/'+item.pdf);
+  // An embedded browser without window.print must still offer working PDF links.
+  window.print=undefined;
+  click('[data-export-print]');
+  assert(document.querySelector('.pdf-dialog-status').textContent);
+  let called=0;window.print=()=>{called++};
+  click('[data-export-print]');assert.equal(called,1);
+  window.print=()=>{throw new Error('Native printing unavailable')};
+  click('[data-export-print]');assert(document.querySelector('.pdf-dialog-status').textContent);
+  click('[data-export-close]');assert(!dialog.hasAttribute('open'));
+}
+console.log('PASS: all 15 document routes, Chinese/English PDF paths, reading toggle/exit, blocked native printing, PDF fallback, dialog close and focus.');

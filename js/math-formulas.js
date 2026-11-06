@@ -411,7 +411,20 @@
   });
   $('#formula-reset').addEventListener('click', () => { searchInput.value = ''; subjectSelect.value = ''; chapterSelect.value = ''; stateSelect.value = ''; applyFilters(); searchInput.focus(); });
   $('#formula-collapse').addEventListener('click', () => { document.querySelectorAll('.formula-card[open]').forEach((card) => { card.open = false; }); });
-  $('#formula-print').addEventListener('click', () => window.print());
+  $('#formula-print').addEventListener('click', () => {
+    if (window.TruePathDocumentTools) window.TruePathDocumentTools.openExport();
+    else if (typeof window.print === 'function') window.print();
+  });
+  let printSnapshot = null;
+  window.addEventListener('beforeprint', () => {
+    if (printSnapshot) return;
+    printSnapshot = [...document.querySelectorAll('.formula-card')].map(card => [card, card.open]);
+    printSnapshot.forEach(([card]) => { if (!card.hidden) card.open = true; });
+  });
+  window.addEventListener('afterprint', () => {
+    printSnapshot?.forEach(([card, open]) => { card.open = open; });
+    printSnapshot = null;
+  });
   $('#formula-random').addEventListener('click', () => {
     const visible = [...document.querySelectorAll('.formula-card:not([hidden])')];
     if (!visible.length) return;

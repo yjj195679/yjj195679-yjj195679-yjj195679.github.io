@@ -11,29 +11,45 @@ for item in data['items']+data['calculations']:
     expressions.update(f['tex'] for f in item.get('formulas',[]))
 math_html=json.loads(subprocess.run(['node',str(ROOT/'tools/render-408-math.cjs')],input=json.dumps(sorted(expressions)),capture_output=True,text=True,check=True).stdout)
 math_pattern=re.compile('|'.join(re.escape(k) for k in sorted(inline_math,key=len,reverse=True)))
+emphasis_pattern=re.compile(r'(当且仅当|不一定|不等于|不代表|不能|必须|只有|至少|至多|先确认|符号位|字节偏移|读写指针|拥塞窗口|接收窗口|临界区|互斥|同步|时间复杂度|空间复杂度|条件|边界)')
+def emphasize(text):
+    return ''.join('<strong>'+e(part)+'</strong>' if i%2 else e(part) for i,part in enumerate(emphasis_pattern.split(text)))
 def rich(text):
     text=str(text)
     parts=[]; end=0
     for match in math_pattern.finditer(text):
-        parts.extend([e(text[end:match.start()]), math_html[inline_math[match.group()]]]); end=match.end()
-    parts.append(e(text[end:]))
-    return '<span class="study-text" data-plain-text="'+e(text,quote=True)+'">'+''.join(parts)+'</span>'
+        parts.extend([emphasize(text[end:match.start()]), math_html[inline_math[match.group()]]]); end=match.end()
+    parts.append(emphasize(text[end:]))
+    rendered=''.join(parts)
+    return '<span class="study-text" data-plain-text="'+e(text,quote=True)+'">'+rendered+'</span>'
 def formula_block(x):
     return '<div class="study-formula-set">'+''.join('<div class="study-formula"><div class="study-formula-scroll" tabindex="0" aria-label="公式，可横向滚动">'+math_html[f['tex']]+'</div><p>'+rich(f['note'])+'</p></div>' for f in x.get('formulas',[]))+'</div>' if x.get('formulas') else ''
 subjects=['数据结构','计算机组成原理','操作系统','计算机网络']
 slugs=['ds','co','os','net']
+chapter_order={
+'数据结构':['基础与复杂度','线性结构','栈、队列与串','数组与矩阵','树与二叉树','图','查找与排序'],
+'计算机组成原理':['计算机概述','数据表示','运算与浮点','存储系统','指令与数据通路','CPU 与流水线','总线','中断与 I/O'],
+'操作系统':['操作系统概述','进程与线程','调度与中断','同步与死锁','存储管理','文件系统','I/O 与磁盘'],
+'计算机网络':['网络体系结构','物理层与链路层','数据链路层','网络层','传输层','应用层']}
+chapter_positions={}
+for subject in subjects:
+    actual=list(dict.fromkeys(x['chapter'] for x in data['items'] if x['subject']==subject))
+    ordered=[ch for ch in chapter_order[subject] if ch in actual]
+    ordered += [ch for ch in actual if ch not in ordered]
+    chapter_positions.update({(subject,ch):n for n,ch in enumerate(ordered)})
+data['items'].sort(key=lambda x:(subjects.index(x['subject']),chapter_positions[x['subject'],x['chapter']]))
 base=(ROOT/'courses.html').read_text()
 header=base[base.index('<header'):base.index('<main')]
 # Chinese material has no pretend English translation.
 header=re.sub(r'<div class="language-switch">.*?</div>','',header)
 footer=base[base.index('<footer'):base.index('<script src="js/main.js')]
 def page(filename,title,description,body):
-    return f'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080a0f"><title>{e(title)} · True Path M</title><meta name="description" content="{e(description)}"><link rel="canonical" href="https://1956799.xyz/{filename}"><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="preload" href="/fonts/tpm-serif.woff2" as="font" type="font/woff2" crossorigin><script src="js/theme.js?v=20260909-15"></script><link rel="stylesheet" href="css/style.css?v=20260909-15"><link rel="stylesheet" href="js/vendor/katex/katex.min.css"><link rel="stylesheet" href="css/408.css?v=20261030-1"></head><body data-page="study" class="study408"><a class="skip-link" href="#main">跳到主要内容</a><div class="site-bg" aria-hidden="true"></div><div class="noise" aria-hidden="true"></div>{header}<main id="main">{body}</main>{footer}<script src="js/main.js?v=20261012-408" defer></script><script src="js/408.js?v=20261030-1" defer></script></body></html>'''
+    return f'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080a0f"><title>{e(title)} · True Path M</title><meta name="description" content="{e(description)}"><link rel="canonical" href="https://1956799.xyz/{filename}"><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="preload" href="/fonts/tpm-serif.woff2" as="font" type="font/woff2" crossorigin><script src="js/theme.js?v=20260909-15"></script><link rel="stylesheet" href="css/style.css?v=20260909-15"><link rel="stylesheet" href="js/vendor/katex/katex.min.css"><link rel="stylesheet" href="css/408.css?v=20261105-separate-1"></head><body data-page="study" class="study408"><a class="skip-link" href="#main">跳到主要内容</a><div class="site-bg" aria-hidden="true"></div><div class="noise" aria-hidden="true"></div>{header}<main id="main">{body}</main>{footer}<script src="js/main.js?v=20261105-408-separate-1" defer></script><script src="js/408.js?v=20261105-separate-1" defer></script></body></html>'''
 def hero(title,lead,calc=False):
-    return f'''<section class="subhero"><div class="container"><article class="subhero-card glass"><a class="back-link" href="courses.html">← 返回学习</a><div class="kicker">408 · {'计算训练' if calc else '概念复习'}</div><h1>{title}</h1><p>{lead}</p><nav class="hero-actions" aria-label="408 板块"><a class="button {'primary' if not calc else ''}" href="408.html" {'aria-current="page"' if not calc else ''}>易错易混与冷门考点</a><a class="button {'primary' if calc else ''}" href="408-calculations.html" {'aria-current="page"' if calc else ''}>计算专项</a></nav></article></div></section>'''
+    return f'''<section class="subhero"><div class="container"><article class="subhero-card glass"><a class="back-link" href="courses.html">← 返回学习</a><div class="kicker">408 · {'计算训练' if calc else '概念复习'}</div><h1>{title}</h1><p>{lead}</p><nav class="hero-actions" aria-label="408 板块"><a class="button" href="408-handbook.html">系统知识手册</a><a class="button {'primary' if not calc else ''}" href="408.html" {'aria-current="page"' if not calc else ''}>易错易混与冷门考点</a><a class="button {'primary' if calc else ''}" href="408-calculations.html" {'aria-current="page"' if calc else ''}>计算专项</a></nav></article></div></section>'''
 def controls(calc=False):
     tags=['个人错题','易错','易混','冷门','近年考查','记忆概念','图解']
-    return f'''<section class="section study-controls" id="filters"><div class="container"><div class="panel glass"><h2 class="study-sr-only">筛选知识点</h2><fieldset id="study-filters" hidden><legend>筛选考点</legend><div class="study-quick" aria-label="快速选择科目"><button class="button" type="button" data-subject-filter="" aria-pressed="true">全部科目</button>{''.join(f'<button class="button" type="button" data-subject-filter="{x}" aria-pressed="false">{x}</button>' for x in subjects if not calc or any(r['subject']==x for r in data['calculations']))}</div><div class="study-filter-grid"><label class="study-search">搜索<input id="study-search" type="search" placeholder="例如：Cache 组号、TCP 窗口、读写指针" autocomplete="off"></label><label>科目<select id="study-subject"><option value="">全部科目</option>{''.join(f'<option>{x}</option>' for x in subjects)}</select></label><label>章节<select id="study-chapter"><option value="">全部章节</option></select></label>{'' if calc else '<label>分类<select id="study-tag"><option value="">全部分类</option>'+''.join(f'<option>{x}</option>' for x in tags)+'</select></label>'}<label>复习状态<select id="study-state"><option value="">全部状态</option><option value="review">待复习</option><option value="mastered">已掌握</option><option value="unmarked">未标记</option></select></label></div><div class="study-actions"><button type="button" class="button" id="study-reset">重置筛选</button><button type="button" class="button" id="study-expand">展开筛选结果</button><button type="button" class="button" id="study-collapse">收起筛选结果</button></div></fieldset><div class="study-progress" id="study-progress" hidden><label for="study-mastery">当前筛选范围的掌握进度</label><progress id="study-mastery" max="100" value="0">0%</progress><span id="study-progress-text"></span></div><p id="study-count" role="status" aria-live="polite">共 {len(data['calculations'] if calc else data['items'])} 条，按科目与章节分类。点击知识点展开解析。</p><p class="study-note" id="study-storage">复习标记只保存在当前浏览器；重置筛选不会清除标记。</p><noscript><p>当前未启用脚本：仍可展开全部解析，搜索、筛选和复习标记暂不可用。</p></noscript></div></div></section>'''
+    return f'''<section class="section study-controls" id="filters"><div class="container"><div class="panel glass"><h2 class="study-sr-only">筛选知识点</h2><div class="study-legend" aria-label="重点颜色说明"><span class="study-tone-concept">蓝 · 正确结论与原理</span><span class="study-tone-key">红 · 关键条件</span><span class="study-tone-contrast">橙 · 易错易混</span><span class="study-tone-example">紫 · 例子与计算</span><span class="study-tone-memory">绿 · 自检与记忆</span></div><fieldset id="study-filters" hidden><legend>筛选考点</legend><div class="study-quick" aria-label="快速选择科目"><button class="button" type="button" data-subject-filter="" aria-pressed="true">全部科目</button>{''.join(f'<button class="button" type="button" data-subject-filter="{x}" aria-pressed="false">{x}</button>' for x in subjects if not calc or any(r['subject']==x for r in data['calculations']))}</div><div class="study-filter-grid"><label class="study-search">搜索<input id="study-search" type="search" placeholder="例如：Cache 组号、TCP 窗口、读写指针" autocomplete="off"></label><label>科目<select id="study-subject"><option value="">全部科目</option>{''.join(f'<option>{x}</option>' for x in subjects)}</select></label><label>章节<select id="study-chapter"><option value="">全部章节</option></select></label>{'' if calc else '<label>分类<select id="study-tag"><option value="">全部分类</option>'+''.join(f'<option>{x}</option>' for x in tags)+'</select></label>'}<label>复习状态<select id="study-state"><option value="">全部状态</option><option value="review">待复习</option><option value="mastered">已掌握</option><option value="unmarked">未标记</option></select></label></div><div class="study-actions"><button type="button" class="button" id="study-random">随机抽查</button><button type="button" class="button" id="study-reset">重置筛选</button><button type="button" class="button" id="study-expand">展开完整解析</button><button type="button" class="button" id="study-collapse">收起筛选结果</button><button type="button" class="button" id="study-print">打印当前结果</button></div></fieldset><div class="study-progress" id="study-progress" hidden><label for="study-mastery">当前筛选范围的掌握进度</label><progress id="study-mastery" max="100" value="0">0%</progress><span id="study-progress-text"></span></div><p id="study-count" role="status" aria-live="polite">共 {len(data['calculations'] if calc else data['items'])} 条，按科目与章节分类。点击知识点展开解析。</p><p class="study-note" id="study-storage">复习标记只保存在当前浏览器；重置筛选不会清除标记。</p><noscript><p>当前未启用脚本：仍可展开全部解析，搜索、筛选和复习标记暂不可用。</p></noscript></div></div></section>'''
 def state_controls(id):
     return f'''<div class="study-mark" hidden aria-label="复习标记"><button type="button" class="button" data-mark="review" aria-pressed="false">待复习</button><button type="button" class="button" data-mark="mastered" aria-pressed="false">已掌握</button><span class="study-state-text">未标记</span><a href="#{id}" class="button-link" aria-label="定位此知识点">定位链接</a></div>'''
 def card(x,calc=False):
@@ -70,20 +86,15 @@ def card(x,calc=False):
         if x.get('code'):content+='<section class="study-detail-block"><h4>代码对照</h4><pre><code>'+e(x['code'])+'</code></pre></section>'
         if x.get('supplement'):content+='<section class="study-detail-block"><h4>教材模型与实现差异</h4><p>'+e(x['supplement'])+'</p></section>'
         if x.get('exam_focus'):
-            focus=x['exam_focus']
-            content+='<section class="study-detail-block study-exam-focus"><h4>真题关联</h4><a href="'+e(focus['url'],quote=True)+'" target="_blank" rel="noopener noreferrer">'+e(focus['label'])+'</a><p>'+rich(focus['point'])+'</p></section>'
+            content+='<section class="study-detail-block study-exam-focus"><h4>考点联系</h4><p>'+rich(x['exam_focus']['point'])+'</p></section>'
         if x.get('extension'):
             ext=x['extension']
             content+='<section class="study-detail-block study-extension"><h4>变式</h4><p class="study-extension-label">'+e(ext['label'])+' · '+e(ext['title'])+'</p><p>'+rich(ext['question'])+'</p><details class="study-recall study-variant-answer"><summary>答案与解析</summary><p>'+rich(ext['answer'])+'</p><p class="study-transfer"><strong>关键区别：</strong>'+rich(ext['lesson'])+'</p></details></section>'
-        content+=('<details class="study-recall study-sources"><summary>相关真题与参考来源</summary>' if x.get('exams') or x.get('sources') else '')
-        if x.get('exams'):
-            urls={2022:'https://www.xit.edu.cn/_upload/article/files/c1/ce/26986f79493495bbaacba9738587/aea64e47-90e0-4cb1-8e12-10eed1a3c5f7.pdf',2024:'https://www.xit.edu.cn/_upload/article/files/c1/ce/26986f79493495bbaacba9738587/6b611f5c-55d9-4612-8ff9-30b028731314.pdf',2025:'https://www.xit.edu.cn/_upload/article/files/c1/ce/26986f79493495bbaacba9738587/d9fce855-72bd-4e00-9a48-5d4ec5ef6f72.pdf'}
-            links=[f'<a href="{urls[r["year"]]}" target="_blank" rel="noopener noreferrer">{r["year"]} · 第 {r["question"]} 题</a>' for r in x['exams']]
-            content+='<p class="study-exams"><strong>相关真题：</strong>'+'；'.join(links)+'</p>'
+        content+=('<details class="study-recall study-sources"><summary>参考资料</summary>' if x.get('sources') else '')
         if x.get('sources'):
             links=['<a href="'+e(r['url'],quote=True)+'" target="_blank" rel="noopener noreferrer">'+e(r['title'])+'</a>' for r in x['sources']]
             content+='<p class="study-note">参考：'+'；'.join(links)+'</p>'
-        content+=('</details>' if x.get('exams') or x.get('sources') else '')+'</div></details>'
+        content+=('</details>' if x.get('sources') else '')+'</div></details>'
         content+=f'''<details class="study-recall"><summary>自检：{e(x['check'])}</summary><p>{rich(x['answer'])}</p></details>'''
     return f'''<details class="study-card glass" id="{x['id']}" data-subject="{e(x['subject'])}" data-chapter="{e(x['chapter'])}" data-tags="{e(' '.join(tags))}" data-search="{e(search,quote=True)}"><summary><span class="study-card-heading"><span class="study-card-title">{e(x['title'])}</span><span class="study-card-preview">{e(x['pitfalls'] if calc else x['review_tip'])}</span></span><span class="study-badges">{badges}</span><span class="study-expand-hint" aria-hidden="true">要点</span></summary><div class="study-card-body">{content}{state_controls(x['id'])}</div></details>'''
 
@@ -95,7 +106,7 @@ def groups(calc=False):
         chapters=list(dict.fromkeys(x['chapter'] for x in rows))
         out+=f'<section class="section anchor-offset study-subject" id="{slug}" data-group-subject="{subject}"><div class="container"><div class="section-head"><div><div class="kicker">408 · {slug.upper()}</div><h2>{subject}</h2></div><p class="section-intro">{len(rows)} 条 · {len(chapters)} 个章节</p></div>'
         for n,ch in enumerate(chapters):
-            out+=f'<div class="study-chapter" id="{slug}-chapter-{n+1}" data-group-chapter="{e(ch)}"><h3>{e(ch)}</h3><div class="study-card-list">'+''.join(card(x,calc) for x in sorted(rows,key=lambda x: '个人错题' not in x.get('tags',[])) if x['chapter']==ch)+'</div></div>'
+            out+=f'<div class="study-chapter" id="{slug}-chapter-{n+1}" data-group-chapter="{e(ch)}"><h3>{e(ch)}</h3><div class="study-card-list">'+''.join(card(x,calc) for x in rows if x['chapter']==ch)+'</div></div>'
         out+='</div></section>'
     return out
 def directory(calc=False):
@@ -106,7 +117,7 @@ def directory(calc=False):
         chapters=list(dict.fromkeys(x['chapter'] for x in rows))
         out+='<article class="study-directory-subject"><h3>'+subject+'<span>'+str(len(rows))+' 条</span></h3><ul>'+''.join(f'<li><a href="#{slug}-chapter-{i+1}">'+e(ch)+'</a></li>' for i,ch in enumerate(chapters))+'</ul></article>'
     return out+'</div></details></div></section>'
-refs='''<section class="section anchor-offset" id="references"><div class="container"><div class="section-head"><h2>内容说明与参考</h2></div><article class="panel glass study-reference"><p>“近年考查”附对应年份与题号；“冷门”指易遗漏的细节。公式和实现约定以题设为准。</p><ul><li><a href="https://www.xit.edu.cn/yjsfk/kyzykwtkw/list.htm" target="_blank" rel="noopener noreferrer">厦门工学院公开真题资料：已核对 2022、2024、2025 年相关题目</a></li><li><a href="https://algs4.cs.princeton.edu/23quicksort/" target="_blank" rel="noopener noreferrer">Princeton Algorithms：快排实现边界</a>；<a href="https://algs4.cs.princeton.edu/43mst/index.php" target="_blank" rel="noopener noreferrer">最小生成树</a></li><li><a href="https://pages.cs.wisc.edu/~remzi/OSTEP/" target="_blank" rel="noopener noreferrer">OSTEP：进程、地址转换、并发与文件系统</a></li><li><a href="https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html" target="_blank" rel="noopener noreferrer">Intel 架构手册：指令与标志位（具体架构示例）</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc9293.html" target="_blank" rel="noopener noreferrer">RFC 9293：TCP</a>；<a href="https://www.rfc-editor.org/rfc/rfc791" target="_blank" rel="noopener noreferrer">RFC 791：IPv4</a></li></ul></article></div></section>'''
+refs='''<section class="section anchor-offset" id="references"><div class="container"><div class="section-head"><h2>阅读与复习</h2></div><article class="panel glass study-reference"><p>本页保留个人错题、易错辨析、推理步骤、例子与自检。先确认正确结论，再展开原理和条件；不要脱离题设直接套用公式。</p><p><a href="408-handbook.html">系统知识手册</a>按四科知识脉络展开；本页用于针对性纠错，<a href="408-calculations.html">计算专项</a>单独练习分步计算。三个入口独立，复习时可以交叉对照。</p><ul><li>蓝色提示结论与原理，红色突出关键条件，橙色标记易错关系，紫色用于例子与计算，绿色用于自检和记忆。</li><li>“展开完整解析”会展开当前筛选范围的原理、图表与答案；打印也只包含当前结果。</li><li>复习标记保存在当前浏览器。原有知识点编号和标记保持连续，系统手册使用独立记录。</li></ul></article></div></section>'''
 for calc in (False,True):
     filename='408-calculations.html' if calc else '408.html'
     title='计算专项' if calc else '易错易混与冷门考点'

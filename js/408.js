@@ -112,6 +112,8 @@
     }
     byId('study-count').textContent = `显示 ${visible.length} / ${records.length} 条 · 待复习 ${review} · 已掌握 ${mastered}`;
     byId('study-empty').hidden = visible.length !== 0;
+    const random = byId('study-random');
+    if (random) random.disabled = visible.length === 0;
   }
   function reset() {
     query.value = ''; subject.value = ''; chapter.value = ''; state.value = '';
@@ -142,7 +144,16 @@
   });
   [chapter, tag, state].filter(Boolean).forEach(el => el.addEventListener('change', apply));
   byId('study-reset').addEventListener('click', reset);
-  byId('study-expand').addEventListener('click', () => cards.filter(el => !el.hidden).forEach(el => { el.open = true; }));
+  byId('study-expand').addEventListener('click', () => cards.filter(el => !el.hidden).forEach(el => { el.open = true; el.querySelectorAll('.study-recall').forEach(detail => { detail.open = true; }); }));
+  byId('study-random')?.addEventListener('click', () => {
+    const visible = cards.filter(el => !el.hidden);
+    if (!visible.length) return;
+    const target = visible[Math.floor(Math.random() * visible.length)];
+    target.open = true;
+    target.querySelector('summary').focus({preventScroll:true});
+    window.scrollTo({top:Math.max(0,target.getBoundingClientRect().top+window.scrollY-110),behavior:'instant'});
+  });
+  byId('study-print')?.addEventListener('click', () => window.print());
   byId('study-collapse').addEventListener('click', () => cards.filter(el => !el.hidden).forEach(el => {
     el.open = false; el.querySelectorAll('details').forEach(nested => { nested.open = false; });
   }));

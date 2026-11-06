@@ -1,0 +1,67 @@
+html.handbook408-root{min-width:0}
+.handbook408-handbook{--hand-concept:#8fbdff;--hand-key:#ffb3b3;--hand-contrast:#f3bf79;--hand-example:#c5b1ff;--hand-memory:#83d6b0}
+html[data-theme="light"] .handbook408-handbook{--hand-concept:#185ca8;--hand-key:#ac2537;--hand-contrast:#875000;--hand-example:#6846ad;--hand-memory:#196b4b}
+.handbook408-handbook [hidden]{display:none!important}
+.handbook408-handbook .formula-hero .subhero-card::after{content:"0 · 1";font-family:var(--font-cjk);bottom:-.18em;opacity:.7}
+.handbook408-handbook .formula-hero .subhero-card h1{max-width:100%;text-wrap:balance}
+.handbook408-handbook .formula-filter-grid>label,.handbook408-handbook .formula-filter-grid input,.handbook408-handbook .formula-filter-grid select{min-width:0}
+.handbook408-handbook .formula-card-number{grid-column:1;grid-row:2}
+.handbook408-handbook .formula-card-summary{grid-row:3}
+.handbook408-card-parts{grid-column:1/-1;grid-row:4;color:var(--muted);font-size:.73rem;letter-spacing:.03em}
+.handbook408-handbook .formula-card summary::after{grid-row:1/4}
+.handbook408-handbook .formula-card-body{grid-template-columns:1fr;padding-top:1rem;gap:1rem}
+.handbook408-handbook .formula-chapter-head{flex-wrap:wrap;align-items:start}
+.handbook408-handbook .formula-chapter-head h2{font-size:1.2rem;margin:0;line-height:1.6;max-width:100%}
+.handbook408-handbook .formula-chapter{margin-bottom:2rem;scroll-margin-top:100px}
+.handbook408-handbook .formula-index{position:sticky;top:90px;max-height:calc(100dvh - 110px);overflow:auto;scrollbar-width:thin}
+.handbook408-directory>summary{cursor:pointer;font-size:.9rem;font-weight:700;padding:.3rem}
+.handbook408-handbook .formula-index nav{margin-top:.5rem}
+.handbook408-handbook .formula-index a{align-items:start;line-height:1.55}
+.handbook408-handbook .formula-index a[aria-current]{color:var(--text);background:var(--surface-soft)}
+.handbook408-handbook .formula-index .index-subject{padding:.5rem .6rem .2rem;font-size:.82rem;line-height:1.6}
+.handbook408-card[data-state="mastered"] .formula-card-number::after{content:" · 已掌握"}
+.handbook408-card[data-state="review"] .formula-card-number::after{content:" · 待复习"}
+.handbook408-handbook .formula-card summary:focus-visible{outline:2px solid var(--accent);outline-offset:-4px;border-radius:var(--radius-md)}
+.handbook408-handbook .formula-actions .button:focus-visible,.handbook408-table-scroll:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.handbook408-handbook .formula-card,.handbook408-handbook .formula-filter-grid label{overflow-wrap:anywhere}
+.handbook408-handbook .formula-actions a{text-decoration:none}
+.handbook408-legend{display:flex;flex-wrap:wrap;gap:.5rem 1rem;margin:.4rem 0 1.15rem;font-size:.8rem;line-height:1.6}
+.handbook408-legend>span{display:inline-flex;gap:.4rem;align-items:center}
+.handbook408-legend>span::before{content:"";display:inline-block;width:.45rem;height:.45rem;border-radius:50%;background:currentColor}
+.legend-concept{color:var(--hand-concept)}.legend-key{color:var(--hand-key)}.legend-contrast{color:var(--hand-contrast)}.legend-example{color:var(--hand-example)}.legend-memory{color:var(--hand-memory)}
+.handbook408-section{--kind-color:var(--accent-strong);min-width:0;padding:.85rem 1rem;border-left:3px solid var(--kind-color);border-radius:0 12px 12px 0;background:var(--surface-soft)}
+.handbook408-section.kind-concept{--kind-color:var(--hand-concept)}
+.handbook408-section.kind-key{--kind-color:var(--hand-key)}
+.handbook408-section.kind-contrast{--kind-color:var(--hand-contrast)}
+.handbook408-section.kind-example{--kind-color:var(--hand-example)}
+.handbook408-section.kind-memory{--kind-color:var(--hand-memory)}
+.handbook408-section h4{margin:0 0 .65rem;color:var(--kind-color);font-size:.9rem;line-height:1.6;font-weight:700}
+.handbook408-section ul{padding-left:1.25rem;margin:0;color:var(--text);font-size:.95rem;line-height:1.95}
+.handbook408-section li+li{margin-top:.55rem}
+.handbook408-section strong{color:var(--kind-color);font-weight:750}
+.handbook408-table-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;border:1px solid var(--line);border-radius:8px;scrollbar-width:thin}
+.handbook408-section table{width:100%;border-collapse:collapse;font-size:.9rem;line-height:1.85;min-width:520px;background:var(--surface)}
+.handbook408-section th,.handbook408-section td{padding:.7rem .8rem;border-bottom:1px solid var(--line);vertical-align:top;text-align:left;min-width:100px;white-space:normal}
+.handbook408-section th{color:var(--kind-color);font-weight:700;background:var(--surface-soft)}
+.handbook408-section tbody tr:last-child td{border-bottom:0}
+.handbook408-section td:first-child{font-weight:650;color:var(--kind-color)}
+@media(max-width:900px){.handbook408-handbook .formula-index{position:static;max-height:none}.handbook408-handbook .formula-index nav{max-height:45vh;overflow:auto}.handbook408-handbook .formula-card-list{grid-template-columns:1fr}}
+@media(max-width:620px){.handbook408-handbook .formula-index nav{grid-template-columns:1fr}.handbook408-handbook .formula-stat-row{gap:.5rem}.handbook408-handbook .formula-stat-row span{font-size:.78rem}.handbook408-handbook .formula-card summary{padding:.85rem}.handbook408-handbook .formula-card-body{padding:1rem .75rem}.handbook408-section{padding:.8rem .7rem}.handbook408-section ul{font-size:.94rem;padding-left:1.1rem}.handbook408-handbook .formula-reference .section-head{flex-direction:column;align-items:flex-start;gap:.7rem}.handbook408-handbook .formula-reference .section-intro{margin:0;text-align:left}}
+@media print{.handbook408-handbook{--hand-concept:#185ca8;--hand-key:#ac2537;--hand-contrast:#875000;--hand-example:#6846ad;--hand-memory:#196b4b}.handbook408-handbook .formula-controls,.handbook408-handbook .formula-index,.handbook408-handbook .formula-reference,.handbook408-handbook .page-tools,.handbook408-handbook .section-nav{display:none!important}.handbook408-handbook .formula-card:not([hidden]){break-inside:auto;box-shadow:none;backdrop-filter:none}.handbook408-handbook .formula-card-body{display:block!important}.handbook408-section{margin-top:.6rem;background:#fff;break-inside:avoid;border-right:1px solid #ddd;border-top:1px solid #ddd;border-bottom:1px solid #ddd}.handbook408-section ul,.handbook408-section td{color:#111}.handbook408-handbook .formula-chapter-head{color:#111}.handbook408-handbook .formula-hero .subhero-card::after{display:none}.handbook408-handbook .formula-actions{display:none!important}.handbook408-section table{min-width:0;background:#fff}.handbook408-table-scroll{overflow:visible}.handbook408-section th{background:#fff}.handbook408-handbook .formula-card summary{break-after:avoid}.handbook408-card-parts{color:#333}}
+html:lang(zh-CN) body.handbook408-handbook .formula-chapter-head h2{font-size:1.2rem;max-width:100%;line-height:1.6}
+html:lang(zh-CN) body.handbook408-handbook .formula-controls-head h2{font-size:clamp(1.35rem,2vw,1.8rem);max-width:100%;line-height:1.4}
+.handbook408-handbook .formula-reference .section-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:1rem}
+.handbook408-section.kind-memory li{color:var(--hand-memory)}
+html.handbook408-root{scroll-behavior:auto}
+
+.handbook408-section p{margin:.4rem 0 .8rem;font-size:.95rem;line-height:1.95;color:var(--text)}
+.handbook408-section p:last-child{margin-bottom:0}
+.handbook408-section pre{white-space:pre;overflow:auto;max-width:100%;font:.88rem/1.7 Consolas,monospace;padding:1rem;border:1px solid var(--line);border-radius:8px;background:var(--surface-strong)}
+.handbook408-formula{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:.7rem .2rem;color:var(--kind-color)}
+.handbook408-formula .katex{font-size:1.1em}
+.handbook408-section .handbook408-formula-note{font-size:.86rem;color:var(--muted)}
+.handbook408-handbook .formula-card-list{grid-template-columns:1fr}
+.handbook408-section.kind-memory p{color:var(--hand-memory)}
+@media print{.handbook408-section pre{white-space:pre-wrap;overflow-wrap:anywhere;overflow:visible}.handbook408-formula{overflow:visible}.handbook408-section{break-inside:auto}}
+
+.handbook408-diagram{margin:.8rem 0}.handbook408-diagram-scroll{overflow-x:auto;max-width:100%;border:1px solid var(--line);border-radius:10px}.handbook408-diagram-scroll svg{display:block;width:100%;min-width:700px;height:auto;--diagram-bg:var(--surface-strong);--diagram-fill:var(--surface-soft);--diagram-line:var(--accent);--diagram-text:var(--text);--diagram-muted:var(--muted)}.handbook408-diagram figcaption{font-size:.85rem;padding-top:.5rem}@media print{.handbook408-diagram-scroll svg{min-width:0;--diagram-bg:#fff;--diagram-fill:#f4f4f4;--diagram-line:#444;--diagram-text:#111;--diagram-muted:#444}.handbook408-diagram-scroll{overflow:visible}}

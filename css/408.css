@@ -219,3 +219,30 @@
 .study-formula-set .study-formula { margin: 0; border: 0; border-radius: 0; background: transparent; }
 .study-formula-set .study-formula + .study-formula { border-top: 1px solid var(--line); }
 @media(max-width:640px) { .study-badges .study-badge:nth-child(n+3) { display: none; } }
+
+/* Topic colors preserve the site's neutral surfaces in both themes. */
+.study408{--study-concept:#8fbdff;--study-key:#ffb3b3;--study-contrast:#f3bf79;--study-example:#c5b1ff;--study-memory:#83d6b0}
+html[data-theme="light"] .study408{--study-concept:#185ca8;--study-key:#ac2537;--study-contrast:#875000;--study-example:#6846ad;--study-memory:#196b4b}
+.study408 .study-legend{display:flex;flex-wrap:wrap;gap:.5rem 1.2rem;margin-bottom:1.2rem;font-size:.85rem;line-height:1.7}
+.study-tone-concept{color:var(--study-concept)}.study-tone-key{color:var(--study-key)}.study-tone-contrast{color:var(--study-contrast)}.study-tone-example{color:var(--study-example)}.study-tone-memory{color:var(--study-memory)}
+.study408 .study-key{border-left-color:var(--study-concept)}
+.study408 .study-key h4{color:var(--study-concept)}
+.study408 .study-caution>strong{color:var(--study-key)}
+.study408 .study-caution>span{color:var(--text)}
+.study408 .study-detail-block>h4{color:var(--study-concept)}
+.study408 .study-example>h4,.study408 .study-formula-set .study-formula>p{color:var(--study-example)}
+.study408 .study-misconception>h4,.study408 .study-wrong-label{color:var(--study-contrast)}
+.study408 .study-card-body>.study-recall>summary{color:var(--study-memory)}
+.study408 .study-explanation>summary{color:var(--study-concept)!important}
+.study408 .study-conclusion strong{color:var(--study-concept)}
+.study408 .study-card-body .study-question{font-size:1rem}
+.study408 .study-reference .section-head{display:flex;flex-wrap:wrap}
+.study408 .study-card-list,.study408 .study-chapter,.study408 .study-subject .container{min-width:0}
+.study408 .section-head h2{max-width:100%;overflow-wrap:anywhere}
+html:lang(zh-CN) .study408 .study-subject h2{font-size:clamp(1.6rem,3vw,2rem);line-height:1.5}
+@media print{.study408{--study-concept:#185ca8;--study-key:#ac2537;--study-contrast:#875000;--study-example:#6846ad;--study-memory:#196b4b}.study408 .study-legend{display:none}}
+
+.study408 .study-text>strong{color:var(--study-key);font-weight:750}
+.study408 .study-key .study-text>strong,.study408 .study-reason-steps .study-text>strong{color:var(--study-concept)}
+.study408 .study-example .study-text>strong{color:var(--study-example)}
+.study408 .study-misconception .study-text>strong{color:var(--study-contrast)}

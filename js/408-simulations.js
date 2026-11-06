@@ -4,7 +4,7 @@
  const el=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text)n.textContent=text;return n;};
  document.querySelectorAll('.study-sim').forEach(root=>{
   let data;try{data=JSON.parse(root.querySelector('.sim-data').textContent);}catch{return;}
-  if(!data.steps?.length)return;
+  if(!data.steps?.length||data.scene==='board')return;
   const host=root.querySelector('.sim-interactive');host.hidden=false;
   let index=0,timer=null,playing=false;
   const stage=el('div','sim-stage'),track=el('div','sim-track');stage.append(track);host.append(stage);
@@ -80,8 +80,10 @@
   function tick(){if(index<data.steps.length-1){index++;render();}if(index===data.steps.length-1)stop();else timer=setTimeout(tick,2600);}
   prev.addEventListener('click',()=>{stop();index=Math.max(0,index-1);render();});next.addEventListener('click',()=>{stop();index=Math.min(data.steps.length-1,index+1);render();});
   reset.addEventListener('click',()=>{stop();index=0;render();});
-  play.addEventListener('click',()=>{if(playing){stop();return;}if(index===data.steps.length-1)index=0;playing=true;play.textContent='暂停演示';play.setAttribute('aria-pressed','true');render();timer=setTimeout(tick,2600);});
+  play.addEventListener('click',()=>{if(playing){stop();return;}if(index===data.steps.length-1)index=0;document.dispatchEvent(new CustomEvent('handbook408-play',{detail:root}));playing=true;play.textContent='暂停演示';play.setAttribute('aria-pressed','true');render();timer=setTimeout(tick,2600);});
   root.closest('.handbook408-card')?.addEventListener('toggle',e=>{if(!e.target.open)stop();});
+  document.addEventListener('handbook408-play',e=>{if(e.detail!==root)stop();});
+  ['input','change','click'].forEach(type=>document.getElementById('handbook408-controls')?.addEventListener(type,stop));
   document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});
   let wasOpen=false;const transcript=root.querySelector('.sim-transcript');window.addEventListener('beforeprint',()=>{stop();wasOpen=transcript.open;transcript.open=true;});window.addEventListener('afterprint',()=>{transcript.open=wasOpen;});
   render();

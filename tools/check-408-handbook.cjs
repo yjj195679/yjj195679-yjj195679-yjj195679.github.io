@@ -21,6 +21,11 @@ function page(blocked=false,hash=''){
  return {get,visible,set,click,window,document};
 }
 let p=page();assert.equal(p.visible().length,items.length);assert(!p.get('handbook408-controls').hidden);
+const diagramCards=items.filter(x=>x.sections.some(s=>s.diagram));const animationCards=items.filter(x=>x.sections.some(s=>s.simulation));
+p.click('[data-visual-filter="diagram"]');assert.equal(p.visible().length,diagramCards.length);
+p.click('[data-visual-filter="animation"]');assert.equal(p.visible().length,animationCards.length);
+p.set('subject','操作系统');assert.equal(p.visible().length,animationCards.filter(x=>x.subject==='操作系统').length);
+p.click('#handbook408-reset');assert.equal(p.visible().length,items.length);
 const co=items.filter(x=>x.subject==='计算机组成原理');p.set('subject','计算机组成原理');assert.equal(p.visible().length,co.length);
 assert([...p.get('handbook408-chapter').options].slice(1).every(o=>p.get(o.value).dataset.subject==='计算机组成原理'));
 p.set('search','zzzz-不存在');assert.equal(p.visible().length,0);assert(p.get('handbook408-random').disabled);p.click('#handbook408-reset');

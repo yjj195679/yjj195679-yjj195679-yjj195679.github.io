@@ -20,6 +20,8 @@
   const searchable = new Map(cards.map((card) => [card, card.textContent.normalize('NFKC').toLocaleLowerCase('zh-CN')]));
   let marks = Object.create(null);
   let visible = cards;
+  let visualFilter = '';
+  const visualButtons = [...document.querySelectorAll('[data-visual-filter]')];
   let canSave = true;
   const storageNote = byId('handbook408-storage');
   function readMarks() {
@@ -66,6 +68,7 @@
       const state = marks[card.id] || 'unmarked';
       const show = (!subject.value || card.dataset.subject === subject.value)
         && (!chapter.value || card.dataset.chapter === chapter.value)
+        && (!visualFilter || card.dataset[visualFilter === 'diagram' ? 'hasDiagram' : 'hasAnimation'] === '1')
         && (!status.value || status.value === state)
         && terms.every((term) => searchable.get(card).includes(term));
       card.hidden = !show;
@@ -94,6 +97,8 @@
   }
   function reset() {
     search.value = subject.value = status.value = '';
+    visualFilter = '';
+    visualButtons.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.visualFilter === '')));
     buildChapters();
     chapter.value = '';
     filter();
@@ -124,6 +129,11 @@
   filter();
   byId('handbook408-controls').hidden = false;
   document.querySelectorAll('.handbook408-card .formula-actions').forEach((el) => { el.hidden = false; });
+  visualButtons.forEach(button => button.addEventListener('click', () => {
+    visualFilter = button.dataset.visualFilter;
+    visualButtons.forEach(b => b.setAttribute('aria-pressed', String(b === button)));
+    filter();
+  }));
   search.addEventListener('input', filter);
   subject.addEventListener('change', () => { chapter.value = ''; buildChapters(); filter(); });
   chapter.addEventListener('change', filter);

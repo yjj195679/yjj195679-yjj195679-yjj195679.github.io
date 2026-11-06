@@ -65,3 +65,10 @@ html.handbook408-root{scroll-behavior:auto}
 @media print{.handbook408-section pre{white-space:pre-wrap;overflow-wrap:anywhere;overflow:visible}.handbook408-formula{overflow:visible}.handbook408-section{break-inside:auto}}
 
 .handbook408-diagram{margin:.8rem 0}.handbook408-diagram-scroll{overflow-x:auto;max-width:100%;border:1px solid var(--line);border-radius:10px}.handbook408-diagram-scroll svg{display:block;width:100%;min-width:700px;height:auto;--diagram-bg:var(--surface-strong);--diagram-fill:var(--surface-soft);--diagram-line:var(--accent);--diagram-text:var(--text);--diagram-muted:var(--muted)}.handbook408-diagram figcaption{font-size:.85rem;padding-top:.5rem}@media print{.handbook408-diagram-scroll svg{min-width:0;--diagram-bg:#fff;--diagram-fill:#f4f4f4;--diagram-line:#444;--diagram-text:#111;--diagram-muted:#444}.handbook408-diagram-scroll{overflow:visible}}
+
+/* Keep statistics and navigation as two distinct, wrapping rows. */
+.handbook408-handbook .formula-hero .formula-stat-row{align-items:center;gap:.7rem;margin-bottom:0}
+.handbook408-handbook .formula-hero .formula-stat-row>span{min-height:44px;align-items:center;white-space:nowrap;line-height:1.5}
+.handbook408-handbook .formula-hero .formula-stat-row+.hero-actions{display:flex;flex-wrap:wrap;align-items:center;gap:.65rem;margin-top:20px}
+.handbook408-handbook .formula-hero .hero-actions>.button{margin:0;min-height:44px;line-height:1.5;white-space:normal;text-align:center}
+@media(max-width:620px){.handbook408-handbook .formula-hero .formula-stat-row{gap:.6rem}.handbook408-handbook .formula-hero .formula-stat-row+.hero-actions{gap:.6rem;margin-top:18px}.handbook408-handbook .formula-hero .hero-actions>.button{max-width:100%}}

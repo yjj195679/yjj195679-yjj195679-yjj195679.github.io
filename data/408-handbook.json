@@ -790,6 +790,11 @@
           "本代码假定模式串非空，S、P 的有效字符均从下标 1 开始，next 已按同一规则生成；0 为失败返回值。条件 j==0 或 k==0 必须放在字符访问之前，利用短路求值避免访问无效的第 0 个字符。"
         ],
         "code": "void getNext(const char P[], int m, int next[]) {\n    int j=1, k=0; next[1]=0;\n    while (j<m) {\n        if (k==0 || P[j]==P[k]) { ++j; ++k; next[j]=k; }\n        else k=next[k];\n    }\n}\nint kmp(const char S[], int n, const char P[], int m, const int next[]) {\n    int i=1, j=1;\n    while (i<=n && j<=m) {\n        if (j==0 || S[i]==P[j]) { ++i; ++j; }\n        else j=next[j];\n    }\n    return j>m ? i-m : 0;\n}"
+      },
+      {
+        "kind": "example",
+        "heading": "机制与步骤图解",
+        "diagram": "kmp-fallback-example"
       }
     ],
     "source_pages": [
@@ -1777,6 +1782,11 @@
           "从顶点 1 出发，资料图的初始可达距离为 d(2)=10、d(5)=5。先固定 5，经过 5 将 d(2) 改为 8、d(4) 改为 7、d(3) 暂为 14；再固定 4，把 d(3) 改为 13；固定 2 后，把 d(3) 改为 9。最终固定顺序可为 1、5、4、2、3。",
           "最终路径依次为 1→5（5），1→5→4（7），1→5→2（8），1→5→2→3（9）。记录 predecessor 并从终点反向追到源点，再逆序，即可恢复路径。"
         ]
+      },
+      {
+        "kind": "example",
+        "heading": "机制与步骤图解",
+        "diagram": "dijkstra-relax-example"
       }
     ],
     "source_pages": [
@@ -2458,6 +2468,11 @@
         "paragraphs": [
           "删除可能使多级祖先失衡，因此需沿路径继续检查；删除叶子后重插不一定恢复原结构，删除分支后重插也不一定改变最终结构。高度 h 的 AVL 最少结点数 N(h)=N(h−1)+N(h−2)+1，取 N(0)=0、N(1)=1，得到高度 O(log n)，查找最坏 O(log n)。"
         ]
+      },
+      {
+        "kind": "example",
+        "heading": "机制与步骤图解",
+        "diagram": "avl-ll-rotation"
       }
     ],
     "source_pages": [
@@ -4879,6 +4894,11 @@
             "note": "a 位地址分成 t 位标记、s 位组号、b 位块内字节偏移。"
           }
         ]
+      },
+      {
+        "kind": "example",
+        "heading": "机制与步骤图解",
+        "diagram": "cache-address-example"
       }
     ],
     "source_pages": [
@@ -5064,6 +5084,11 @@
         "paragraphs": [
           "存在位为 1 且权限允许时可形成物理地址；存在位为 0 引起缺页异常，由操作系统调入页面后重试。分页便于管理固定大小单元，但进程最后一页通常存在内部碎片，页本身未必对应程序逻辑模块。"
         ]
+      },
+      {
+        "kind": "example",
+        "heading": "机制与步骤图解",
+        "diagram": "paging-address-example"
       }
     ],
     "source_pages": [
@@ -8545,6 +8570,11 @@
           "若生产者先P(mutex)再P(empty)，缓冲已满时会持有mutex等待空位，消费者又需mutex才能取走产品，形成死锁；消费者先互斥后等待full同理。故此模型中**等待资源的P在前，访问缓冲结构的P在后**。",
           "两个相邻V不因等待而直接阻塞，在不改变资源正确计数和共享结构可见性的前提下常可交换，但把通知放在释放锁前可能使被唤醒者再次等待锁。多个full表示多个可消费单位，不要求一次消费全部，也不要求全部缓冲区读完后才允许再次写入。"
         ]
+      },
+      {
+        "kind": "example",
+        "heading": "机制与步骤图解",
+        "diagram": "producer-consumer-order"
       }
     ],
     "source_pages": [
@@ -9190,6 +9220,11 @@
         "paragraphs": [
           "按字节编址，页4KB，逻辑地址0x12345：页号0x12，偏移0x345。若该页对应页框0x2A，则物理地址0x2A345。页内偏移保持不变，不能把页号原样当作物理块号。"
         ]
+      },
+      {
+        "kind": "example",
+        "heading": "机制与步骤图解",
+        "diagram": "paging-address-example"
       }
     ],
     "source_pages": [
@@ -13695,6 +13730,11 @@
         "paragraphs": [
           "DNS 把域名等名字解析成资源记录，常用于得到 IP；ARP 把本链路 IPv4 下一跳映射为硬件地址。两者既不是同一层次的查询，也不是互相替代。ARP 请求不由普通路由器跨网广播，PPP 等点到点链路则不必先运行 ARP。"
         ]
+      },
+      {
+        "kind": "example",
+        "heading": "机制与步骤图解",
+        "diagram": "arp-next-hop-example"
       }
     ],
     "source_pages": [
@@ -15025,6 +15065,11 @@
         "paragraphs": [
           "MSS 是一个 TCP 报文段数据部分的最大长度，不含 TCP/IP 首部；MTU 是链路可承载的 IP 分组总长度上限。典型无选项 IPv4/以太网中 MSS 可取1500−20−20=1460 B，但实际选项、隧道和路径条件须另算。TCP 可因 MSS、应用推送或定时策略形成不同长度报文段。"
         ]
+      },
+      {
+        "kind": "example",
+        "heading": "机制与步骤图解",
+        "diagram": "tcp-send-credit-example"
       }
     ],
     "source_pages": [

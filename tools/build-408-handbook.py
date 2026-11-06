@@ -45,7 +45,7 @@ for n,((subject,chapter),rows) in enumerate(groups.items(),1):
                 text+='<div class="handbook408-table-scroll" role="region" tabindex="0" aria-label="'+escape(section['heading'])+'对照表"><table><thead><tr>'+''.join('<th scope="col">'+rich(c)+'</th>' for c in cols)+'</tr></thead><tbody>'+''.join('<tr>'+''.join('<td>'+rich(c)+'</td>' for c in r)+'</tr>' for r in table_rows)+'</tbody></table></div>'
             if section.get('diagram'):
                 name=section['diagram'];assert re.fullmatch(r'[a-z-]+',name)
-                svg=(root/'images/408'/f'{name}.svg').read_text()
+                svg=(root/'images/408'/f'{name}.svg').read_text().replace(name+'-',row['id']+'-'+name+'-')
                 text+='<figure class="handbook408-diagram"><div class="handbook408-diagram-scroll" tabindex="0" aria-label="图解，可横向滚动">'+svg+'</div><figcaption><a href="images/408/'+name+'.svg" target="_blank" rel="noopener noreferrer">单独查看图片</a></figcaption></figure>';points+=1
             if section.get('code'):
                 text+='<pre tabindex="0" aria-label="算法代码，可横向滚动"><code>'+escape(section['code'])+'</code></pre>';points+=1

@@ -48,7 +48,8 @@
    const edges=new Set(s.edges.map(ed=>ed.a+'|'+ed.b+'|'+ed.label));paths.forEach(({path,label},key)=>{const show=edges.has(key);path.style.opacity=label.style.opacity=show?'1':'0';if(!show)return;const ed=s.edges.find(e=>e.a+'|'+e.b+'|'+e.label===key);if(ed.directed===false)path.removeAttribute('marker-end');
     const a=here.get(ed.a),b=here.get(ed.b);const ax=a.x+a.w/2,ay=a.y+a.h/2,bx=b.x+b.w/2,by=b.y+b.h/2,dx=bx-ax,dy=by-ay;
     let start=Math.min(dx?(a.w/2+4)/Math.abs(dx):1e6,dy?(a.h/2+4)/Math.abs(dy):1e6),end=Math.min(dx?(b.w/2+8)/Math.abs(dx):1e6,dy?(b.h/2+8)/Math.abs(dy):1e6);if(a.w<5){start=0;end=0;}
-    path.setAttribute('d',`M${ax+dx*start},${ay+dy*start} L${bx-dx*end},${by-dy*end}`);label.setAttribute('x',(ax+bx)/2);label.setAttribute('y',(ay+by)/2-12);label.style.fontSize=Math.min(18,(Math.abs(dx)>100?Math.abs(dx)-18:180)/Math.max(1,[...ed.label].reduce((a,c)=>a+(c.charCodeAt(0)>255?1:.58),0)))+'px';label.textContent=ed.label;
+    path.style.strokeDasharray=ed.points?'6 5':'';
+    path.setAttribute('d',ed.points?ed.points.map(([x,y],i)=>(i?'L':'M')+x+','+y).join(' '):`M${ax+dx*start},${ay+dy*start} L${bx-dx*end},${by-dy*end}`);label.setAttribute('x',(ax+bx)/2);label.setAttribute('y',(ay+by)/2-12);label.style.fontSize=Math.min(18,(Math.abs(dx)>100?Math.abs(dx)-18:180)/Math.max(1,[...ed.label].reduce((a,c)=>a+(c.charCodeAt(0)>255?1:.58),0)))+'px';label.textContent=ed.label;
    });
    note.textContent=s.note||'蓝色为结构；紫色为当前操作；绿色为已处理部分。';count.textContent=`步骤 ${index+1} / ${data.steps.length}`;heading.textContent=s.title;explain.textContent=s.explain;seek.value=String(index);seek.setAttribute('aria-valuetext',`${index+1}：${s.title}`);prev.disabled=index===0;next.disabled=index===data.steps.length-1;
   }

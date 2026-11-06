@@ -23,7 +23,10 @@ def draw(s,slug):
   a,b=ns[ed['a']],ns[ed['b']];ax,ay=a['x']+a['w']/2,a['y']+a['h']/2;bx,byy=b['x']+b['w']/2,b['y']+b['h']/2;dx,dy=bx-ax,byy-ay
   start=min((a['w']/2+4)/abs(dx) if dx else 1e6,(a['h']/2+4)/abs(dy) if dy else 1e6);end=min((b['w']/2+8)/abs(dx) if dx else 1e6,(b['h']/2+8)/abs(dy) if dy else 1e6)
   mark=f' marker-end="url(#{slug}-arrow)"' if ed.get('directed',True) else ''
-  out.append(f'<path class="ve"{mark} d="M{ax+dx*start},{ay+dy*start} L{bx-dx*end},{byy-dy*end}"/>')
+  if ed.get('points'):
+   pathdata=' '.join(('M' if i==0 else 'L')+str(x)+','+str(y) for i,(x,y) in enumerate(ed['points']))
+   out.append(f'<path class="ve" stroke-dasharray="6 5"{mark} d="{pathdata}"/>')
+  else:out.append(f'<path class="ve"{mark} d="M{ax+dx*start},{ay+dy*start} L{bx-dx*end},{byy-dy*end}"/>')
   if ed['label']:out.append(f'<text class="vt vl" font-size="18" x="{(ax+bx)/2}" y="{(ay+byy)/2-12}" text-anchor="middle">{html.escape(ed["label"])}</text>')
  for n in s['nodes']:
   out.append(f'<g class="{n["tone"]}"><rect class="vb" x="{n["x"]}" y="{n["y"]}" width="{n["w"]}" height="{n["h"]}" rx="10"/>');lines=n['label'].split('\n');units=max(sum(1 if ord(c)>255 else .58 for c in line) for line in lines);font=min(19,(n['w']-14)/max(1,units),(n['h']-12)/len(lines)/1.3)

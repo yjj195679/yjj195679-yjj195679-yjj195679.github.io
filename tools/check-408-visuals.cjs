@@ -19,6 +19,7 @@ for(const r of roots){
  click(prev);assert.equal(r.querySelector('.sim-heading').textContent,data.steps.at(-2).title);click(next);
  if(data.scene==='board'){
   boards++;
+  for(const ed of data.steps.at(-1).edges.filter(e=>e.points)){const expectedPath=ed.points.map(([x,y],i)=>(i?'L':'M')+x+','+y).join(' ');assert([...r.querySelectorAll('.board-edge')].some(p=>p.style.opacity==='1' && p.getAttribute('d')===expectedPath && p.style.strokeDasharray),data.title+': missing routed thread');}
   const wires=data.steps.at(-1).wires||[];
   for(const wire of wires){assert([...r.querySelectorAll('.board-wire')].some(p=>p.style.opacity==='1' && p.getAttribute('d')===wire.points.map(([x,y],i)=>(i?'L':'M')+x+','+y).join(' ')),data.title+': missing waveform');}
   if(data.steps.at(-1).edges.length && data.steps.at(-1).edges.every(e=>e.directed===false))assert([...r.querySelectorAll('.board-edge')].filter(p=>p.style.opacity==='1').every(p=>!p.getAttribute('marker-end')),data.title+': undirected edges must have no arrowheads');

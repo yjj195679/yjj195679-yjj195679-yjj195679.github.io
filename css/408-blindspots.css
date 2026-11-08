@@ -1,0 +1,37 @@
+.blindspots408 [hidden]{display:none!important}
+html:lang(zh-CN) body.blindspots408 .section-head{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:1rem}
+.blindspots408 .section-head>div{flex:1 1 16rem;min-width:0}
+html:lang(zh-CN) body.blindspots408 .section-head h2{max-width:100%;font-size:clamp(1.45rem,3vw,2rem);line-height:1.5}
+.blindspots408 .section-head>p{margin:0;flex:0 1 auto}
+.blindspots408 .study-card-list{grid-template-columns:1fr}
+.blindspots408 .study-card-body>.study-detail-block{margin-top:1rem}
+.blindspots408 .study-card-body h4{margin-bottom:.5rem}
+.blindspots408 .study-card-body>.study-detail-block:nth-of-type(2)>h4{color:var(--study-key)}
+.blindspots408 .study-detail-block>p{line-height:1.95}
+.blindspots408 .priority-list{list-style:none;margin:1rem 0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 1.5rem}
+.priority-list li{display:flex;align-items:center;justify-content:space-between;gap:.8rem;border-bottom:1px solid var(--line);padding:.85rem 0;min-width:0}
+.priority-list label{display:flex;align-items:center;gap:.75rem;min-width:0;cursor:pointer;line-height:1.7;font-size:.94rem}
+.priority-list input{width:20px;height:20px;flex:0 0 20px;accent-color:var(--study-memory,var(--accent))}
+.priority-name{overflow-wrap:anywhere}.priority-name small{display:block;color:var(--muted);font-size:.76rem}
+.priority-links{flex:0 0 auto;max-width:40%;line-height:1.8;font-size:.8rem}.priority-links a{white-space:nowrap}
+.priority-list label:has(input:checked) .priority-name{color:var(--muted)}
+#priority-progress{width:100%;height:10px;accent-color:var(--accent)}
+#priority-reset-note{margin-left:.7rem;font-size:.85rem;color:var(--muted)}
+.mips-formats{display:grid;gap:1rem;padding:1rem 0 1.5rem;overflow-x:auto}
+.mips-format{min-width:540px;display:grid;grid-template-columns:45px 1fr;gap:.7rem;align-items:center}
+.mips-format>strong{font-size:.9rem}.mips-bits{display:grid;grid-template-columns:var(--columns);border:1px solid var(--line-strong);border-radius:8px;overflow:hidden}
+.mips-bits>span{display:grid;text-align:center;padding:.65rem .3rem;background:var(--surface-soft);border-right:1px solid var(--line);color:var(--text);font-family:Consolas,monospace;font-size:.9rem}
+.mips-bits>span:last-child{border-right:0}.mips-bits small{font-size:.72rem;color:var(--muted);margin-top:.3rem}
+#mips-reference .study-table{min-width:860px}#mips-reference .study-table td:nth-child(2),#mips-reference .study-table td:nth-child(3){font-family:Consolas,'Times New Roman',SimSun,serif}
+#mips-reference .study-table-wrap{margin:1rem 0 2rem}
+#mips-reference h3{font-size:1.12rem;margin-top:2rem}
+.mips-stepper{padding:1rem;border:1px solid var(--line-strong);border-left:3px solid var(--study-example,var(--accent));border-radius:10px;background:var(--surface-soft);margin:1rem 0}
+.mips-stepper h4{font-size:1rem}.mips-stepper p{line-height:1.8;overflow-wrap:anywhere}.mips-stepper button:disabled{opacity:.4;cursor:default}
+#mips-step-text{min-height:3.6em;transition:opacity .15s ease}
+#mips-address-form input{width:100%;min-width:0;font:inherit;color:var(--text);background:var(--surface-soft);border:1px solid var(--line-strong);border-radius:8px;padding:.7rem;box-sizing:border-box}
+#mips-address-form label{display:grid;gap:.4rem;min-width:0}#mips-address-form .study-filter-grid{grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:1rem}
+#mips-address-result{overflow-wrap:anywhere;min-height:3em;color:var(--text);line-height:1.8}
+.blindspots408 input:focus-visible,.blindspots408 button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media(max-width:720px){.blindspots408 .priority-list{grid-template-columns:1fr}#mips-address-form .study-filter-grid{grid-template-columns:1fr}.priority-links{max-width:35%}.blindspots408 .hero-actions .button{white-space:normal}}
+@media(prefers-reduced-motion:reduce){#mips-step-text{transition:none}}
+@media print{#priority-reset,#priority-reset-note,.mips-stepper,#mips-address-form{display:none!important}.blindspots408 .priority-list{grid-template-columns:1fr 1fr}.mips-format{min-width:0}.mips-bits>span{background:#fff;color:#111}.mips-bits small{color:#333}#mips-reference .study-table{min-width:0;font-size:8pt}.blindspots408 .study-card{break-inside:auto}}

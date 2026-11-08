@@ -2,6 +2,16 @@
   const select = (selector, root = document) => root.querySelector(selector);
   const selectAll = (selector, root = document) => [...root.querySelectorAll(selector)];
   document.body.classList.add("js-ready");
+  if (/\/408(?:-handbook|-calculations)?\.html$/.test(location.pathname)) {
+    const studyLinks = document.querySelector('.subhero-card .hero-actions');
+    if (studyLinks && !studyLinks.querySelector('a[href="408-blindspots.html"]')) {
+      const link = document.createElement('a');
+      link.className = 'button';
+      link.href = '408-blindspots.html';
+      link.textContent = '冷门考点查漏与 MIPS';
+      studyLinks.append(link);
+    }
+  }
 
   const isEnglish = document.documentElement.lang.toLowerCase().startsWith("en");
   const locale = isEnglish ? "en-US" : "zh-CN";
@@ -346,6 +356,19 @@
       }
     });
 
+    if (document.body.dataset.exportMode === "print") {
+      const printCurrent = () => {
+        try {
+          if (typeof window.print !== "function") throw new Error("unavailable");
+          window.print();
+        } catch {
+          showToolStatus("当前浏览器无法打印，可在 Safari 或系统浏览器中打开本页后打印／另存为 PDF。");
+        }
+      };
+      select("span", printButton).textContent = "打印 / 另存 PDF";
+      window.TruePathDocumentTools = Object.freeze({ openExport: printCurrent });
+      printButton.addEventListener("click", printCurrent);
+    } else {
     const scriptTag = document.currentScript || select('script[src*="js/main.js"]');
     const scriptUrl = new URL(scriptTag?.getAttribute("src") || (isEnglish ? "../js/main.js" : "js/main.js"), document.baseURI).href;
     const siteRoot = new URL("../", scriptUrl);
@@ -395,6 +418,7 @@
     });
     window.TruePathDocumentTools = Object.freeze({ openExport });
     printButton.addEventListener("click", openExport);
+    }
   }
 
   if (page !== "home" && pageSections.length >= 2) {
@@ -824,4 +848,5 @@
   if (document.readyState === "complete") stabilizeInitialHash();
   else window.addEventListener("load", stabilizeInitialHash, { once: true });
 })();
+
 

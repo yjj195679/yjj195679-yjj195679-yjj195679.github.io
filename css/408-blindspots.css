@@ -32,6 +32,17 @@ html:lang(zh-CN) body.blindspots408 .section-head h2{max-width:100%;font-size:cl
 #mips-address-form label{display:grid;gap:.4rem;min-width:0}#mips-address-form .study-filter-grid{grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:1rem}
 #mips-address-result{overflow-wrap:anywhere;min-height:3em;color:var(--text);line-height:1.8}
 .blindspots408 input:focus-visible,.blindspots408 button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+#x86-reference .study-table{min-width:800px}#x86-reference .study-table-wrap{margin:1rem 0 2rem}
+#x86-reference .study-table td:nth-child(2),#x86-reference .study-table td:nth-child(3){font-family:Consolas,'Times New Roman',SimSun,serif}
+#x86-reference h3{font-size:1.12rem;margin-top:2rem}
+.x86-caution{border-left:3px solid var(--study-contrast);padding:1rem;background:var(--surface-soft);border-radius:0 10px 10px 0}
+.x86-caution h4{color:var(--study-contrast);margin-top:0}.x86-caution li{line-height:1.9}
+#x86-flags-form .study-filter-grid{grid-template-columns:repeat(3,minmax(0,1fr));margin:1rem 0}
+#x86-flags-result{margin-top:1rem;overflow-wrap:anywhere}#x86-flags-result p{line-height:1.85}
+.x86-flag-badges{display:flex;flex-wrap:wrap;gap:.6rem;margin:1rem 0}.x86-flag-badges span{font:1rem/1.5 Consolas,monospace;border:1px solid var(--line-strong);border-radius:8px;padding:.6rem .8rem;color:var(--study-concept);background:var(--surface-soft)}
+.x86-flag-badges [data-set="1"]{color:var(--study-key);border-color:var(--study-key)}
+@media(max-width:720px){#x86-flags-form .study-filter-grid{grid-template-columns:1fr}}
+@media print{#x86-flags-form{display:none!important}#x86-reference .study-table{min-width:0;font-size:8pt}}
 @media(max-width:720px){.blindspots408 .priority-list{grid-template-columns:1fr}#mips-address-form .study-filter-grid{grid-template-columns:1fr}.priority-links{max-width:35%}.blindspots408 .hero-actions .button{white-space:normal}}
 @media(prefers-reduced-motion:reduce){#mips-step-text{transition:none}}
 @media print{#priority-reset,#priority-reset-note,.mips-stepper,#mips-address-form{display:none!important}.blindspots408 .priority-list{grid-template-columns:1fr 1fr}.mips-format{min-width:0}.mips-bits>span{background:#fff;color:#111}.mips-bits small{color:#333}#mips-reference .study-table{min-width:0;font-size:8pt}.blindspots408 .study-card{break-inside:auto}}

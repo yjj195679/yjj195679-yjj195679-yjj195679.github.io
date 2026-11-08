@@ -11,7 +11,7 @@
       && (!filter.state || filter.state === state)
       && words.every(word => normalize(card.search).includes(word));
   }
-  const MARK_LIMITS = { k: 96, c: 0 };
+  const MARK_LIMITS = { k: 112, c: 0 };
   function validId(id) {
     return /^(k|c)\d{3}$/.test(id) && +id.slice(1) > 0 && +id.slice(1) <= MARK_LIMITS[id[0]];
   }

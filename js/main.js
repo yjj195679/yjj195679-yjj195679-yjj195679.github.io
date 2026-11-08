@@ -8,7 +8,7 @@
       const link = document.createElement('a');
       link.className = 'button';
       link.href = '408-blindspots.html';
-      link.textContent = '冷门考点查漏与 MIPS';
+      link.textContent = '冷门查漏 · MIPS / x86';
       studyLinks.append(link);
     }
   }

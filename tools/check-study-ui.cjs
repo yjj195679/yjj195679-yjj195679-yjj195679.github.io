@@ -46,8 +46,8 @@ test("vocabulary print CSS contains escaped newline bug",!read("css/vocabulary.c
 const main=read("js/main.js");
 const match=main.match(/const publishedPdfNames\s*=\s*new Set\(\[([\s\S]*?)\]\);/);
 test("PDF existence guard missing",!!match);
-const exports=JSON.parse("["+match[1]+"]");
-for(const name of exports)test("missing generated PDF: "+name,exists("documents/exports/"+name+".pdf"));
+const pdfNames=JSON.parse("["+match[1]+"]");
+for(const name of pdfNames)test("missing generated PDF: "+name,exists("documents/exports/"+name+".pdf"));
 const schema=read("supabase/writing_word_progress.sql");
 test("RLS migration missing",schema.includes("enable row level security")&&schema.includes("revoke all"));
 test("Edge function missing",exists("supabase/functions/writing-progress/index.ts"));

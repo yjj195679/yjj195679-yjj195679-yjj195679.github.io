@@ -126,3 +126,13 @@
 - 每条内容同时标注适用条件和易错提醒，长公式按移动端阅读拆行。
 - 支持关键词搜索、科目/章节/掌握状态筛选、随机抽查、浏览器本地掌握度标记及打印导出。
 - 页面逻辑位于 `js/math-formulas.js`，样式位于 `css/math-formulas.css`；不依赖网络 API。
+
+## 作文词汇进度与网页回归检查（2026-11-17）
+
+- `writing-vocabulary.html`：独立的英语一作文名词、形容词、搭配与历史错词复习页，保留现有单词 PDF 板块。
+- `js/writing-vocabulary.js`：本地缓存与随机第一方 Cookie 识别；云端读取、合并、保存失败时保留本地数据。清除浏览器 Cookie 或在另一台设备上访问，会使用另一份独立进度。
+- `supabase/writing_word_progress.sql`：云端进度表，开启 RLS 且不对匿名 Data API 开放；只存 Cookie 的 SHA-256 哈希。
+- `supabase/functions/writing-progress/index.ts`：对应 Supabase Edge Function，服务端密钥仅通过运行时环境读取，绝不可复制到网页。
+- `node tools/check-study-ui.cjs`：检查站内链接、页面锚点、68 组词汇、脚本语法、圆形图解、PDF 链接和数据库权限声明；GitHub Actions 推送时自动执行。
+
+此功能并非账号体系，Cookie 不会自动跨设备同步；数据库异常时页面继续使用本地记录。线上功能仍应使用浏览器测试读写和移动端显示。

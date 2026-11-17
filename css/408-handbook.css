@@ -92,3 +92,14 @@ html.handbook408-root{scroll-behavior:auto}
 .board-wire{fill:none;stroke:var(--hand-concept);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;transition:opacity .35s}@media(prefers-reduced-motion:reduce){.board-wire{transition:none}}
 
 .board-node.rb-red rect{stroke:var(--hand-key)}.board-node.rb-red text{fill:var(--hand-key)}.board-node.rb-black rect{stroke:var(--text);stroke-width:3}
+
+/* Stable circle geometry and separated captions for ring/BFS diagrams. */
+.sim-ring .sim-track{height:315px}
+.sim-bfs .sim-track{height:295px}
+.sim-bfs .visual-caption{bottom:9px}
+.ring-slot{box-sizing:border-box;padding:4px;font-size:12px;line-height:1.2;text-align:center;overflow-wrap:anywhere;word-break:break-word}
+.ring-pointer{font-size:13px;line-height:18px}
+.ring-center{z-index:2;line-height:1.4}
+.bfs-node{height:60px;box-sizing:border-box;aspect-ratio:1;border-radius:50%}
+.sim-stage{overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+@media(max-width:700px){.study-sim .sim-explain{min-height:0}.sim-buttons .button{min-width:0;padding:10px 12px}}

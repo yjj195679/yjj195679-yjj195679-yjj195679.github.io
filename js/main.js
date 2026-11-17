@@ -356,7 +356,14 @@
       }
     });
 
-    if (document.body.dataset.exportMode === "print") {
+    // Prevent download/open buttons from targeting PDFs that were never generated.
+    const publishedPdfNames = new Set([
+      "408","408-calculations","408-handbook","achievements","courses",
+      "education","life","math-formulas","politics","projects",
+      "en-achievements","en-courses","en-education","en-life","en-projects"
+    ]);
+    const pdfPageName=(isEnglish?"en-":"")+location.pathname.split("/").pop().replace(/\.html$/,"");
+    if (document.body.dataset.exportMode === "print" || !publishedPdfNames.has(pdfPageName)) {
       const printCurrent = () => {
         try {
           if (typeof window.print !== "function") throw new Error("unavailable");

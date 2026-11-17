@@ -22,6 +22,7 @@
   const valid = new Set(["mastered","review"]);
   function save() {
     try { localStorage.setItem(storageKey, JSON.stringify(marks)); } catch {}
+    queueSync();
   }
   function applyMark(entry) {
     const current = valid.has(marks[entry.id]) ? marks[entry.id] : "unmarked";
@@ -105,5 +106,104 @@
     entries.forEach(applyMark);
     update();
   });
+
+  // Keep existing local marks; sync a per-browser device to Supabase.
+  const syncLabel=document.getElementById("writing-sync-status");
+  const baselineKey="true-path-writing-vocab-v1-cloud-baseline";
+  const cookieName="tpm_writing_device";
+  const api="https://lbnmkxmvdalavcjdxtpy.supabase.co/functions/v1/writing-progress";
+  const knownIds=new Set(entries.map(e=>e.id));
+  const sanitize=v=>{
+    const result={};
+    if(v && typeof v==="object"&&!Array.isArray(v))for(const [id,s] of Object.entries(v))if(knownIds.has(id)&&valid.has(s))result[id]=s;
+    return result;
+  };
+  function readJSON(k){try{return JSON.parse(localStorage.getItem(k)||"{}")}catch{return {}}}
+  function storeJSON(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
+  function deviceCookie(){
+    try{
+      const item=document.cookie.split(";").map(s=>s.trim()).find(s=>s.startsWith(cookieName+"="));
+      const existing=item?decodeURIComponent(item.slice(cookieName.length+1)):"";
+      if(/^wv1_[0-9a-f]{64}$/.test(existing))return existing;
+      if(!window.isSecureContext)return "";
+      const bytes=crypto.getRandomValues(new Uint8Array(32));
+      const token="wv1_"+[...bytes].map(b=>b.toString(16).padStart(2,"0")).join("");
+      document.cookie=cookieName+"="+token+"; Max-Age=31536000; Path=/; SameSite=Lax; Secure";
+      return document.cookie.includes(cookieName+"=")?token:"";
+    }catch{return ""}
+  }
+  const token=deviceCookie();
+  const fingerprint=token.slice(-16);
+  let cloudReady=false,cloudBusy=false,cloudDirty=false,timer=0;
+  function setSync(s,mode=""){if(syncLabel){syncLabel.textContent=s;syncLabel.dataset.state=mode}}
+  const baseline=()=>{const x=readJSON(baselineKey);return x?.device===fingerprint?sanitize(x.marks):{}};
+  const saveBaseline=snapshot=>storeJSON(baselineKey,{device:fingerprint,marks:sanitize(snapshot)});
+  const identical=(a,b)=>{const ak=Object.keys(a).sort(),bk=Object.keys(b).sort();return ak.length===bk.length&&ak.every((k,i)=>k===bk[i]&&a[k]===b[k])};
+  async function cloud(action,snapshot){
+    const abort=new AbortController(),timeout=window.setTimeout(()=>abort.abort(),9000);
+    try{
+      const response=await fetch(api,{method:"POST",mode:"cors",credentials:"omit",cache:"no-store",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify(action==="read"?{action,cookie:token}:{action,cookie:token,marks:snapshot}),
+        signal:abort.signal});
+      if(!response.ok)throw new Error("Sync HTTP "+response.status);
+      return await response.json();
+    }finally{window.clearTimeout(timeout)}
+  }
+  function queueSync(){
+    if(!token){setSync("Cookie 不可用，进度仅保存在本地浏览器。","local");return}
+    if(!cloudReady){setSync("进度已保存在本地，等待 Supabase 连接。","pending");return}
+    cloudDirty=true;setSync("本地已保存，正在同步…","pending");
+    window.clearTimeout(timer);timer=window.setTimeout(flushCloud,700);
+  }
+  async function flushCloud(){
+    if(!cloudReady||cloudBusy||!cloudDirty)return;
+    cloudBusy=true;cloudDirty=false;
+    const snapshot=sanitize(marks);
+    try{
+      await cloud("save",snapshot);
+      saveBaseline(snapshot);
+      setSync("已同步至 Supabase · 使用本机 Cookie 识别","success");
+    }catch{
+      cloudDirty=true;setSync("云端保存失败，进度仍在本地。","error");
+    }finally{
+      cloudBusy=false;
+      if(!identical(marks,snapshot)){
+        cloudDirty=true;window.clearTimeout(timer);timer=window.setTimeout(flushCloud,700);
+      }
+    }
+  }
+  async function initializeCloud(){
+    if(!token){setSync("Cookie 不可用，记录仅保存在本地。","local");return}
+    if(cloudReady){if(cloudDirty)flushCloud();return}
+    setSync("正在从 Supabase 恢复进度…","pending");
+    try{
+      const last=baseline();
+      const remote=sanitize((await cloud("read")).marks);
+      const local=sanitize(marks);
+      const merged={...remote};
+      for(const id of knownIds){
+        const previous=last[id]||null,current=local[id]||null;
+        if(previous!==current){
+          if(current)merged[id]=current;
+          else delete merged[id];
+        }
+      }
+      marks=sanitize(merged);
+      storeJSON(storageKey,marks);
+      entries.forEach(applyMark);update();
+      saveBaseline(remote);cloudReady=true;
+      if(!identical(marks,remote))queueSync();
+      else setSync("Supabase 学习记录已恢复。","success");
+    }catch{setSync("云端暂不可用，本地记录已保留。","error")}
+  }
+  window.addEventListener("online",()=>cloudReady?flushCloud():initializeCloud());
+  document.addEventListener("visibilitychange",()=>{
+    if(document.visibilityState==="visible"){
+      if(!cloudReady)initializeCloud();
+      else if(cloudDirty)flushCloud();
+    }
+  });
   update();
+  initializeCloud();
 })();

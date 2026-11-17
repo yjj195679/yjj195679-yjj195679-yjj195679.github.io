@@ -38,6 +38,7 @@
    nodes.forEach(n=>n.hidden=true);cursor.hidden=true;visualCaption=el('div','visual-caption');track.append(visualCaption);
   }
   if(data.scene==='ring'){
+   stage.classList.add('sim-ring');
    ringSlots=ringXY.map(([x,y])=>{const n=el('div','ring-slot');n.style.left=x+'px';n.style.top=y+'px';track.append(n);return n;});
    ringPointers=ringXY.map(([x,y])=>{const n=el('div','ring-pointer');n.style.left=(x-15)+'px';n.style.top=(y+64)+'px';track.append(n);return n;});
    visualCaption.textContent='5个槽位 / 最多4项';visualCaption.classList.add('ring-center');
@@ -47,6 +48,7 @@
    lruTiles=[1,2,3,4].map(page=>{const n=el('div','lru-tile','页面 '+page);track.append(n);return n;});
   }
   if(data.scene==='bfs'){
+   stage.classList.add('sim-bfs');
    const xy=[[300,10],[180,90],[420,90],[180,170],[420,170]],names=['A','B','C','D','E'];
    const g=document.createElementNS('http://www.w3.org/2000/svg','svg');g.setAttribute('viewBox','0 0 660 260');g.classList.add('sim-edges');
    const line=document.createElementNS(g.namespaceURI,'path');line.setAttribute('d',[[0,1],[0,2],[1,3],[2,4],[3,4]].map(([a,b])=>`M${xy[a][0]+30} ${xy[a][1]+25} L${xy[b][0]+30} ${xy[b][1]+25}`).join(' '));g.append(line);track.prepend(g);
@@ -64,18 +66,28 @@
   function render(){
    const step=data.steps[index];count.textContent=`步骤 ${index+1} / ${data.steps.length}`;heading.textContent=step.title;explain.textContent=step.explain;
    prev.disabled=index===0;next.disabled=index===data.steps.length-1;
-   nodes.forEach((n,i)=>{n.textContent=step.values[i];n.style.left=(step.positions[i][0]/6.6)+'%';n.style.top=step.positions[i][1]+'px';n.classList.toggle('sim-active',i===step.active);n.classList.toggle('sim-pending',step.values[i].includes('未插入'));});
-   cursor.style.left=(step.positions[step.active][0]/6.6)+'%';
+   // Specialized scenes (ring/BFS/LRU/KMP/fragment/GBN) have no generic nodes.
+   if(Array.isArray(step.values)&&Array.isArray(step.positions)){
+    nodes.forEach((n,i)=>{
+     const value=String(step.values[i]??'');
+     const point=step.positions[i];
+     n.textContent=value;
+     if(Array.isArray(point)){n.style.left=(point[0]/6.6)+'%';n.style.top=point[1]+'px';}
+     n.classList.toggle('sim-active',i===step.active);
+     n.classList.toggle('sim-pending',value.includes('未插入'));
+    });
+    if(Array.isArray(step.positions[step.active]))cursor.style.left=(step.positions[step.active][0]/6.6)+'%';
+   }
    if(isBuffer){token.style.left=([30,30,255,255,255,465,465][index]/6.6)+'%';token.style.opacity=index===0?'0':'1';token.textContent=index===6?'A 已消费':'产品 A';}
    if(isTCP){flight.style.width=([.5,1,.5,.5,0][index]*90)+'%';credit.style.width=([.5,0,.5,0,1000/1200][index]*90)+'%';flight.textContent='在途数据';credit.textContent='可新增发送';}
    if(addressToken){addressToken.style.left=(step.positions[step.active][0]/6.6)+'%';addressToken.textContent=index<3?'页号 →':'物理地址 →';}
    if(mainCells){patternRow.style.transform='translateX('+(step.shift*48)+'px)';mainCells.forEach((n,i)=>{n.classList.toggle('kmp-current',i===step.i);n.classList.toggle('kmp-matched',index===5&&i>=2);});patternCells.forEach((n,i)=>{n.classList.toggle('kmp-current',i===step.j);n.classList.toggle('kmp-matched',i<step.j);});}
    if(pieces){packet.style.opacity=index<2?'1':'.35';pieces.forEach((n,i)=>{const show=index>=i+2;n.style.opacity=show?'1':'0';n.style.transform='translate('+(20+i*210)+'px,'+(show?135:30)+'px)';n.classList.toggle('fragment-active',index===i+2);});}
    if(ringSlots){ringSlots.forEach((n,i)=>{n.textContent=i+'：'+(step.slots[i]||'空');n.classList.toggle('ring-filled',!!step.slots[i]);ringPointers[i].textContent=[i===step.front?'front':'',i===step.rear?'rear':''].filter(Boolean).join(' / ');});}
-   if(lruTiles){lruTiles.forEach((n,i)=>{const at=step.order.indexOf(i+1);n.style.opacity=at<0?'0':'1';n.style.transform='translate('+(at<0?525:45+at*180)+'px,85px)';n.classList.toggle('visual-current',step.page===i+1);});visualCaption.textContent='本次访问：'+(step.page||'无')+'；累计缺页：'+step.faults+'次';}
-   if(bfsNodes){bfsNodes.forEach(n=>{n.classList.toggle('bfs-visited',step.visited.includes(n.textContent));n.classList.toggle('visual-current',step.current===n.textContent);});visualCaption.textContent='FIFO队列（左端出队）：['+step.queue.join(', ')+']';}
-   if(gbnPacket){gbnPacket.textContent=step.packet;gbnPacket.style.left=(step.lost?225:425)+'px';gbnPacket.classList.toggle('gbn-lost',step.lost);gbnReceive.textContent='接收方：期待帧'+step.expected;gbnAck.textContent='← '+step.ack;visualCaption.textContent='已按序交付：['+step.delivered.join(', ')+']';}
-   if(path){const pairs=data.graph?[[0,1],[0,2],[1,2]]:index===0?[]:index<4?(index===1?[[0,1]]:[[0,1],[1,2]]):[[1,0],[1,2]];path.setAttribute('d',pairs.map(([a,b])=>`M${step.positions[a][0]+75} ${step.positions[a][1]+25} L${step.positions[b][0]+75} ${step.positions[b][1]+25}`).join(' '));}
+   if(lruTiles){lruTiles.forEach((n,i)=>{const at=(step.order||[]).indexOf(i+1);n.style.opacity=at<0?'0':'1';n.style.transform='translate('+(at<0?525:45+at*180)+'px,85px)';n.classList.toggle('visual-current',step.page===i+1);});visualCaption.textContent='本次访问：'+(step.page||'无')+'；累计缺页：'+step.faults+'次';}
+   if(bfsNodes){bfsNodes.forEach(n=>{n.classList.toggle('bfs-visited',(step.visited||[]).includes(n.textContent));n.classList.toggle('visual-current',step.current===n.textContent);});visualCaption.textContent='FIFO队列（左端出队）：['+(step.queue||[]).join(', ')+']';}
+   if(gbnPacket){gbnPacket.textContent=step.packet;gbnPacket.style.left=(step.lost?225:425)+'px';gbnPacket.classList.toggle('gbn-lost',step.lost);gbnReceive.textContent='接收方：期待帧'+step.expected;gbnAck.textContent='← '+step.ack;visualCaption.textContent='已按序交付：['+(step.delivered||[]).join(', ')+']';}
+   if(path&&Array.isArray(step.positions)){const pairs=data.graph?[[0,1],[0,2],[1,2]]:index===0?[]:index<4?(index===1?[[0,1]]:[[0,1],[1,2]]):[[1,0],[1,2]];path.setAttribute('d',pairs.map(([a,b])=>`M${step.positions[a][0]+75} ${step.positions[a][1]+25} L${step.positions[b][0]+75} ${step.positions[b][1]+25}`).join(' '));}
   }
   function tick(){if(index<data.steps.length-1){index++;render();}if(index===data.steps.length-1)stop();else timer=setTimeout(tick,2600);}
   prev.addEventListener('click',()=>{stop();index=Math.max(0,index-1);render();});next.addEventListener('click',()=>{stop();index=Math.min(data.steps.length-1,index+1);render();});

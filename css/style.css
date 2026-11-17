@@ -4230,3 +4230,8 @@ html[data-theme="light"] .quick-title {
   .reveal { opacity: 1 !important; visibility: visible !important; transform: none !important; }
   body.reading-mode .glass, body.reading-mode .timeline { background: #fff !important; }
 }
+
+/* Prevent compact oval labels from shrinking or clipping on narrow screens. */
+.tag,.mini{display:inline-flex;align-items:center;max-width:100%;min-width:0;white-space:normal;overflow-wrap:anywhere;vertical-align:middle}
+.tag,.mini{line-height:1.5}
+@media(max-width:480px){.tag,.mini{padding-inline:9px;max-width:100%}}

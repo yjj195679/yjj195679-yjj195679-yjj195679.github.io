@@ -90,6 +90,7 @@ html[data-theme="dark"] .review-next { color: #101216; background: #f1f4f8; bord
   .reader-sheet { padding: 0; color: #000; background: #fff; border: 0; border-radius: 0; box-shadow: none; font-size: 10pt; }
   .vocabulary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 14mm; }
   .vocab-group { border-bottom-color: #bbb; content-visibility: visible; contain-intrinsic-size: none; }
-  .vocab-term, .vocab-definition { color: #000 !important; }\n  .js-ready .vocab-entry.is-definition-hidden .vocab-definition { color: #000 !important; background: none !important; filter: none !important; }
+  .vocab-term, .vocab-definition { color: #000 !important; }
+  .js-ready .vocab-entry.is-definition-hidden .vocab-definition { color: #000 !important; background: none !important; filter: none !important; }
   .vocab-pos { color: #333 !important; background: #f2f2f2 !important; border-color: #aaa !important; }
 }
